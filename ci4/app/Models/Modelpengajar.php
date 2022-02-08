@@ -20,6 +20,16 @@ class Modelpengajar extends Model
             ->get()->getResultArray();
     }
 
+    //Hapus Akun Pengajar saat Data Pengajar Dihapus - Get User id
+    public function get_user_id($pengajar_id)
+    {
+        return $this->table('pengajar')
+            ->select('user_id')
+            ->where('pengajar_id', $pengajar_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
     //Dashboaed - Admin
     public function jml_pengajar()
     {

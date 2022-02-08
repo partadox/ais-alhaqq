@@ -17,7 +17,7 @@
                 <th>Kelas</th>
                 <th>Program</th>
                 <th>Ket. Kelas</th>
-                <th>Kouta</th>
+                <th>Kuota</th>
                 <th>Status</th>
                 <th>Peserta</th>
             </tr>
@@ -43,8 +43,8 @@
                         <?php } ?>
                     </td>
                     <td width="15%">
-                        <p>Kouta: <?= $data['kouta'] ?></p>
-                        <p>Sisa Kouta: <?= $data['sisa_kouta'] ?></p>
+                        <p>Kuota: <?= $data['kouta'] ?></p>
+                        <p>Sisa Kuota: <?= $data['sisa_kouta'] ?></p>
                     </td>
                     <td width="5%">
                         <?php if($data['status_kelas'] == 'aktif') { ?>

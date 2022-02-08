@@ -25,71 +25,50 @@
                 <input type="hidden" class="form-control" id="peserta_id" name="peserta_id" value="<?= $bayar_peserta_id ?>" disabled>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Total Nominal Transfer<code>*</code></label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" value="Rp <?= rupiah($awal_bayar) ?>" readonly>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="nominal_bayar" name="nominal_bayar">
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="nominal_bayar" name="nominal_bayar" value="Rp <?= rupiah($awal_bayar) ?>">
                         <div class="invalid-feedback errorNominal_bayar"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Daftar<code>*</code></label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" value="Rp <?= rupiah($awal_bayar_daftar) ?>" readonly>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="bayar_daftar" name="bayar_daftar">
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="bayar_daftar" name="bayar_daftar"  value="Rp <?= rupiah($awal_bayar_daftar) ?>">
                         <div class="invalid-feedback errorBayar_daftar"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">SPP-1<code>*</code></label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" value="Rp <?= rupiah($awal_bayar_spp1) ?>" readonly>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="bayar_spp1" name="bayar_spp1">
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="bayar_spp1" name="bayar_spp1" value="Rp <?= rupiah($awal_bayar_spp1) ?>">
                         <div class="invalid-feedback errorBayar_spp1"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">SPP-2<code>*</code></label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" value="Rp <?= rupiah($awal_bayar_spp2) ?>" readonly>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="bayar_spp2" name="bayar_spp2">
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="bayar_spp2" name="bayar_spp2" value="Rp <?= rupiah($awal_bayar_spp2) ?>">
                         <div class="invalid-feedback errorBayar_spp2"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">SPP-3<code>*</code></label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" value="Rp <?= rupiah($awal_bayar_spp3) ?>" readonly>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="bayar_spp3" name="bayar_spp3">
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="bayar_spp3" name="bayar_spp3" value="Rp <?= rupiah($awal_bayar_spp3) ?>">
                         <div class="invalid-feedback errorBayar_spp3"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">SPP-4<code>*</code></label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" value="Rp <?= rupiah($awal_bayar_spp4) ?>" readonly>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="bayar_spp4" name="bayar_spp4">
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="bayar_spp4" name="bayar_spp4" value="Rp <?= rupiah($awal_bayar_spp4) ?>">
                         <div class="invalid-feedback errorBayar_spp4"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Infaq<code>*</code></label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" value="Rp <?= rupiah($awal_bayar_infaq) ?>" readonly>
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="bayar_infaq" name="bayar_infaq">
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="bayar_infaq" name="bayar_infaq" value="Rp <?= rupiah($awal_bayar_infaq) ?>">
                         <div class="invalid-feedback errorBayar_infaq"></div>
                     </div>
                 </div>

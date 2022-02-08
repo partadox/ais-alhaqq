@@ -98,7 +98,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="" class="col-sm-4 col-form-label">Kouta <code>*</code></label>
+                    <label for="" class="col-sm-4 col-form-label">Kuota <code>*</code></label>
                     <div class="col-sm-8">
                         <input type="number" class="form-control"  value="<?= $kouta ?>" id="kouta" name="kouta" placeholder="">
                         <div class="invalid-feedback errorKouta"></div>

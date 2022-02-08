@@ -21,7 +21,7 @@
                 <th>Program</th>
                 <th>Ket. Kelas</th>
                 <th>Ketentuan Peserta</th>
-                <th>Kouta</th>
+                <th>Kuota</th>
                 <th>Status Kelas</th>
                 <th>Tindakan</th>
             </tr>
@@ -37,6 +37,14 @@
                     <td width="10%"><?= $data['nama_program'] ?></td>
                     <td width="20%">
                         <p>Hari: <?= $data['hari_kelas'] ?></p>
+                        <p>
+                        <?php if($data['status_kerja'] == '0') { ?>
+                            <p>Weekdays</p>
+                        <?php } ?>
+                        <?php if($data['status_kerja'] == '1') { ?>
+                            <p>Weekend</p>
+                        <?php } ?>
+                        </p>
                         <p>Jam: <?= $data['waktu_kelas'] ?></p>
                         <p>Pengajar: <?= $data['nama_pengajar'] ?></p>
                         <?php if($data['metode_kelas'] == 'online') { ?>
@@ -49,18 +57,10 @@
                     <td width="20%">
                         <p>Level: <?= $data['nama_level'] ?></p>
                         <p>Jenis Kelamin: <?= $data['jenkel'] ?></p>
-                        <p>
-                        <?php if($data['status_kerja'] == '0') { ?>
-                            <p> Status: Non Pekerja</p>
-                        <?php } ?>
-                        <?php if($data['status_kerja'] == '1') { ?>
-                            <p>Status: Pekerja</p>
-                        <?php } ?>
-                        </p>
                     </td>
                     <td width="15%">
-                        <p>Kouta: <?= $data['kouta'] ?></p>
-                        <p>Sisa Kouta: <?= $data['sisa_kouta'] ?></p>
+                        <p>Kuota: <?= $data['kouta'] ?></p>
+                        <p>Sisa Kuota: <?= $data['sisa_kouta'] ?></p>
                     </td>
                     <td width="5%">
                         <?php if($data['status_kelas'] == 'aktif') { ?>

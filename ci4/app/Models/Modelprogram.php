@@ -64,7 +64,7 @@ class Modelprogram extends Model
             ->get()->getResultArray();
     }
 
-    //Dashboaed - Admin
+    //Dashboard - Admin
     public function jml_kelas()
     {
         return $this->table('program_kelas')

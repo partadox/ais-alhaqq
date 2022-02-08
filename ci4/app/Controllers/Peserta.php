@@ -53,7 +53,7 @@ class Peserta extends BaseController
                 'title'             => 'Form Input Peserta Baru',
                 'level'             => $this->level->list(),
                 'kantor_cabang'     => $this->kantor_cabang->list(),
-                'user'              => $this->user->list_peserta(),
+                'user'              => $this->user->getnonaktif(),
             ];
             $msg = [
                 'sukses' => view('auth/peserta/tambah', $data)
@@ -72,6 +72,13 @@ class Peserta extends BaseController
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'nis' => [
+                    'label' => 'nis',
+                    'rules' => 'is_unique[peserta.nis]',
+                    'errors' => [
+                        'is_unique' => '{field} harus unik, sudah ada yang menggunakan {field} ini',
                     ]
                 ],
                 'asal_cabang_peserta' => [
@@ -97,9 +104,10 @@ class Peserta extends BaseController
                 ],
                 'nik' => [
                     'label' => 'nik',
-                    'rules' => 'required',
+                    'rules' => 'required|is_unique[peserta.nik]',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
+                        'is_unique' => '{field} harus unik, sudah ada yang menggunakan {field} ini',
                     ]
                 ],
                 'tmp_lahir' => [
@@ -178,6 +186,7 @@ class Peserta extends BaseController
                     'error' => [
                         'nama'                  => $validation->getError('nama'),
                         'asal_cabang_peserta'   => $validation->getError('asal_cabang_peserta'),
+                        'nis'                   => $validation->getError('nis'),
                         'level_peserta'         => $validation->getError('level_peserta'),
                         'jenkel'                => $validation->getError('jenkel'),
                         'nik'                   => $validation->getError('nik'),
@@ -291,6 +300,13 @@ class Peserta extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
+                'nis' => [
+                    'label' => 'nis',
+                    'rules' => 'is_unique[peserta.nis]',
+                    'errors' => [
+                        'is_unique' => '{field} harus unik, sudah ada yang menggunakan {field} ini',
+                    ]
+                ],
                 'asal_cabang_peserta' => [
                     'label' => 'asal_cabang_peserta',
                     'rules' => 'required',
@@ -314,9 +330,10 @@ class Peserta extends BaseController
                 ],
                 'nik' => [
                     'label' => 'nik',
-                    'rules' => 'required',
+                    'rules' => 'required|is_unique[peserta.nik]',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
+                        'is_unique' => '{field} harus unik, sudah ada yang menggunakan {field} ini',
                     ]
                 ],
                 'tmp_lahir' => [
@@ -395,6 +412,7 @@ class Peserta extends BaseController
                     'error' => [
                         'nama'                  => $validation->getError('nama'),
                         'asal_cabang_peserta'   => $validation->getError('asal_cabang_peserta'),
+                        'nis'                   => $validation->getError('nis'),
                         'level_peserta'         => $validation->getError('level_peserta'),
                         'jenkel'                => $validation->getError('jenkel'),
                         'nik'                   => $validation->getError('nik'),
@@ -451,6 +469,41 @@ class Peserta extends BaseController
                     ]
                 ];
             }
+            echo json_encode($msg);
+        }
+    }
+
+    public function hapus_peserta()
+    {
+        if ($this->request->isAJAX()) {
+
+            $peserta_id = $this->request->getVar('peserta_id');
+
+            //Get data user id
+            $get_user_id = $this->peserta->get_user_id($peserta_id);
+            $user_id = $get_user_id->user_id;
+            $updatedata = ['active' => 0, ];
+
+            // Update Akun User
+            $this->user->update($user_id, $updatedata);
+            // Hapus Data Peserta
+            $this->peserta->delete($peserta_id);
+
+            // Data Log START
+            $log = [
+                'username_log' => session()->get('username'),
+                'tgl_log'      => date("Y-m-d"),
+                'waktu_log'    => date("H:i:s"),
+                'aktivitas_log'=> 'Hapus Data Peserta ID : ' .  $this->request->getVar('peserta_id'),
+            ];
+            $this->log->insert($log);
+            // Data Log END
+
+            $msg = [
+                'sukses' => [
+                    'link' => 'peserta'
+                ]
+            ];
             echo json_encode($msg);
         }
     }

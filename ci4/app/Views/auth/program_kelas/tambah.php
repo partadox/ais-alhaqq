@@ -94,18 +94,18 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="" class="col-sm-4 col-form-label">Status Kerja <code>*</code></label>
+                    <label for="" class="col-sm-4 col-form-label">Kat. Pilihan Waktu<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="status_kerja" name="status_kerja">
                             <option value="" disabled selected>--Pilih--</option>
-                            <option value="0">Non-Pekerja (Weekdays)</option>
-                            <option value="1">Pekerja (Weekdays & Weekend)</option>
+                            <option value="0">Weekdays (Non-Pekerja)</option>
+                            <option value="1">Weekdays & Weekend (Pekerja)</option>
                         </select>
                         <div class="invalid-feedback errorStatuskerja"></div>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="" class="col-sm-4 col-form-label">Kouta <code>*</code></label>
+                    <label for="" class="col-sm-4 col-form-label">Kuota <code>*</code></label>
                     <div class="col-sm-8">
                         <input type="number" class="form-control" id="kouta" name="kouta" placeholder="">
                         <div class="invalid-feedback errorKouta"></div>

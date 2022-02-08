@@ -235,6 +235,14 @@
                             $('.errorAsal_cabang_peserta').html('');
                         }
 
+                        if (response.error.nis) {
+                            $('#nis').addClass('is-invalid');
+                            $('.errorNis').html(response.error.nis);
+                        } else {
+                            $('#nis').removeClass('is-invalid');
+                            $('.errorNis').html('');
+                        }
+
                         if (response.error.level_peserta) {
                             $('#level_peserta').addClass('is-invalid');
                             $('.errorLevel_peserta').html(response.error.level_peserta);

@@ -30,9 +30,10 @@ class Daftar extends BaseController
                 ],
                 'nik' => [
                     'label' => 'nik',
-                    'rules' => 'required',
+                    'rules' => 'required|is_unique[peserta.nik]',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
+                        'is_unique' => '{field} harus unik, sudah ada yang menggunakan {field} ini',
                     ]
                 ],
                 'tmp_lahir' => [

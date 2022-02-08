@@ -22,7 +22,7 @@ class Pengajar extends BaseController
             $data = [
                 'title'           => 'Form Input Pengajar Baru',
                 'kantor_cabang'   => $this->kantor_cabang->list(),
-                'user'            => $this->user->list_pengajar(),
+                'user'            => $this->user->list_pengajar_nonaktif(),
             ];
             $msg = [
                 'sukses' => view('auth/pengajar/tambah', $data)
@@ -45,9 +45,10 @@ class Pengajar extends BaseController
                 ],
                 'nik_pengajar' => [
                     'label' => 'nik_pengajar',
-                    'rules' => 'required',
+                    'rules' => 'required|is_unique[pengajar.nik_pengajar]',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
+                        'is_unique' => '{field} harus unik, sudah ada yang menggunakan {field} ini',
                     ]
                 ],
                 'tipe_pengajar' => [
@@ -305,9 +306,10 @@ class Pengajar extends BaseController
                 ],
                 'nik_pengajar' => [
                     'label' => 'nik_pengajar',
-                    'rules' => 'required',
+                    'rules' => 'required|is_unique[pengajar.nik_pengajar]',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
+                        'is_unique' => '{field} harus unik, sudah ada yang menggunakan {field} ini',
                     ]
                 ],
                 'tipe_pengajar' => [
@@ -478,6 +480,41 @@ class Pengajar extends BaseController
                     ]
                 ];
             }
+            echo json_encode($msg);
+        }
+    }
+
+    public function hapus_pengajar()
+    {
+        if ($this->request->isAJAX()) {
+
+            $pengajar_id = $this->request->getVar('pengajar_id');
+
+            //Get data user id
+            $get_user_id = $this->pengajar->get_user_id($pengajar_id);
+            $user_id = $get_user_id->user_id;
+            $updatedata = ['active' => 0, ];
+
+            // Update Akun User
+            $this->user->update($user_id, $updatedata);
+            // Hapus Data Pengajar
+            $this->pengajar->delete($pengajar_id);
+
+            // Data Log START
+            $log = [
+                'username_log' => session()->get('username'),
+                'tgl_log'      => date("Y-m-d"),
+                'waktu_log'    => date("H:i:s"),
+                'aktivitas_log'=> 'Hapus Data Pengajar/Penguji ID : ' .  $this->request->getVar('pengajar_id'),
+            ];
+            $this->log->insert($log);
+            // Data Log END
+
+            $msg = [
+                'sukses' => [
+                    'link' => 'pengajar'
+                ]
+            ];
             echo json_encode($msg);
         }
     }

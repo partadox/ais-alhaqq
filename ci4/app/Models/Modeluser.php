@@ -35,6 +35,16 @@ class Modeluser extends Model
             ->get()->getResultArray();
     }
 
+    public function list_pengajar_nonaktif()
+    {
+        return $this->table('user')
+            ->where('active', 0)
+            ->where('level', 5)
+            ->orwhere('level', 6)
+            ->orderBy('user_id', 'ASC')
+            ->get()->getResultArray();
+    }
+
     public function list_peserta_pengajar()
     {
         //$where = "level=4 OR level=5";

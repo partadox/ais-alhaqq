@@ -44,10 +44,12 @@
                     <td width="8%"><button class="btn btn-primary btn-sm" disabled> <?= $data['username'] ?></td>
                     <td width="8%"><?= $data['hp_pengajar'] ?></td>
                     <td width="10%">
-                        <button type="button" class="btn btn-secondary mb-2" onclick="datadiri('<?= $data['pengajar_id'] ?>')" >
-                        <i class=" fa fa-info mr-1"></i>Detail</button> <br>
+                        <button type="button" class="btn btn-secondary" onclick="datadiri('<?= $data['pengajar_id'] ?>')" >
+                        <i class=" fa fa-info"></i></button>
                         <button type="button" class="btn btn-warning" onclick="edit('<?= $data['pengajar_id'] ?>')" >
-                        <i class=" fa fa-edit mr-1"></i>Edit</button>
+                        <i class=" fa fa-edit"></i></button>
+                        <button type="button" class="btn btn-danger" onclick="hapus('<?= $data['pengajar_id'] ?>')" >
+                        <i class=" fa fa-trash"></i></button>
                     </td>
                 </tr>
 
@@ -114,6 +116,43 @@
                 }
             }
         });
+    }
+
+    function hapus(pengajar_id) {
+        Swal.fire({
+            title: 'Yakin Hapus Data Pengajar ini?',
+            text: `Data Kelas Terkait Data Pengajar ini Akan Hilang Juga.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "<?= site_url('pengajar/hapus_pengajar') ?>",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        pengajar_id : pengajar_id
+                    },
+                    success: function(response) {
+                        if (response.sukses) {
+                            Swal.fire({
+                                title: "Berhasil!",
+                                text: "Anda berhasil menghapus data pengajar ini!",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(function() {
+                                window.location = response.sukses.link;
+                        });
+                        }
+                    }
+                });
+            }
+        })
     }
 </script>
 <?= $this->endSection('isi') ?>

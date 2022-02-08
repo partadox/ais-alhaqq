@@ -56,12 +56,23 @@ class Modelpeserta extends Model
             ->getUnbufferedRow();
     }
 
+    //Hapus Akun Peserta saat Data Peserta Dihapus - Get User id
+    public function get_user_id($peserta_id)
+    {
+        return $this->table('peserta')
+            ->select('user_id')
+            ->where('peserta_id', $peserta_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
     // Get List All Data Peserta for view of datatable
     public function list()
     {
         return $this->table('peserta')
             ->join('peserta_level', 'peserta_level.peserta_level_id = peserta.level_peserta')
             ->join('user', 'user.user_id = peserta.user_id')
+            ->join('kantor_cabang', 'kantor_cabang.kantor_id = peserta.asal_cabang_peserta')
             ->orderBy('peserta_id', 'DESC')
             ->get()->getResultArray();
     }

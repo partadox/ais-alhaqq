@@ -17,7 +17,7 @@
 <?php if ($cek1 == 0 && $cek2 == 0) { ?>
  <div class="container-fluid">
   <p class="mt-1">Catatan :<br>
-      <i class="mdi mdi-information"></i> Pilih kelas yang masih memiliki kouta. <br>
+      <i class="mdi mdi-information"></i> Pilih kelas yang masih memiliki kuota. <br>
   </p>
    <div class="row">
       <?php
@@ -35,8 +35,8 @@
             <p> <i class="mdi mdi-cash-marker"></i> Biaya Pendaftaran = Rp <?= rupiah($data['biaya_daftar']) ?></p>
             <p> <i class="mdi mdi-cash-register"></i> SPP per Bulan = Rp <?= rupiah($data['biaya_bulanan']) ?> (x 4 Bulan)</p>
             <hr>
-            <p> <i class="mdi mdi-bookmark-check"></i> Total Kouta = <?= $data['kouta'] ?></p>
-            <h6> <i class="mdi mdi-bookmark-minus"> </i> Sisa Kouta = <?= $data['sisa_kouta'] ?> </h6>
+            <p> <i class="mdi mdi-bookmark-check"></i> Total Kuota = <?= $data['kouta'] ?></p>
+            <h6> <i class="mdi mdi-bookmark-minus"> </i> Sisa Kuota = <?= $data['sisa_kouta'] ?> </h6>
             
               <input type="hidden" name="peserta_id" id="peserta_id" value="<?= $peserta['peserta_id'] ?>" />
               <input type="hidden" name="kelas_id" id="kelas_id" value="<?= $data['kelas_id'] ?>" />

@@ -67,9 +67,10 @@ class Pembayaran extends BaseController
                 ],
                 'nis' => [
                     'label' => 'nis',
-                    'rules' => 'required',
+                    'rules' => 'required|is_unique[peserta.nis]',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
+                        'is_unique' => '{field} harus unik, sudah ada yang menggunakan {field} ini',
                     ]
                 ],
             ]);
@@ -528,5 +529,188 @@ class Pembayaran extends BaseController
                 $this->session->setFlashdata('pesan_sukses', 'Data Pembayaran Baru Berhasil Ditambahkan!');
                 return redirect()->to('index');
             }
+    }
+
+    public function edit_bayar()
+    {
+        if ($this->request->isAJAX()) {
+
+            $bayar_id       = $this->request->getVar('bayar_id');
+            $pembayaran     =  $this->program_bayar->find($bayar_id);
+            $data = [
+                'title'                 => 'Ubah Data Pembayaran',
+                'bayar_id'              => $pembayaran['bayar_id'],
+                'awal_bayar'            => $pembayaran['awal_bayar'],
+                'awal_bayar_infaq'      => $pembayaran['awal_bayar_infaq'],
+                'awal_bayar_daftar'     => $pembayaran['awal_bayar_daftar'],
+                'awal_bayar_spp1'       => $pembayaran['awal_bayar_spp1'],
+                'awal_bayar_spp2'       => $pembayaran['awal_bayar_spp2'],
+                'awal_bayar_spp3'       => $pembayaran['awal_bayar_spp3'],
+                'awal_bayar_spp4'       => $pembayaran['awal_bayar_spp4'],
+                'keterangan_bayar'      => $pembayaran['keterangan_bayar'],
+            ];
+            $msg = [
+                'sukses' => view('auth/pembayaran/edit', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function update_bayar()
+    {
+        if ($this->request->isAJAX()) {
+            $validation = \Config\Services::validation();
+            $valid = $this->validate([
+                'awal_bayar' => [
+                    'label' => 'awal_bayar',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'awal_bayar_infaq' => [
+                    'label' => 'awal_bayar_infaq',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'awal_bayar_daftar' => [
+                    'label' => 'awal_bayar_daftar',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'awal_bayar_spp1' => [
+                    'label' => 'awal_bayar_spp1',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'awal_bayar_spp2' => [
+                    'label' => 'awal_bayar_spp2',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'awal_bayar_spp3' => [
+                    'label' => 'awal_bayar_spp3',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'awal_bayar_spp4' => [
+                    'label' => 'awal_bayar_spp4',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+            ]);
+            if (!$valid) {
+                $msg = [
+                    'error' => [
+                        'awal_bayar'        => $validation->getError('awal_bayar'),
+                        'awal_bayar_infaq'  => $validation->getError('awal_bayar_infaq'),
+                        'awal_bayar_daftar' => $validation->getError('awal_bayar_daftar'),
+                        'awal_bayar_spp1'   => $validation->getError('awal_bayar_spp1'),
+                        'awal_bayar_spp2'   => $validation->getError('awal_bayar_spp2'),
+                        'awal_bayar_spp3'   => $validation->getError('awal_bayar_spp3'),
+                        'awal_bayar_spp4'   => $validation->getError('awal_bayar_spp4'),
+                    ]
+                ];
+            } else {
+
+                //Get from form input view modal
+                $get_awal_bayar         =  $this->request->getVar('awal_bayar');
+                $get_awal_bayar_infaq   =  $this->request->getVar('awal_bayar_infaq');
+                $get_awal_bayar_daftar  =  $this->request->getVar('awal_bayar_daftar');
+                $get_awal_bayar_spp1    =  $this->request->getVar('awal_bayar_spp1');
+                $get_awal_bayar_spp2    =  $this->request->getVar('awal_bayar_spp2');
+                $get_awal_bayar_spp3    =  $this->request->getVar('awal_bayar_spp3');
+                $get_awal_bayar_spp4    =  $this->request->getVar('awal_bayar_spp4');
+
+                //Replace Rp. and thousand separtor from input
+                $awal_bayar_int           = str_replace(str_split('Rp. .'), '', $get_awal_bayar);
+                $awal_bayar_daftar_int    = str_replace(str_split('Rp. .'), '', $get_awal_bayar_daftar);
+                $awal_bayar_spp1_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp1);
+                $awal_bayar_infaq_int     = str_replace(str_split('Rp. .'), '', $get_awal_bayar_infaq);
+                $awal_bayar_spp2_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp2);
+                $awal_bayar_spp3_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp3);
+                $awal_bayar_spp4_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp4);
+
+                //Get Data from Input view
+                $keterangan_bayar       =  $this->request->getVar('keterangan_bayar');
+                $awal_bayar              = $awal_bayar_int;
+                $awal_bayar_daftar       = $awal_bayar_daftar_int;
+                $awal_bayar_spp1         = $awal_bayar_spp1_int;
+                $awal_bayar_infaq        = $awal_bayar_infaq_int;
+                $awal_bayar_spp2         = $awal_bayar_spp2_int;
+                $awal_bayar_spp3         = $awal_bayar_spp3_int;
+                $awal_bayar_spp4         = $awal_bayar_spp4_int;
+
+                $update_data = [
+                    'awal_bayar'        => $awal_bayar ,
+                    'awal_bayar_infaq'  => $awal_bayar_infaq ,
+                    'awal_bayar_daftar' => $awal_bayar_daftar,
+                    'awal_bayar_spp1'   => $awal_bayar_spp1,
+                    'awal_bayar_spp2'   => $awal_bayar_spp2,
+                    'awal_bayar_spp3'   => $awal_bayar_spp3,
+                    'awal_bayar_spp4'   => $awal_bayar_spp4,
+                    'keterangan_bayar'  => $keterangan_bayar, 
+                ];
+
+                $bayar_id = $this->request->getVar('bayar_id');
+                $this->program_bayar->update($bayar_id, $update_data);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'aktivitas_log'=> 'Ubah Data Pembayaran ID : ' .  $this->request->getVar('bayar_id'),
+                ];
+                $this->log->insert($log);
+                // Data Log END
+
+                $msg = [
+                    'sukses' => [
+                        'link' => 'pembayaran'
+                    ]
+                ];
+            }
+            echo json_encode($msg);
+        }
+    }
+
+    public function hapus_bayar()
+    {
+        if ($this->request->isAJAX()) {
+
+            $bayar_id = $this->request->getVar('bayar_id');
+
+            $this->program_bayar->delete($bayar_id);
+
+            // Data Log START
+            $log = [
+                'username_log' => session()->get('username'),
+                'tgl_log'      => date("Y-m-d"),
+                'waktu_log'    => date("H:i:s"),
+                'aktivitas_log'=> 'Hapus Data Pembayaran ID : ' .  $this->request->getVar('bayar_id'),
+            ];
+            $this->log->insert($log);
+            // Data Log END
+
+            $msg = [
+                'sukses' => [
+                    'link' => 'pembayaran'
+                ]
+            ];
+            echo json_encode($msg);
+        }
     }
 }

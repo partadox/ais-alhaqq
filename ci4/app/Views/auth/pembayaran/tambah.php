@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="" class="col-sm-2 col-form-label"> Kelas Ada Kouta<code>*</code></label>
+                    <label for="" class="col-sm-2 col-form-label"> Kelas Ada Kuota<code>*</code></label>
                     <div class="col-sm-10">
                         <select name="kelas_id" id="kelas_id" class="js-example-basic-single">
                                 <option value="" disabled selected>--Pilih--</option>

@@ -41,6 +41,7 @@ if (session()->getFlashdata('pesan_sukses')) {
             <th>Nominal Bayar</th>
             <th>Bukti Transfer</th>
             <th>Status Konfirmasi</th>
+            <th>Tindakan</th>
         </tr>
     </thead>
     <tbody>
@@ -105,6 +106,12 @@ if (session()->getFlashdata('pesan_sukses')) {
                         <p>Jam: <?= $data['waktu_bayar_konfirmasi'] ?></p>
                     <?php } ?>
                 </td>
+                <td width="10%">
+                        <button type="button" class="btn btn-warning" onclick="edit('<?= $data['bayar_id'] ?>')" >
+                        <i class=" fa fa-edit mr-1"></i>Edit</button>
+                        <button type="button" class="btn btn-danger mt-2" onclick="hapus('<?= $data['bayar_id'] ?>')" >
+                        <i class=" fa fa-trash mr-1"></i>Hapus</button>
+                </td>
             </tr>
 
         <?php endforeach; ?>
@@ -113,6 +120,9 @@ if (session()->getFlashdata('pesan_sukses')) {
 </div>
 
 <div class="viewmodaltambah">
+</div>
+
+<div class="viewmodaldataedit">
 </div>
 
 <script>
@@ -130,6 +140,60 @@ if (session()->getFlashdata('pesan_sukses')) {
                 }
             }
         });
+    }
+
+    function edit(bayar_id) {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('pembayaran/edit_bayar') ?>",
+            data: {
+                bayar_id : bayar_id
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.sukses) {
+                    $('.viewmodaldataedit').html(response.sukses).show();
+                    $('#modaledit').modal('show');
+                }
+            }
+        });
+    }
+
+    function hapus(bayar_id) {
+        Swal.fire({
+            title: 'Yakin Hapus Data Pembayaran ini?',
+            text: `Data SPP/Infaq yang Terkait Data Pembayaran ini Akan Hilang Juga.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "<?= site_url('pembayaran/hapus_bayar') ?>",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        bayar_id : bayar_id
+                    },
+                    success: function(response) {
+                        if (response.sukses) {
+                            Swal.fire({
+                                title: "Berhasil!",
+                                text: "Anda berhasil menghapus pembayaran ini!",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(function() {
+                                window.location = response.sukses.link;
+                        });
+                        }
+                    }
+                });
+            }
+        })
     }
 
 </script>

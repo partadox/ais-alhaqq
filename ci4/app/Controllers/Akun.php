@@ -266,6 +266,34 @@ class Akun extends BaseController
         }
     }
 
+    public function hapus_user()
+    {
+        if ($this->request->isAJAX()) {
+
+            $user_id = $this->request->getVar('user_id');
+
+            // Hapus Akun User Juga
+            $this->user->delete($user_id);
+
+            // Data Log START
+            $log = [
+                'username_log' => session()->get('username'),
+                'tgl_log'      => date("Y-m-d"),
+                'waktu_log'    => date("H:i:s"),
+                'aktivitas_log'=> 'Hapus Data Akun User ID : ' .  $this->request->getVar('user_id'),
+            ];
+            $this->log->insert($log);
+            // Data Log END
+
+            $msg = [
+                'sukses' => [
+                    'link' => 'user'
+                ]
+            ];
+            echo json_encode($msg);
+        }
+    }
+
     public function admin()
     {
         $data = [
