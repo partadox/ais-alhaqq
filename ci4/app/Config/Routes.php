@@ -33,6 +33,11 @@ $routes->setAutoRoute(true);
 // route since we don't have to scan directories.
 // $routes->setDefaultNamespace('');
 $routes->get('/auth/login', 'Login::index');
+$routes->get('/auth/pembayaran/login', 'Login::index');
+$routes->get('/auth/program/login', 'Login::index');
+$routes->get('/auth/akun/login', 'Login::index');
+$routes->get('/auth/daftar/login', 'Login::index');
+
 $routes->get('/auth/register', 'Register::index');
 $routes->get('/auth/daftar', 'Daftar::index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/daftar/program', 'Daftar::program', ['filter' => 'Validasilogin']);

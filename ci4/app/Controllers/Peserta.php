@@ -53,7 +53,7 @@ class Peserta extends BaseController
                 'title'             => 'Form Input Peserta Baru',
                 'level'             => $this->level->list(),
                 'kantor_cabang'     => $this->kantor_cabang->list(),
-                'user'              => $this->user->getnonaktif(),
+                'user'              => $this->user->getnonaktif_peserta(),
             ];
             $msg = [
                 'sukses' => view('auth/peserta/tambah', $data)

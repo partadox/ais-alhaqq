@@ -85,4 +85,13 @@ class Modeluser extends Model
             ->get()->getResultArray();
     }
 
+    public function getnonaktif_peserta()
+    {
+        return $this->table('user')
+            ->where('active', 0)
+            ->where('level', 4)
+            ->orderBy('user_id', 'ASC')
+            ->get()->getResultArray();
+    }
+
 }
