@@ -306,10 +306,9 @@ class Pengajar extends BaseController
                 ],
                 'nik_pengajar' => [
                     'label' => 'nik_pengajar',
-                    'rules' => 'required|is_unique[pengajar.nik_pengajar]',
+                    'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
-                        'is_unique' => '{field} harus unik, sudah ada yang menggunakan {field} ini',
                     ]
                 ],
                 'tipe_pengajar' => [

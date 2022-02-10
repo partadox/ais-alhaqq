@@ -300,13 +300,6 @@ class Peserta extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
-                'nis' => [
-                    'label' => 'nis',
-                    'rules' => 'is_unique[peserta.nis]',
-                    'errors' => [
-                        'is_unique' => '{field} harus unik, sudah ada yang menggunakan {field} ini',
-                    ]
-                ],
                 'asal_cabang_peserta' => [
                     'label' => 'asal_cabang_peserta',
                     'rules' => 'required',
@@ -330,10 +323,9 @@ class Peserta extends BaseController
                 ],
                 'nik' => [
                     'label' => 'nik',
-                    'rules' => 'required|is_unique[peserta.nik]',
+                    'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
-                        'is_unique' => '{field} harus unik, sudah ada yang menggunakan {field} ini',
                     ]
                 ],
                 'tmp_lahir' => [
@@ -412,7 +404,6 @@ class Peserta extends BaseController
                     'error' => [
                         'nama'                  => $validation->getError('nama'),
                         'asal_cabang_peserta'   => $validation->getError('asal_cabang_peserta'),
-                        'nis'                   => $validation->getError('nis'),
                         'level_peserta'         => $validation->getError('level_peserta'),
                         'jenkel'                => $validation->getError('jenkel'),
                         'nik'                   => $validation->getError('nik'),
