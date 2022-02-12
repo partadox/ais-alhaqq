@@ -311,9 +311,10 @@ class Program extends BaseController
                 ],
                 'nama_kelas' => [
                     'label' => 'nama_kelas',
-                    'rules' => 'required',
+                    'rules' => 'required|is_unique[program_kelas.nama_kelas]',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
+                        'is_unique' => '{field} harus unik, sudah ada yang menggunakan {field} ini',
                     ]
                 ],
                 'pengajar_id' => [
@@ -777,33 +778,110 @@ class Program extends BaseController
         }
     }
 
-    public function kelas_peserta()
+    public function kelas_peserta($kelas_id)
     {
+        $peserta_onkelas    = $this->peserta_kelas->peserta_onkelas($kelas_id);
         $data = [
-            'title' => 'Al-Haqq - Peserta Dalam Kelas',
-            'list' => $this->program->list()
+            'title'             => 'Al-Haqq - Peserta Kelas',
+            'list'              => $this->program->list(),
+            'peserta_onkelas'   => $peserta_onkelas,
+            'detail_kelas'      => $this->program->list_detail_kelas($kelas_id),
+            'jumlah_peserta'    => $this->peserta_kelas->jumlah_peserta_onkelas($kelas_id),
         ];
-        //var_dump($data);
         return view('auth/program_kelas/kelas_peserta', $data);
     }
 
-    public function kelas_peserta_list()
+    public function pindah_kelas()
     {
         if ($this->request->isAJAX()) {
 
-            $kelas_id        = $this->request->getVar('kelas_id');
-            $peserta_onkelas = $this->peserta_kelas->peserta_onkelas($kelas_id);
+            $peserta_kelas_id   = $this->request->getVar('peserta_kelas_id');
+            $peserta_kelas      = $this->peserta_kelas->find($peserta_kelas_id);
+
+            //get id peserta
+            $peserta_id        = $this->peserta_kelas->get_peserta_id($peserta_kelas_id);
+            $data_peserta      = $this->peserta->find($peserta_id );
 
             $data = [
-                'title'             => 'List Peserta Dalam Kelas',
-                'peserta_onkelas'   => $peserta_onkelas,
+                'title'             => 'Pindah Kelas Peserta',
+                'peserta_kelas_id'  => $peserta_kelas_id,
+                'data_kelas_id'     => $peserta_kelas['data_kelas_id'],
+                'kelas'             => $this->program->list(),
+                'nama_peserta'      => $data_peserta[0]['nama_peserta'],
+                'nis'               => $data_peserta[0]['nis']
             ];
-            //var_dump($data);
             $msg = [
-                'sukses' => view('auth/program_kelas/kelas_peserta_list', $data)
+                'sukses' => view('auth/program_kelas/kelas_peserta_pindah', $data)
             ];
             echo json_encode($msg);
         }
     }
+
+    public function pindah_kelas_simpan()
+    {
+        if ($this->request->isAJAX()) {
+            $validation = \Config\Services::validation();
+            $valid = $this->validate([
+                'data_kelas_id' => [
+                    'label' => 'data_kelas_id',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+            ]);
+            if (!$valid) {
+                $msg = [
+                    'error' => [
+                        'data_kelas_id'    => $validation->getError('data_kelas_id'),
+                    ]
+                ];
+            } else {
+
+                $updatedata = [
+                    'data_kelas_id'        => $this->request->getVar('data_kelas_id'),
+                ];
+
+                $peserta_kelas_id = $this->request->getVar('peserta_kelas_id');
+                $this->peserta_kelas->update($peserta_kelas_id, $updatedata);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'aktivitas_log'=> 'Memindahkan Peserta ke Kelas : ' .  $this->request->getVar('data_kelas_id'),
+                ];
+                $this->log->insert($log);
+                // Data Log END
+
+                $msg = [
+                    'sukses' => [
+                        'link' => $peserta_kelas_id
+                    ]
+                ];
+            }
+            echo json_encode($msg);
+        }
+    }
+
+    // public function kelas_peserta_list()
+    // {
+    //     if ($this->request->isAJAX()) {
+
+    //         $kelas_id        = $this->request->getVar('kelas_id');
+    //         $peserta_onkelas = $this->peserta_kelas->peserta_onkelas($kelas_id);
+
+    //         $data = [
+    //             'title'             => 'List Peserta Dalam Kelas',
+    //             'peserta_onkelas'   => $peserta_onkelas,
+    //         ];
+    //         //var_dump($data);
+    //         $msg = [
+    //             'sukses' => view('auth/program_kelas/kelas_peserta_list', $data)
+    //         ];
+    //         echo json_encode($msg);
+    //     }
+    // }
 
 }

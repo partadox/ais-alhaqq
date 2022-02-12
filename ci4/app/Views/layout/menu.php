@@ -106,9 +106,9 @@
         <a href="<?= base_url('auth/program/kelas') ?>" class="waves-effect">
             <i class="mdi mdi-school"></i> <span> Kelas </span>
         </a>
-        <a href="<?= base_url('auth/program/kelas_peserta') ?>" class="waves-effect">
+        <!-- <a href="<?= base_url('auth/program/kelas_peserta') ?>" class="waves-effect">
             <i class="mdi mdi-chair-school"></i> <span> Kelas-Peserta </span>
-        </a>
+        </a> -->
         <a href="<?= base_url('auth/program/level') ?>" class="waves-effect">
             <i class="mdi mdi-account-badge-horizontal-outline"></i> <span>  Level</span>
         </a>

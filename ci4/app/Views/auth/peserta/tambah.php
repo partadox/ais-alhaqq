@@ -14,7 +14,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Peserta <code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nama" name="nama">
+                        <input type="text"  class="form-control text-uppercase" id="nama" name="nama">
                         <div class="invalid-feedback errorNama"></div>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Tempat Lahir<code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="tmp_lahir" name="tmp_lahir">
+                        <input type="text" class="form-control text-uppercase" id="tmp_lahir" name="tmp_lahir">
                         <div class="invalid-feedback errorTmp_lahir"></div>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Jurusan Pendidikan Terakhir<code>*</code></label>
                     <div class="col-sm-8">
-                        <input class="form-control" type="text" id="jurusan" name="jurusan">
+                        <input class="form-control text-uppercase" type="text" id="jurusan" name="jurusan">
                         <div class="invalid-feedback errorJurusan"></div>
                     </div>
                 </div>
@@ -126,12 +126,21 @@
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="pekerjaan" name="pekerjaan">
                             <option value="" disabled selected>--Pilih--</option>
-                            <option value="Swasta">Swasta</option>
-                            <option value="Pegawai Swasta">Pegawai Swasta</option>
-                            <option value="Pegawai Negeri">Pegawai Negeri</option>
-                            <option value="Ibu Rumah Tangga">Ibu Rumah Tangga</option>>
-                            <option value="Pelajar / Mahasiswa">Pelajar / Mahasiswa</option>>
-                            <option value="Freelance">Freelance</option>>
+                            <option value="WIRASWASTA">WIRASWASTA</option>
+                            <option value="PEGAWAI SWASTA">PEGAWAI SWASTA</option>
+                            <option value="PEMERINTAH/PNS">PEMERINTAH/PNS</option>
+                            <option value="BUMN">BUMN</option>
+                            <option value="USAHA/DAGANG">USAHA/DAGANG</option>
+                            <option value="KEAMANAN/MILITER/POLISI">KEAMANAN/MILITER/POLISI</option>
+                            <option value="PERBANKAN/KEUANGAN">PERBANKAN/KEUANGAN</option>
+                            <option value="KESEHATAN">KESEHATAN</option>
+                            <option value="PENDIDIKAN">PENDIDIKAN</option>
+                            <option value="OLAHRAGA/ATLET">OLAHRAGA/ATLET</option>
+                            <option value="KESENIAN/ARTIS">KESENIAN/ARTIS</option>
+                            <option value="KEAGAMAAN/MAJELIS">KEAGAMAAN/MAJELIS</option>>
+                            <option value="PELAJAR/MAHASISWA">PELAJAR/MAHASISWA</option>>
+                            <option value="KELUARGA/RUMAH TANGGA">KELUARGA/RUMAH TANGGA</option>
+                            <option value="FREELANCE">FREELANCE</option>>
                         </select>
                         <div class="invalid-feedback errorPekerjaan"></div>
                     </div>
@@ -146,14 +155,14 @@
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Email<code>*</code></label>
                     <div class="col-sm-8">
-                        <input class="form-control" type="text" id="email" name="email" >
+                        <input class="form-control text-lowercase" type="text" id="email" name="email" >
                         <div class="invalid-feedback errorEmail"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Alamat<code>*</code></label>
                     <div class="col-sm-8">
-                        <input class="form-control" type="text" id="alamat" name="alamat" >
+                        <input class="form-control text-uppercase" type="text" id="alamat" name="alamat" >
                         <div class="invalid-feedback errorAlamat"></div>
                     </div>
                 </div>

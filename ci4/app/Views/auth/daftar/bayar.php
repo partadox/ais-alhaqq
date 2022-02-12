@@ -99,6 +99,10 @@
                               echo ' </strong> </div>';
                           }
                           ?>
+
+                        <?php if($program_bayar[0]['status_konfirmasi'] == '') { ?>
+                            
+                        
                         <?php echo form_open_multipart('/daftar/bayarprogram');
                         helper('text');
                         ?>
@@ -169,13 +173,10 @@
                             </div>
                           </div>
                       </div>
-                        <?php if($program_bayar[0]['status_konfirmasi'] == '') {
-                              echo '<button class="btn btn-warning mt-5" type="submit">Konfirmasi Pembayaran</button>';
-                          } else{
-                            echo'';
-                          }?>
+                        <button class="btn btn-warning mt-5" type="submit">Konfirmasi Pembayaran</button>
                         <?php echo form_close() ?>
                       </div>
+                      <?php } ?>  
                     </div>
                 </div>
               </div>

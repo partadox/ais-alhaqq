@@ -64,6 +64,16 @@ class Modelprogram extends Model
             ->get()->getResultArray();
     }
 
+    public function list_detail_kelas($kelas_id)
+    {
+        return $this->table('program_kelas')
+            ->join('program', 'program.program_id = program_kelas.program_id')
+            ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+            ->join('peserta_level', 'peserta_level.peserta_level_id = program_kelas.peserta_level')
+            ->where('kelas_id', $kelas_id)
+            ->get()->getResultArray();
+    }
+
     //Dashboard - Admin
     public function jml_kelas()
     {

@@ -30,6 +30,24 @@ class Modelpesertakelas extends Model
             ->get()->getResultArray();
     }
 
+    //Jumlah peserta dalam kelas - Peserta_Kelas
+    public function jumlah_peserta_onkelas($kelas_id)
+    {
+        return $this->table('peserta_kelas')
+            ->where('data_kelas_id', $kelas_id)
+            ->countAllResults();
+    }
+
+    // Get Data Peserta utk show di modal pindah kelas
+    public function get_peserta_id($peserta_kelas_id)
+    {
+        return $this->table('program_kelas')
+            ->select('data_peserta_id')
+            ->where('peserta_kelas_id', $peserta_kelas_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
     //Cek Kelas Peserta
     public function kelas_peserta($peserta_id)
     {

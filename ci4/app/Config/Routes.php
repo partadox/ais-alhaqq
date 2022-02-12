@@ -37,13 +37,21 @@ $routes->get('/auth/pembayaran/login', 'Login::index');
 $routes->get('/auth/program/login', 'Login::index');
 $routes->get('/auth/akun/login', 'Login::index');
 $routes->get('/auth/daftar/login', 'Login::index');
+$routes->get('/auth/program/kelas_peserta/login', 'Login::index');
 
 $routes->get('/auth/register', 'Register::index');
 $routes->get('/auth/daftar', 'Daftar::index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/daftar/program', 'Daftar::program', ['filter' => 'Validasilogin']);
 $routes->get('/auth/daftar/bayar', 'Daftar::bayar', ['filter' => 'Validasilogin']);
+
 $routes->get('/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/pembayaran/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/program/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/akun/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/daftar/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/program/kelas_peserta/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
+
 $routes->get('/auth/pembayaran/konfirmasi', 'Pembayaran::konfirmasi', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran', 'Pembayaran::Index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/program', 'Program::Index', ['filter' => 'Validasilogin']);
@@ -56,7 +64,10 @@ $routes->get('/auth/akun/admin', 'Akun::admin', ['filter' => 'Validasilogin']);
 $routes->get('/auth/kantor', 'Kantor::Index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/bank', 'Bank::Index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/log', 'Log::Index', ['filter' => 'Validasilogin']);
+
 $routes->get('/auth/program/kelas_peserta', 'Program::kelas_peserta', ['filter' => 'Validasilogin']);
+$routes->get('/auth/program/kelas_peserta/(:num)', 'Program::kelas_peserta/$1', ['filter' => 'Validasilogin']);
+
 $routes->get('/auth/akademik', 'Akademik::Index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akun/biodata_peserta', 'Akun::biodata_peserta', ['filter' => 'Validasilogin']);
 

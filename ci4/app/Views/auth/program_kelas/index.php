@@ -19,9 +19,14 @@
                 <th>No.</th>
                 <th>Kelas</th>
                 <th>Program</th>
-                <th>Ket. Kelas</th>
-                <th>Ketentuan Peserta</th>
-                <th>Kuota</th>
+                <th>Hari</th>
+                <th>Jam</th>
+                <th>Pengajar</th>
+                <th>Metode TM</th>
+                <th>Level</th>
+                <th>Jen. Kel.</th>
+                <th>Kuota Pendaftaran</th>
+                <th>Jml Peserta</th>
                 <th>Status Kelas</th>
                 <th>Tindakan</th>
             </tr>
@@ -35,18 +40,17 @@
                     <td width="5%"><?= $nomor ?></td>
                     <td width="15%"><?= $data['nama_kelas'] ?></td>
                     <td width="10%"><?= $data['nama_program'] ?></td>
-                    <td width="20%">
-                        <p>Hari: <?= $data['hari_kelas'] ?></p>
-                        <p>
+                    <td width="5%"><?= $data['hari_kelas'] ?> <br>
                         <?php if($data['status_kerja'] == '0') { ?>
-                            <p>Weekdays</p>
+                            <p>(Weekdays)</p>
                         <?php } ?>
                         <?php if($data['status_kerja'] == '1') { ?>
-                            <p>Weekend</p>
+                            <p>(Weekend)</p>
                         <?php } ?>
-                        </p>
-                        <p>Jam: <?= $data['waktu_kelas'] ?></p>
-                        <p>Pengajar: <?= $data['nama_pengajar'] ?></p>
+                    </td>
+                    <td width="5%"><?= $data['waktu_kelas'] ?></td>
+                    <td width="7%"><?= $data['nama_pengajar'] ?></td>
+                    <td width="5%">
                         <?php if($data['metode_kelas'] == 'online') { ?>
                             <button class="btn btn-primary btn-sm" disabled>Online</button> 
                         <?php } ?>
@@ -54,14 +58,13 @@
                             <button class="btn btn-info btn-sm" disabled>Offline</button> 
                         <?php } ?>
                     </td>
-                    <td width="20%">
-                        <p>Level: <?= $data['nama_level'] ?></p>
-                        <p>Jenis Kelamin: <?= $data['jenkel'] ?></p>
-                    </td>
+                    <td  width="7%"><?= $data['nama_level'] ?></td>
+                    <td  width="7%"><?= $data['jenkel'] ?></td>
                     <td width="15%">
                         <p>Kuota: <?= $data['kouta'] ?></p>
                         <p>Sisa Kuota: <?= $data['sisa_kouta'] ?></p>
                     </td>
+                    <td></td>
                     <td width="5%">
                         <?php if($data['status_kelas'] == 'aktif') { ?>
                             <button class="btn btn-success btn-sm" disabled>Aktif</button> 
@@ -72,7 +75,19 @@
                     </td>
                     <td width="10%">
                         <button type="button" class="btn btn-warning" onclick="edit('<?= $data['kelas_id'] ?>')" >
-                            <i class=" fa fa-edit mr-1"></i>Edit</button>
+                            <i class=" fa fa-edit"></i></button>
+
+                        <!-- <form action="kelas_peserta/<?= $data['kelas_id'] ?>" method="post" class="d-inline">
+                            <?= csrf_field()?>
+                            <input type="hidden" id=kelas_id value="<?= $data['kelas_id'] ?>">
+                            <button type="button" class="btn btn-info" ><i class="fa fa-user-graduate"></i></button>
+                        </form> -->
+                        
+                        <a href="kelas_peserta/<?= $data['kelas_id'] ?>" class="btn btn-info">
+                            <i class=" fa fa-user-graduate"></i>
+                        </a>
+                        <!-- <button type="button" class="btn btn-info" onclick="peserta('<?= $data['kelas_id'] ?>')" >
+                            <i class=" fa fa-user-graduate mr-1"></i></button> -->
                     </td>
                 </tr>
 
@@ -118,6 +133,22 @@
                     $('#modaledit').modal('show');
                 }
             }
+        });
+    }
+
+    function peserta(kelas_id) {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('program/kelas_peserta') ?>",
+            data: {
+                kelas_id : kelas_id
+            },
+            dataType: "json",
+            // success: function(response) {
+            //     (function() {
+            //                     window.location = response.sukses.link;
+            //             });
+            // }
         });
     }
 </script>

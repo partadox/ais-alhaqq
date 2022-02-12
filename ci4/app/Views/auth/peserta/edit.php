@@ -121,12 +121,28 @@
                     <label class="col-sm-4 col-form-label">Pekerjaan<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="pekerjaan" name="pekerjaan">
-                            <option value="Swasta"  <?php if ($pekerjaan == 'Swasta') echo "selected"; ?>>Swasta</option>
+                            <option value="WIRASWASTA" <?php if ($pekerjaan == 'WIRASWASTA') echo "selected"; ?>>WIRASWASTA</option>
+                            <option value="PEGAWAI SWASTA" <?php if ($pekerjaan == 'PEGAWAI SWASTA') echo "selected"; ?>>PEGAWAI SWASTA</option>
+                            <option value="PEMERINTAH/PNS" <?php if ($pekerjaan == 'PEMERINTAH/PNS') echo "selected"; ?>>PEMERINTAH/PNS</option>
+                            <option value="BUMN" <?php if ($pekerjaan == 'BUMN') echo "selected"; ?>>BUMN</option>
+                            <option value="USAHA/DAGANG" <?php if ($pekerjaan == 'USAHA/DAGANG') echo "selected"; ?>>USAHA/DAGANG</option>
+                            <option value="KEAMANAN/MILITER/POLISI" <?php if ($pekerjaan == 'KEAMANAN/MILITER/POLISI') echo "selected"; ?>>KEAMANAN/MILITER/POLISI</option>
+                            <option value="PERBANKAN/KEUANGAN" <?php if ($pekerjaan == 'PERBANKAN/KEUANGAN') echo "selected"; ?>>PERBANKAN/KEUANGAN</option>
+                            <option value="KESEHATAN" <?php if ($pekerjaan == 'KESEHATAN') echo "selected"; ?>>KESEHATAN</option>
+                            <option value="PENDIDIKAN" <?php if ($pekerjaan == 'PENDIDIKAN') echo "selected"; ?>>PENDIDIKAN</option>
+                            <option value="OLAHRAGA/ATLET" <?php if ($pekerjaan == 'OLAHRAGA/ATLET') echo "selected"; ?>>OLAHRAGA/ATLET</option>
+                            <option value="KESENIAN/ARTIS" <?php if ($pekerjaan == 'KESENIAN/ARTIS') echo "selected"; ?>>KESENIAN/ARTIS</option>
+                            <option value="KEAGAMAAN/MAJELIS" <?php if ($pekerjaan == 'KEAGAMAAN/MAJELIS') echo "selected"; ?>>KEAGAMAAN/MAJELIS</option>>
+                            <option value="PELAJAR/MAHASISWA" <?php if ($pekerjaan == 'PELAJAR/MAHASISWA') echo "selected"; ?>>PELAJAR/MAHASISWA</option>>
+                            <option value="KELUARGA/RUMAH TANGGA" <?php if ($pekerjaan == 'KELUARGA/RUMAH TANGGA') echo "selected"; ?>>KELUARGA/RUMAH TANGGA</option>
+                            <option value="FREELANCE" <?php if ($pekerjaan == 'FREELANCE') echo "selected"; ?>>FREELANCE</option>>
+
+                            <!-- <option value="Swasta"  <?php if ($pekerjaan == 'Swasta') echo "selected"; ?>>Swasta</option>
                             <option value="Pegawai Swasta" <?php if ($pekerjaan == 'Pegawai Swasta') echo "selected"; ?>>Pegawai Swasta</option>
                             <option value="Pegawai Negeri" <?php if ($pekerjaan == 'Pegawai Negeri') echo "selected"; ?>>Pegawai Negeri</option>
                             <option value="Ibu Rumah Tangga" <?php if ($pekerjaan == 'Ibu Rumah Tangga') echo "selected"; ?>>Ibu Rumah Tangga</option>>
                             <option value="Pelajar / Mahasiswa" <?php if ($pekerjaan == 'Pelajar / Mahasiswa') echo "selected"; ?>>Pelajar / Mahasiswa</option>>
-                            <option value="Freelance" <?php if ($pekerjaan == 'Freelance') echo "selected"; ?>>Freelance</option>>
+                            <option value="Freelance" <?php if ($pekerjaan == 'Freelance') echo "selected"; ?>>Freelance</option>> -->
                         </select>
                         <div class="invalid-feedback errorPekerjaan"></div>
                     </div>

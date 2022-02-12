@@ -113,12 +113,21 @@
                       <label class="form-label">Pekerjaan<code>*</code></label>
                       <select class="form-control btn-square" id="pekerjaan" name="pekerjaan">
                         <option value="" disabled selected>--Pilih--</option>
-                        <option value="Swasta">Swasta</option>
-                        <option value="Pegawai Swasta">Pegawai Swasta</option>
-                        <option value="Pegawai Negeri">Pegawai Negeri</option>
-                        <option value="Ibu Rumah Tangga">Ibu Rumah Tangga</option>>
-                        <option value="Pelajar / Mahasiswa">Pelajar / Mahasiswa</option>>
-                        <option value="Freelance">Freelance</option>>
+                        <option value="WIRASWASTA">WIRASWASTA</option>
+                        <option value="PEGAWAI SWASTA">PEGAWAI SWASTA</option>
+                        <option value="PEMERINTAH/PNS">PEMERINTAH/PNS</option>
+                        <option value="BUMN">BUMN</option>
+                        <option value="USAHA/DAGANG">USAHA/DAGANG</option>
+                        <option value="KEAMANAN/MILITER/POLISI">KEAMANAN/MILITER/POLISI</option>
+                        <option value="PERBANKAN/KEUANGAN">PERBANKAN/KEUANGAN</option>
+                        <option value="KESEHATAN">KESEHATAN</option>
+                        <option value="PENDIDIKAN">PENDIDIKAN</option>
+                        <option value="OLAHRAGA/ATLET">OLAHRAGA/ATLET</option>
+                        <option value="KESENIAN/ARTIS">KESENIAN/ARTIS</option>
+                        <option value="KEAGAMAAN/MAJELIS">KEAGAMAAN/MAJELIS</option>>
+                        <option value="PELAJAR/MAHASISWA">PELAJAR/MAHASISWA</option>>
+                        <option value="KELUARGA/RUMAH TANGGA">KELUARGA/RUMAH TANGGA</option>
+                        <option value="FREELANCE">FREELANCE</option>>
                       </select>
                       <div class="invalid-feedback errorPekerjaan">
                     </div>
