@@ -34,7 +34,7 @@
                 <hr>
                 <div class="form-group mb-2">
                     <label>Angkatan</label>
-                    <input type="text" class="form-control" id="angkatan" name="angkatan" placeholder="Masukan Angkatan Peserta">
+                    <input type="number" class="form-control" id="angkatan" name="angkatan" placeholder="Masukan Angkatan Peserta">
                     <div class="invalid-feedback errorAngkatan">
                 </div>
                 <div class="form-group mb-2">

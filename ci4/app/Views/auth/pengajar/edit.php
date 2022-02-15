@@ -15,7 +15,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Pengajar <code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nama_pengajar" name="nama_pengajar" value="<?= $nama_pengajar ?>">
+                        <input type="text" class="form-control text-uppercase" id="nama_pengajar" name="nama_pengajar" value="<?= $nama_pengajar ?>">
                         <div class="invalid-feedback errorNama_pengajar"></div>
                     </div>
                 </div>
@@ -30,8 +30,8 @@
                     <label for="" class="col-sm-4 col-form-label">Tipe Pengajar<code>*</code></label>
                     <div class="col-sm-8">
                         <select name="tipe_pengajar" id="tipe_pengajar" class="js-example-basic-single-edit">
-                            <option value="Pengajar" <?php if ($tipe_pengajar == 'Pengajar') echo "selected"; ?>>Pengajar</option>
-                            <option value="Penguji"  <?php if ($tipe_pengajar == 'Penguji') echo "selected"; ?>>Penguji</option>
+                            <option value="PENGAJAR" <?php if ($tipe_pengajar == 'PENGAJAR') echo "selected"; ?>>PENGAJAR</option>
+                            <option value="PENGUJI"  <?php if ($tipe_pengajar == 'PENGUJI') echo "selected"; ?>>PENGUJI</option>
                         </select>
                         <div class="invalid-feedback errorTipe_pengajar"></div>
                     </div>
@@ -51,8 +51,8 @@
                     <label for="" class="col-sm-4 col-form-label">Jenis Kelamin <code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="jenkel_pengajar" name="jenkel_pengajar">
-                            <option value="Ikhwan" <?php if ($jenkel_pengajar == 'Ikhwan') echo "selected"; ?>>Ikhwan</option>
-                            <option value="Akhwat" <?php if ($jenkel_pengajar == 'Akhwat') echo "selected"; ?>>Akhwat</option>
+                            <option value="IKHWAN" <?php if ($jenkel_pengajar == 'IKHWAN') echo "selected"; ?>>IKHWAN</option>
+                            <option value="AKHWAT" <?php if ($jenkel_pengajar == 'AKHWAT') echo "selected"; ?>>AKHWAT</option>
                         </select>
                         <div class="invalid-feedback errorJenkel_pengajar"></div>
                     </div>
@@ -60,7 +60,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Tempat Lahir<code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="tmp_lahir_pengajar" name="tmp_lahir_pengajar" value="<?= $tmp_lahir_pengajar ?>">
+                        <input type="text" class="form-control text-uppercase" id="tmp_lahir_pengajar" name="tmp_lahir_pengajar" value="<?= $tmp_lahir_pengajar ?>">
                         <div class="invalid-feedback errorTmp_lahir_pengajar"></div>
                     </div>
                 </div>
@@ -74,7 +74,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Suku Bangsa<code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="suku_bangsa" name="suku_bangsa" value="<?= $suku_bangsa ?>">
+                        <input type="text" class="form-control text-uppercase" id="suku_bangsa" name="suku_bangsa" value="<?= $suku_bangsa ?>">
                         <div class="invalid-feedback errorSuku_bangsa"></div>
                     </div>
                 </div>
@@ -82,8 +82,9 @@
                     <label for="" class="col-sm-4 col-form-label">Status Nikah<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="status_nikah" name="status_nikah">
-                            <option value="Menikah"  <?php if ($status_nikah == 'Menikah') echo "selected"; ?>>Menikah</option>
-                            <option value="Lajang" <?php if ($status_nikah == 'Lajang') echo "selected"; ?>>Lajang</option>
+                            <option value="MENIKAH"  <?php if ($status_nikah == 'MENIKAH') echo "selected"; ?>>MENIKAH</option>
+                            <option value="LAJANG" <?php if ($status_nikah == 'LAJANG') echo "selected"; ?>>LAJANG</option>
+                            <option value="SINGLE PARENT" <?php if ($status_nikah == 'SINGLE PARENT') echo "selected"; ?>>SINGLE PARENT</option>
                         </select>
                         <div class="invalid-feedback errorStatus_nikah"></div>
                     </div>
@@ -102,9 +103,10 @@
                             <option value="SD" <?php if ($pendidikan_pengajar == 'SD') echo "selected"; ?>>SD</option>
                             <option value="SLTP" <?php if ($pendidikan_pengajar == 'SLPT') echo "selected"; ?>>SLTP</option>
                             <option value="SLTA" <?php if ($pendidikan_pengajar == 'SLTA') echo "selected"; ?>>SLTA</option>
-                            <option value="Diploma" <?php if ($pendidikan_pengajar == 'Diploma') echo "selected"; ?>>Diploma</option>
-                            <option value="Sarjana" <?php if ($pendidikan_pengajar == 'Sarjana') echo "selected"; ?>>Sarjana (S1)</option>
-                            <option value="Magister" <?php if ($pendidikan_pengajar == 'Magister') echo "selected"; ?>>Magister (S2)</option>
+                            <option value="DIPLOMA" <?php if ($pendidikan_pengajar == 'DIPLOMA') echo "selected"; ?>>DIPLOMA</option>
+                            <option value="SARJANA" <?php if ($pendidikan_pengajar == 'SARJANA') echo "selected"; ?>>SARJANA (S1)</option>
+                            <option value="MAGISTER" <?php if ($pendidikan_pengajar == 'MAGISTER') echo "selected"; ?>>MAGISTER (S2)</option>
+                            <option value="DOKTOR" <?php if ($pendidikan_pengajar == 'DOKTOR') echo "selected"; ?>>DOKTOR (S3)</option>
                         </select>
                         <div class="invalid-feedback errorPendidikan_pengajar"></div>
                     </div>
@@ -112,7 +114,7 @@
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Jurusan Pendidikan Terakhir<code>*</code></label>
                     <div class="col-sm-8">
-                        <input class="form-control" type="text" id="jurusan_pengajar" name="jurusan_pengajar" value="<?= $jurusan_pengajar ?>">
+                        <input class="form-control text-uppercase" type="text" id="jurusan_pengajar" name="jurusan_pengajar" value="<?= $jurusan_pengajar ?>">
                         <div class="invalid-feedback errorJurusan_pengajar"></div>
                     </div>
                 </div>
@@ -126,14 +128,14 @@
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Email<code>*</code></label>
                     <div class="col-sm-8">
-                        <input class="form-control" type="text" id="email_pengajar" name="email_pengajar" value="<?= $email_pengajar ?>">
+                        <input class="form-control text-lowercase" type="text" id="email_pengajar" name="email_pengajar" value="<?= $email_pengajar ?>">
                         <div class="invalid-feedback errorEmail_pengajar"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Alamat<code>*</code></label>
                     <div class="col-sm-8">
-                        <input class="form-control" type="text" id="alamat_pengajar" name="alamat_pengajar" value="<?= $alamat_pengajar ?>">
+                        <input class="form-control text-uppercase" type="text" id="alamat_pengajar" name="alamat_pengajar" value="<?= $alamat_pengajar ?>">
                         <div class="invalid-feedback errorAlamat_pengajar"></div>
                     </div>
                 </div>
@@ -143,7 +145,7 @@
                         <select name="user_id" id="user_id" class="js-example-basic-single-edit">
                                 <option Disabled=true Selected=true> </option>
                             <?php foreach ($user as $key => $data) { ?>
-                                <option value="<?= $data['user_id'] ?>" <?php if ($data['user_id'] == $user_id) echo "selected"; ?>><?= $data['nama'] ?></option>
+                                <option value="<?= $data['user_id'] ?>" <?php if ($data['user_id'] == $user_id) echo "selected"; ?>><?= $data['nama'] ?> | <?= $data['username'] ?></option>
                             <?php } ?>
                         </select>
                         <div class="invalid-feedback errorUser_id"></div>

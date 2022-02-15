@@ -22,21 +22,22 @@ class Peserta extends BaseController
             $peserta_id = $this->request->getVar('peserta_id');
             $peserta =  $this->peserta->find($peserta_id);
             $data = [
-                'title'         => 'Data Diri Peserta',
-                'nama'          => $peserta['nama_peserta'],
-                'nis'           => $peserta['nis'],
-                'jenkel'        => $peserta['jenkel'],
-                'tmp_lahir'     => $peserta['tmp_lahir'],
-                'tgl_lahir'     => $peserta['tgl_lahir'],
-                'nik'           => $peserta['nik'],
-                'pendidikan'    => $peserta['pendidikan'],
-                'jurusan'       => $peserta['jurusan'],
-                'status_kerja'  => $peserta['status_kerja'],
-                'pekerjaan'     => $peserta['pekerjaan'],
-                'alamat'        => $peserta['alamat'],
-                'hp'            => $peserta['hp'],
-                'email'         => $peserta['email'],
-                'tgl_gabung'    => $peserta['tgl_gabung'],
+                'title'             => 'Data Diri Peserta',
+                'nama'              => $peserta['nama_peserta'],
+                'nis'               => $peserta['nis'],
+                'jenkel'            => $peserta['jenkel'],
+                'tmp_lahir'         => $peserta['tmp_lahir'],
+                'tgl_lahir'         => $peserta['tgl_lahir'],
+                'nik'               => $peserta['nik'],
+                'pendidikan'        => $peserta['pendidikan'],
+                'jurusan'           => $peserta['jurusan'],
+                'status_kerja'      => $peserta['status_kerja'],
+                'pekerjaan'         => $peserta['pekerjaan'],
+                'domisili_peserta'  => $peserta['domisili_peserta'],
+                'alamat'            => $peserta['alamat'],
+                'hp'                => $peserta['hp'],
+                'email'             => $peserta['email'],
+                'tgl_gabung'        => $peserta['tgl_gabung'],
             ];
             $msg = [
                 'sukses' => view('auth/peserta/datadiri', $data)
@@ -166,8 +167,22 @@ class Peserta extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
+                'domisili_peserta' => [
+                    'label' => 'domisili_peserta',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
                 'alamat' => [
                     'label' => 'alamat',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'status_peserta' => [
+                    'label' => 'status_peserta',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
@@ -198,29 +213,34 @@ class Peserta extends BaseController
                         'pekerjaan'             => $validation->getError('pekerjaan'),
                         'hp'                    => $validation->getError('hp'),
                         'email'                 => $validation->getError('email'),
+                        'domisili_peserta'      => $validation->getError('domisili_peserta'),
                         'alamat'                => $validation->getError('alamat'),
+                        'status_peserta'        => $validation->getError('status_peserta'),
                         'user_id'               => $validation->getError('user_id'),
                     ]
                 ];
             } else {
                 $simpandata = [
-                    'nama_peserta'          => $this->request->getVar('nama'),
+                    'nama_peserta'          => strtoupper($this->request->getVar('nama')),
                     'asal_cabang_peserta'   => $this->request->getVar('asal_cabang_peserta'),
                     'nis'                   => $this->request->getVar('nis'),
                     'angkatan'              => $this->request->getVar('angkatan'),
                     'level_peserta'         => $this->request->getVar('level_peserta'),
                     'jenkel'                => $this->request->getVar('jenkel'),
                     'nik'                   => $this->request->getVar('nik'),
-                    'tmp_lahir'             => $this->request->getVar('tmp_lahir'),
+                    'tmp_lahir'             => strtoupper($this->request->getVar('tmp_lahir')),
                     'tgl_lahir'             => $this->request->getVar('tgl_lahir'),
                     'pendidikan'            => $this->request->getVar('pendidikan'),
-                    'jurusan'               => $this->request->getVar('jurusan'),
+                    'jurusan'               => strtoupper($this->request->getVar('jurusan')),
                     'status_kerja'          => $this->request->getVar('status_kerja'),
                     'pekerjaan'             => $this->request->getVar('pekerjaan'),
                     'hp'                    => $this->request->getVar('hp'),
-                    'email'                 => $this->request->getVar('email'),
-                    'alamat'                => $this->request->getVar('alamat'),
+                    'email'                 => strtolower($this->request->getVar('email')),
+                    'domisili_peserta'      => $this->request->getVar('domisili_peserta'),
+                    'alamat'                => strtoupper($this->request->getVar('alamat')),
+                    'status_peserta'        => $this->request->getVar('status_peserta'),
                     'user_id'               => $this->request->getVar('user_id'),
+                    'tgl_gabung'            => date("Y-m-d"),
                 ];
 
                 $data_active = [
@@ -261,7 +281,7 @@ class Peserta extends BaseController
                 'title'                 => 'Ubah Data Peserta',
                 'level'                 => $this->level->list(),
                 'kantor_cabang'         => $this->kantor_cabang->list(),
-                'user'                  => $this->user->list(),
+                'user'                  => $this->user->list_peserta(),
                 'peserta_id'            => $peserta['peserta_id'],
                 'nama'                  => $peserta['nama_peserta'],
                 'asal_cabang_peserta'   => $peserta['asal_cabang_peserta'],
@@ -276,7 +296,9 @@ class Peserta extends BaseController
                 'jurusan'               => $peserta['jurusan'],
                 'status_kerja'          => $peserta['status_kerja'],
                 'pekerjaan'             => $peserta['pekerjaan'],
+                'domisili_peserta'      => $peserta['domisili_peserta'],
                 'alamat'                => $peserta['alamat'],
+                'status_peserta'        => $peserta['status_peserta'],
                 'hp'                    => $peserta['hp'],
                 'email'                 => $peserta['email'],
                 'user_id'               => $peserta['user_id'],
@@ -384,8 +406,22 @@ class Peserta extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
+                'domisili_peserta' => [
+                    'label' => 'domisili_peserta',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
                 'alamat' => [
                     'label' => 'alamat',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'status_peserta' => [
+                    'label' => 'status_peserta',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
@@ -415,29 +451,33 @@ class Peserta extends BaseController
                         'pekerjaan'             => $validation->getError('pekerjaan'),
                         'hp'                    => $validation->getError('hp'),
                         'email'                 => $validation->getError('email'),
+                        'domisili_peserta'      => $validation->getError('domisili_peserta'),
                         'alamat'                => $validation->getError('alamat'),
+                        'status_peserta'        => $validation->getError('status_peserta'),
                         'user_id'               => $validation->getError('user_id'),
                     ]
                 ];
             } else {
 
                 $updatedata = [
-                    'nama_peserta'          => $this->request->getVar('nama'),
+                    'nama_peserta'          => strtoupper($this->request->getVar('nama')),
                     'asal_cabang_peserta'   => $this->request->getVar('asal_cabang_peserta'),
                     'nis'                   => $this->request->getVar('nis'),
                     'angkatan'              => $this->request->getVar('angkatan'),
                     'level_peserta'         => $this->request->getVar('level_peserta'),
                     'jenkel'                => $this->request->getVar('jenkel'),
                     'nik'                   => $this->request->getVar('nik'),
-                    'tmp_lahir'             => $this->request->getVar('tmp_lahir'),
+                    'tmp_lahir'             => strtoupper($this->request->getVar('tmp_lahir')),
                     'tgl_lahir'             => $this->request->getVar('tgl_lahir'),
                     'pendidikan'            => $this->request->getVar('pendidikan'),
-                    'jurusan'               => $this->request->getVar('jurusan'),
+                    'jurusan'               => strtoupper($this->request->getVar('jurusan')),
                     'status_kerja'          => $this->request->getVar('status_kerja'),
                     'pekerjaan'             => $this->request->getVar('pekerjaan'),
                     'hp'                    => $this->request->getVar('hp'),
-                    'email'                 => $this->request->getVar('email'),
-                    'alamat'                => $this->request->getVar('alamat'),
+                    'email'                 => strtolower($this->request->getVar('email')),
+                    'domisili_peserta'      => $this->request->getVar('domisili_peserta'),
+                    'alamat'                => strtoupper($this->request->getVar('alamat')),
+                    'status_peserta'        => $this->request->getVar('status_peserta'),
                     'user_id'               => $this->request->getVar('user_id'),
                 ];
 
@@ -498,4 +538,258 @@ class Peserta extends BaseController
             echo json_encode($msg);
         }
     }
+
+    public function import_file()
+    {
+        $file   = $this->request->getFile('file_excel');
+        $ext    = $file->getClientExtension();
+
+        if ($ext == 'xls') {
+            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else{
+            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+
+        $spreadsheet = $render->load($file);
+        $sheet       = $spreadsheet->getActiveSheet()->toArray();
+
+        foreach ($sheet as $x => $excel) {
+
+            //Skip row pertama - keempat (judul tabel)
+            if ($x == 0) {
+                continue;
+            }
+            if ($x == 1) {
+                continue;
+            }
+            if ($x == 2) {
+                continue;
+            }
+            if ($x == 3) {
+                continue;
+            }
+
+            //Skip data duplikat
+            $nis    = $this->peserta->cek_duplikat_import($excel['3']);
+            if ($excel['3'] == $nis['nis']) {
+                continue;
+            }
+
+            $data   = [
+                'user_id'               => $excel['1'],
+                'angkatan'              => $excel['2'],
+                'nis'                   => $excel['3'],
+                'nama_peserta'          => $excel['4'],
+                'nik'                   => $excel['5'],
+                'level_peserta'         => $excel['6'],
+                'status_peserta'        => $excel['7'],
+                'asal_cabang_peserta'   => $excel['8'],
+                'tmp_lahir'             => $excel['9'],
+                'tgl_lahir'             => $excel['10'],
+                'jenkel'                => $excel['11'],
+                'pendidikan'            => $excel['12'],
+                'jurusan'               => $excel['13'],
+                'status_kerja'          => $excel['14'],
+                'pekerjaan'             => $excel['15'],
+                'domisili_peserta'      => $excel['16'],
+                'alamat'                => $excel['17'],
+                'hp'                    => $excel['18'],
+                'email'                 => $excel['19'],
+                'tgl_gabung'            => $excel['20'],
+            ];
+
+            $this->peserta->insert($data);
+        }
+
+        $this->session->setFlashdata('pesan_sukses', 'Data Excel Berhasil Di-import!');
+        return redirect()->to('index');
+    }
+
+    public function export()
+    {
+        $peserta =  $this->peserta->findAll();
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $styleColumn = [
+            'font' => [
+                'bold' => true,
+                'size' => 14,
+            ],
+            'alignment' => [
+                'horizontal'    => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical'      => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ]
+        ];
+
+        $border = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $sheet->setCellValue('A1', "DATA PESERTA ALHAQQ - ACADEMIC ALHAQQ INFORMATION SYSTEM");
+        $sheet->mergeCells('A1:U1');
+        $sheet->getStyle('A1')->applyFromArray($styleColumn);
+
+        $sheet->setCellValue('A2', date("Y-m-d"));
+        $sheet->mergeCells('A2:U2');
+        $sheet->getStyle('A2')->applyFromArray($styleColumn);
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A4', 'ID')
+            ->setCellValue('B4', 'USER ID')
+            ->setCellValue('C4', 'ANGKATAN')
+            ->setCellValue('D4', 'NIS')
+            ->setCellValue('E4', 'NAMA PESERTA')
+            ->setCellValue('F4', 'NIK')
+            ->setCellValue('G4', 'LEVEL')
+            ->setCellValue('H4', 'STATUS')
+            ->setCellValue('I4', 'ASAL CABANG')
+            ->setCellValue('J4', 'TMP. LAHIR')
+            ->setCellValue('K4', 'TGL. LAHIR')
+            ->setCellValue('L4', 'JENKEL')
+            ->setCellValue('M4', 'PENDIDIKAN')
+            ->setCellValue('N4', 'JURUSAN')
+            ->setCellValue('O4', 'STATUS KERJA')
+            ->setCellValue('P4', 'PEKERJAAN')
+            ->setCellValue('Q4', 'DOMISILI')
+            ->setCellValue('R4', 'ALAMAT')
+            ->setCellValue('S4', 'HP')
+            ->setCellValue('T4', 'EMAIL')
+            ->setCellValue('U4', 'TGL GABUNG');
+        
+        $sheet->getStyle('A4')->applyFromArray($styleColumn);
+        $sheet->getStyle('A4')->applyFromArray($border);
+        $sheet->getStyle('B4')->applyFromArray($styleColumn);
+        $sheet->getStyle('B4')->applyFromArray($border);
+        $sheet->getStyle('C4')->applyFromArray($styleColumn);
+        $sheet->getStyle('C4')->applyFromArray($border);
+        $sheet->getStyle('D4')->applyFromArray($styleColumn);
+        $sheet->getStyle('D4')->applyFromArray($border);
+        $sheet->getStyle('E4')->applyFromArray($styleColumn);
+        $sheet->getStyle('E4')->applyFromArray($border);
+        $sheet->getStyle('F4')->applyFromArray($styleColumn);
+        $sheet->getStyle('F4')->applyFromArray($border);
+        $sheet->getStyle('G4')->applyFromArray($styleColumn);
+        $sheet->getStyle('G4')->applyFromArray($border);
+        $sheet->getStyle('H4')->applyFromArray($styleColumn);
+        $sheet->getStyle('H4')->applyFromArray($border);
+        $sheet->getStyle('I4')->applyFromArray($styleColumn);
+        $sheet->getStyle('I4')->applyFromArray($border);
+        $sheet->getStyle('J4')->applyFromArray($styleColumn);
+        $sheet->getStyle('J4')->applyFromArray($border);
+        $sheet->getStyle('K4')->applyFromArray($styleColumn);
+        $sheet->getStyle('K4')->applyFromArray($border);
+        $sheet->getStyle('L4')->applyFromArray($styleColumn);
+        $sheet->getStyle('L4')->applyFromArray($border);
+        $sheet->getStyle('M4')->applyFromArray($styleColumn);
+        $sheet->getStyle('M4')->applyFromArray($border);
+        $sheet->getStyle('N4')->applyFromArray($styleColumn);
+        $sheet->getStyle('N4')->applyFromArray($border);
+        $sheet->getStyle('O4')->applyFromArray($styleColumn);
+        $sheet->getStyle('O4')->applyFromArray($border);
+        $sheet->getStyle('P4')->applyFromArray($styleColumn);
+        $sheet->getStyle('P4')->applyFromArray($border);
+        $sheet->getStyle('Q4')->applyFromArray($styleColumn);
+        $sheet->getStyle('Q4')->applyFromArray($border);
+        $sheet->getStyle('R4')->applyFromArray($styleColumn);
+        $sheet->getStyle('R4')->applyFromArray($border);
+        $sheet->getStyle('S4')->applyFromArray($styleColumn);
+        $sheet->getStyle('S4')->applyFromArray($border);
+        $sheet->getStyle('T4')->applyFromArray($styleColumn);
+        $sheet->getStyle('T4')->applyFromArray($border);
+        $sheet->getStyle('U4')->applyFromArray($styleColumn);
+        $sheet->getStyle('U4')->applyFromArray($border);
+
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('P')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('S')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('T')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('U')->setAutoSize(true);
+
+        $row = 5;
+
+        foreach ($peserta as $psrtdata) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $row, $psrtdata['peserta_id'])
+                ->setCellValue('B' . $row, $psrtdata['user_id'])
+                ->setCellValue('C' . $row, $psrtdata['angkatan'])
+                ->setCellValue('D' . $row, $psrtdata['nis'])
+                ->setCellValue('E' . $row, $psrtdata['nama_peserta'])
+                ->setCellValue('F' . $row, $psrtdata['nik'])
+                ->setCellValue('G' . $row, $psrtdata['level_peserta'])
+                ->setCellValue('H' . $row, $psrtdata['status_peserta'])
+                ->setCellValue('I' . $row, $psrtdata['asal_cabang_peserta'])
+                ->setCellValue('J' . $row, $psrtdata['tmp_lahir'])
+                ->setCellValue('K' . $row, $psrtdata['tgl_lahir'])
+                ->setCellValue('L' . $row, $psrtdata['jenkel'])
+                ->setCellValue('M' . $row, $psrtdata['pendidikan'])
+                ->setCellValue('N' . $row, $psrtdata['jurusan'])
+                ->setCellValue('O' . $row, $psrtdata['status_kerja'])
+                ->setCellValue('P' . $row, $psrtdata['pekerjaan'])
+                ->setCellValue('Q' . $row, $psrtdata['domisili_peserta'])
+                ->setCellValue('R' . $row, $psrtdata['alamat'])
+                ->setCellValue('S' . $row, $psrtdata['hp'])
+                ->setCellValue('T' . $row, $psrtdata['email'])
+                ->setCellValue('U' . $row, $psrtdata['tgl_gabung']);
+
+            $sheet->getStyle('F' . $row)->getNumberFormat()
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
+
+            $sheet->getStyle('A' . $row)->applyFromArray($border);
+            $sheet->getStyle('B' . $row)->applyFromArray($border);
+            $sheet->getStyle('C' . $row)->applyFromArray($border);
+            $sheet->getStyle('D' . $row)->applyFromArray($border);
+            $sheet->getStyle('E' . $row)->applyFromArray($border);
+            $sheet->getStyle('F' . $row)->applyFromArray($border);
+            $sheet->getStyle('G' . $row)->applyFromArray($border);
+            $sheet->getStyle('H' . $row)->applyFromArray($border);
+            $sheet->getStyle('I' . $row)->applyFromArray($border);
+            $sheet->getStyle('J' . $row)->applyFromArray($border);
+            $sheet->getStyle('K' . $row)->applyFromArray($border);
+            $sheet->getStyle('L' . $row)->applyFromArray($border);
+            $sheet->getStyle('M' . $row)->applyFromArray($border);
+            $sheet->getStyle('N' . $row)->applyFromArray($border);
+            $sheet->getStyle('O' . $row)->applyFromArray($border);
+            $sheet->getStyle('P' . $row)->applyFromArray($border);
+            $sheet->getStyle('Q' . $row)->applyFromArray($border);
+            $sheet->getStyle('R' . $row)->applyFromArray($border);
+            $sheet->getStyle('S' . $row)->applyFromArray($border);
+            $sheet->getStyle('T' . $row)->applyFromArray($border);
+            $sheet->getStyle('U' . $row)->applyFromArray($border);
+
+            $row++;
+        }
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $filename =  'Data-Peserta-'. date('Y-m-d-His');
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+
 }

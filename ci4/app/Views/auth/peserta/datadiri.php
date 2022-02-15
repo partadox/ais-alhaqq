@@ -70,6 +70,12 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="" class="col-sm-3 col-form-label">Domisili </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" value="<?= $domisili_peserta ?>" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="" class="col-sm-3 col-form-label">Alamat </label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" value="<?= $alamat ?>" readonly>

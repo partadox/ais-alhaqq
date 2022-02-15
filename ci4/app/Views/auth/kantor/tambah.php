@@ -14,21 +14,21 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Kantor <code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nama_kantor" name="nama_kantor">
+                        <input type="text" class="form-control text-uppercase" id="nama_kantor" name="nama_kantor">
                         <div class="invalid-feedback errorNama_kantor"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Kota Kantor<code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="kota_kantor" name="kota_kantor">
+                        <input type="text" class="form-control text-uppercase" id="kota_kantor" name="kota_kantor">
                         <div class="invalid-feedback errorKota_kantor"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Alamat Kantor<code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="alamat_kantor" name="alamat_kantor">
+                        <input type="text" class="form-control text-uppercase" id="alamat_kantor" name="alamat_kantor">
                         <div class="invalid-feedback errorAlamat_kantor"></div>
                     </div>
                 </div>

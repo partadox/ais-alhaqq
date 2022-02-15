@@ -40,10 +40,11 @@
                                   <th width="15%">Nama Pendaftar</th>
                                   <th width="15%">Program & Kelas</th>
                                   <th width="10%">Total SPP Program</th>
-                                  <th width="7%">Biaya Daftar</th>
-                                  <th width="10%">Biaya SPP Perbulan</th>
-                                  <th width="15%">Total Bayar</th>
-                                  <th width="15%">Batal Pendaftaran</th>
+                                  <th width="7%">Biaya Pendaftaran</th>
+                                  <th width="10%">SPP Perbulan</th>
+                                  <th width="7%">Biaya Modul</th>
+                                  <th width="18%">Total Bayar</th>
+                                  <th width="10%">Batal Pendaftaran</th>
                               </tr>
                           </thead>
                           <tbody>
@@ -58,10 +59,11 @@
                                       <td>Rp <?= rupiah($program_bayar[0]['biaya_program']) ?></td>
                                       <td>Rp <?= rupiah($program_bayar[0]['biaya_daftar']) ?></td>
                                       <td>Rp <?= rupiah($program_bayar[0]['biaya_bulanan']) ?> (x4)</td>
+                                      <td>Rp <?= rupiah($program_bayar[0]['biaya_modul']) ?></td>
                                       <td> 
-                                      Total Bayar Lunas = <br> <b>Rp.<?= rupiah( $program_bayar[0]['biaya_program']+$program_bayar[0]['biaya_daftar']) ?></b>
+                                      Total Bayar Lunas = <br> <b>Rp <?= rupiah( $program_bayar[0]['biaya_program']+$program_bayar[0]['biaya_daftar']+$program_bayar[0]['biaya_modul']) ?></b>
                                       <hr>
-                                        Total Daftar + SPP-1 = <br> <b>Rp. <?= rupiah($program_bayar[0]['biaya_bulanan']+$program_bayar[0]['biaya_daftar']) ?></b> 
+                                        Total Pendaftaran + SPP 1 + Modul= <br> <b>Rp <?= rupiah($program_bayar[0]['biaya_bulanan']+$program_bayar[0]['biaya_daftar']+$program_bayar[0]['biaya_modul']) ?></b>
                                       </td>
                                       <td>
                                       <?php if($program_bayar[0]['status_konfirmasi'] == '') { ?>
@@ -110,26 +112,20 @@
                         <input type="hidden" name="bayar_id" id="bayar_id" value="<?= $program_bayar[0]['bayar_id'] ?>" />
                         <div class="form-group">
                           <div class="mb-3">
-                            <label class="form-label">Nominal Transfer<code>*</code></label>
+                            <label class="form-label">Total Nominal Transfer<code>*</code></label>
                               <input class="form-control number-separator" type="text" id="awal_bayar" name="awal_bayar" placeholder="Input Nominal Transfer">
                           </div>
                         </div>
                         <div class="form-group">
                           <div class="mb-3">
-                            <label class="form-label">Daftar <code>*</code></label>
-                            <input class="form-control number-separator" type="text" id="daftar" name="daftar" placeholder="Input Nominal Daftar">
+                            <label class="form-label">Pendaftaran <code>*</code></label>
+                            <input class="form-control number-separator" type="text" id="daftar" name="daftar" placeholder="Input Nominal Daftar" value="<?= $program_bayar[0]['biaya_daftar'] ?>">
                           </div>
                         </div>
                         <div class="form-group">
                           <div class="mb-3">
                             <label class="form-label">SPP-1 <code>*</code></label>
-                            <input class="form-control number-separator" type="text" id="spp1" name="spp1" placeholder="Input Nominal SPP-1">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <div class="mb-3">
-                            <label class="form-label">Infaq <code>*</code></label>
-                            <input class="form-control number-separator" type="text" id="infaq" name="infaq" placeholder="(Masukan 0 jika tidak ada infaq)">
+                            <input class="form-control number-separator" type="text" id="spp1" name="spp1" placeholder="Input Nominal SPP-1" value="<?= $program_bayar[0]['biaya_bulanan'] ?>">
                           </div>
                         </div>
                         <div class="form-group">
@@ -152,8 +148,27 @@
                         </div>
                         <div class="form-group">
                           <div class="mb-3">
+                            <label class="form-label">Infaq <code>*</code></label>
+                            <input class="form-control number-separator" type="text" id="infaq" name="infaq" placeholder="(Masukan 0 jika tidak ada infaq)">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                        <div class="form-group">
+                          <div class="mb-3">
+                            <label class="form-label">Modul <code>*</code></label>
+                            <input class="form-control number-separator" type="text" id="modul" name="modul" placeholder="(Masukan 0 jika tidak membayar modul)" value="<?= $program_bayar[0]['biaya_modul'] ?>">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="mb-3">
+                            <label class="form-label">Biaya Lainnya (Merchandise, dsb) <code>*</code></label>
+                            <input class="form-control number-separator" type="text" id="lain" name="lain" placeholder="(Masukan 0 jika tidak biaya lainnya)">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="mb-3">
                             <label class="form-label">Keterangan Transfer</label>
-                            <input class="form-control" type="text-area" id="keterangan_bayar" name="keterangan_bayar" placeholder="Masukan Keterangan Pengiring (jika ada)">
+                            <input class="form-control text-uppercase" type="text-area" id="keterangan_bayar" name="keterangan_bayar" placeholder="Masukan Keterangan Pengiring (jika ada)">
                           </div>
                         </div>
                         <div class="form-group row">
@@ -196,10 +211,12 @@
 			$('#awal_bayar').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0});
 			$('#daftar').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0});
       $('#spp1').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0});
-      $('#infaq').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
       $('#spp2').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
       $('#spp3').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
       $('#spp4').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
+      $('#infaq').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
+      $('#modul').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
+      $('#lain').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
   });
 
 

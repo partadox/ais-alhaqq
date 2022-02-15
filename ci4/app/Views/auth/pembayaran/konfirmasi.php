@@ -15,8 +15,7 @@
         <tr>
             <th>No.</th>
             <th>Peserta</th>
-            <th>NIS</th>
-            <th>Nominal Transfer</th>
+            <th>Rincian Transfer</th>
             <th>Kelas</th>
             <th>Upload Bukti</th>
             <th>Status</th>
@@ -32,22 +31,32 @@
         ?>
             <tr>
                 <td width="5%"><?= $data['bayar_id'] ?></td>
-                <td width="15%"><?= $data['nama_peserta'] ?></td>
                 <td width="15%">
+                    <?= $data['nama_peserta'] ?> <br>
                     <?php if($data['nis'] == '') { ?>
+                        NIS = <button type="button" class="btn btn-primary btn-sm" onclick="nis('<?= $data['peserta_id'] ?>')">Buat NIS</button>
                         <p>Peserta Baru. Isi NIS dahulu sebelum konfirmasi</p>
-                        <button type="button" class="btn btn-primary btn-sm" onclick="nis('<?= $data['peserta_id'] ?>')">Buat NIS</button>
                     <?php } ?>
                     <?php if($data['nis'] != '') { ?>
-                        <p><?= $data['nis'] ?></p>
+                        <p>NIS = <?= $data['nis'] ?></p>
                     <?php } ?>
                 </td>
-                <td width="8%">Rp <?= rupiah($data['awal_bayar'])?></td>
+                <td width="15%">
+                    <p>Total Transfer = Rp <?= rupiah($data['awal_bayar'])?></p>
+                    <p>Pendaftaran = Rp <?= rupiah($data['awal_bayar_daftar'])?></p>
+                    <p>SPP-1 = Rp <?= rupiah($data['awal_bayar_spp1'])?></p>
+                    <p>SPP-2 = Rp <?= rupiah($data['awal_bayar_spp2'])?></p>
+                    <p>SPP-3 = Rp <?= rupiah($data['awal_bayar_spp3'])?></p>
+                    <p>SPP-4 = Rp <?= rupiah($data['awal_bayar_spp4'])?></p>
+                    <p>Infaq = Rp <?= rupiah($data['awal_bayar_infaq'])?></p>
+                    <p>Modul = Rp <?= rupiah($data['awal_bayar_modul'])?></p>
+                    <p>Biaya Lain = Rp <?= rupiah($data['awal_bayar_lainnya'])?></p>
+                </td>
                 <td width="14%">
                     <p>Program: <?= $data['nama_program'] ?></p>
                     <p>Kelas: <?= $data['nama_kelas'] ?></p>
                     <p>Hari: <?= $data['hari_kelas'] ?></p>
-                    <p>Waktu: <?= $data['waktu_kelas'] ?></p>
+                    <p>Waktu: <?= $data['waktu_kelas'] ?>  <?= $data['zona_waktu_kelas'] ?></p>
                     <p>Pengajar: <?= $data['nama_pengajar'] ?></p>
                 </td>
                 <td width="14%">

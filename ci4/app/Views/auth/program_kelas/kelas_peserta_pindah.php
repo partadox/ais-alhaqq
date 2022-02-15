@@ -13,6 +13,8 @@
             <div class="modal-body">
                 <input type="hidden" class="form-control" id="peserta_kelas_id" value="<?= $peserta_kelas_id ?>" name="peserta_kelas_id" 
                 readonly>
+                <input type="hidden" class="form-control" id="asal_kelas_id" value="<?= $data_kelas_id ?>" name="asal_kelas_id" 
+                readonly>
                 <h6 style="text-align:center;">Nama: <?= $nama_peserta ?></h6>
                 <h6 style="text-align:center;">NIS: <?= $nis ?></h6>
                 <h6 style="text-align:center;">Domisili: </h6>

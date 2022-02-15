@@ -15,7 +15,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Username<code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="username" name="username" value="<?= $username ?>">
+                        <input type="text" class="form-control text-lowercase" id="username" name="username" value="<?= $username ?>">
                         <div class="invalid-feedback errorUsername"></div>
                     </div>
                 </div>

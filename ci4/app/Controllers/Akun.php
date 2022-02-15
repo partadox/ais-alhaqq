@@ -75,14 +75,14 @@ class Akun extends BaseController
                     'error' => [
                         'username'  => $validation->getError('username'),
                         'nama'      => $validation->getError('nama'),
-                        'level'      => $validation->getError('level'),
+                        'level'     => $validation->getError('level'),
                         'password'  => $validation->getError('password'),
                     ]
                 ];
             } else {
                 $simpandata = [
-                    'username'     => $this->request->getVar('username'),
-                    'nama'         => $this->request->getVar('nama'),
+                    'username'     => strtolower($this->request->getVar('username')),
+                    'nama'         => strtoupper($this->request->getVar('nama')),
                     'password'     => (password_hash($this->request->getVar('password'), PASSWORD_BCRYPT)),
                     'level'        => $this->request->getVar('level'),
                     'foto'         => 'default.png',
@@ -161,7 +161,7 @@ class Akun extends BaseController
                 $cek_password = $this->request->getVar('password');
                 if($cek_password == ''){
                     $update_data = [
-                        'nama'         => $this->request->getVar('nama'),
+                        'nama'         => strtoupper($this->request->getVar('nama')),
                         'level'        => $this->request->getVar('level'),
                     ];
     
@@ -169,7 +169,7 @@ class Akun extends BaseController
                     $this->user->update($user_id, $update_data);
                 } else{
                     $update_data = [
-                        'nama'         => $this->request->getVar('nama'),
+                        'nama'         => strtoupper($this->request->getVar('nama')),
                         'password'     => (password_hash($this->request->getVar('password'), PASSWORD_BCRYPT)),
                         'level'        => $this->request->getVar('level'),
                     ];
@@ -239,7 +239,7 @@ class Akun extends BaseController
             } else {
 
                 $update_data = [
-                    'username'  => $this->request->getVar('username'),
+                    'username'  => strtolower($this->request->getVar('username')),
                 ];
 
                 $user_id = $this->request->getVar('user_id');
@@ -358,14 +358,14 @@ class Akun extends BaseController
                     'error' => [
                         'username'  => $validation->getError('username'),
                         'nama'      => $validation->getError('nama'),
-                        'level'      => $validation->getError('level'),
+                        'level'     => $validation->getError('level'),
                         'password'  => $validation->getError('password'),
                     ]
                 ];
             } else {
                 $simpandata = [
-                    'username'     => $this->request->getVar('username'),
-                    'nama'         => $this->request->getVar('nama'),
+                    'username'     => strtolower($this->request->getVar('username')),
+                    'nama'         => strtoupper($this->request->getVar('nama')),
                     'password'     => (password_hash($this->request->getVar('password'), PASSWORD_BCRYPT)),
                     'level'        => $this->request->getVar('level'),
                     'foto'         => 'default.png',
@@ -443,7 +443,7 @@ class Akun extends BaseController
                 $cek_password = $this->request->getVar('password');
                 if($cek_password == ''){
                     $update_data = [
-                        'nama'         => $this->request->getVar('nama'),
+                        'nama'         => strtoupper($this->request->getVar('nama')),
                         'level'        => $this->request->getVar('level'),
                     ];
     
@@ -451,7 +451,7 @@ class Akun extends BaseController
                     $this->user->update($user_id, $update_data);
                 } else{
                     $update_data = [
-                        'nama'         => $this->request->getVar('nama'),
+                        'nama'         => strtoupper($this->request->getVar('nama')),
                         'password'     => (password_hash($this->request->getVar('password'), PASSWORD_BCRYPT)),
                         'level'        => $this->request->getVar('level'),
                     ];
@@ -521,7 +521,7 @@ class Akun extends BaseController
             } else {
 
                 $update_data = [
-                    'username'  => $this->request->getVar('username'),
+                    'username'  => strtolower($this->request->getVar('username')),
                 ];
 
                 $user_id = $this->request->getVar('user_id');

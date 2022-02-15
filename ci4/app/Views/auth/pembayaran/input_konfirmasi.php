@@ -17,8 +17,8 @@
                 <p class="mt-3">Catatan :<br> 
                     <i class="mdi mdi-information"></i> Lihat Bukti Bayar Dengan Teliti. <br>
                     <i class="mdi mdi-information"></i> Semua form input wajib diisi, jika nominal 0 input kembali dengan nominal 0. <br>
-                    <i class="mdi mdi-information"></i> Bilah kiri adalah nominal input dari peserta, bilah kanan merupakan nominal input konfirmasi untuk admin yang harus diisi. <br>
-                    <i class="mdi mdi-information"></i> Perhatikan nominal input dan ketrangan lain dari Peserta. Kemudian jika sesuai masukan kembali nominal pada form input kanan.<br>
+                    <!-- <i class="mdi mdi-information"></i> Bilah kiri adalah nominal input dari peserta, bilah kanan merupakan nominal input konfirmasi untuk admin yang harus diisi. <br>
+                    <i class="mdi mdi-information"></i> Perhatikan nominal input dan ketrangan lain dari Peserta. Kemudian jika sesuai masukan kembali nominal pada form input kanan.<br> -->
                 </p>
                 <input type="hidden" class="form-control" id="bayar_id" name="bayar_id" value="<?= $bayar_id ?>" disabled>
                 <input type="hidden" class="form-control" id="kelas_id" name="kelas_id" value="<?= $kelas_id ?>" disabled>
@@ -73,6 +73,20 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label">Modul<code>*</code></label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="bayar_modul" name="bayar_modul" value="Rp <?= rupiah($awal_bayar_modul) ?>">
+                        <div class="invalid-feedback errorBayar_modul"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label">Biaya Lainnya (Marchendise, dsb)<code>*</code></label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="bayar_lain" name="bayar_lain" value="Rp <?= rupiah($awal_bayar_lainnya) ?>">
+                        <div class="invalid-feedback errorBayar_lain"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Keterangan Dari Peserta</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" value="<?= $keterangan_bayar ?>" readonly>
@@ -114,10 +128,12 @@
     $('#nominal_bayar').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
     $('#bayar_daftar').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
       $('#bayar_spp1').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
-      $('#bayar_infaq').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
       $('#bayar_spp2').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
       $('#bayar_spp3').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
       $('#bayar_spp4').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
+      $('#bayar_infaq').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
+      $('#bayar_modul').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
+      $('#bayar_lain').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
   });
 
 
@@ -141,6 +157,8 @@
                     bayar_spp3: $('input#bayar_spp3').val(),
                     bayar_spp4: $('input#bayar_spp4').val(),
                     bayar_infaq: $('input#bayar_infaq').val(),
+                    bayar_modul: $('input#bayar_modul').val(),
+                    bayar_lain: $('input#bayar_lain').val(),
                 },
                 dataType: "json",
                 beforeSend: function() {
@@ -201,6 +219,20 @@
                         } else {
                             $('#bayar_spp4').removeClass('is-invalid');
                             $('.errorBayar_spp4').html('');
+                        }
+                        if (response.error.bayar_modul) {
+                            $('#bayar_modul').addClass('is-invalid');
+                            $('.errorBayar_modul').html(response.error.bayar_modul);
+                        } else {
+                            $('#bayar_modul').removeClass('is-invalid');
+                            $('.errorBayar_modul').html('');
+                        }
+                        if (response.error.bayar_lain) {
+                            $('#bayar_lain').addClass('is-invalid');
+                            $('.errorBayar_lain').html(response.error.bayar_lain);
+                        } else {
+                            $('#bayar_lain').removeClass('is-invalid');
+                            $('.errorBayar_lain').html('');
                         }
                     } else {
                         Swal.fire({

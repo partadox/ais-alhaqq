@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="modaltambah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered " role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><?= $title ?></h5>
@@ -22,7 +22,7 @@
                     <label for="" class="col-sm-4 col-form-label">Asal Peserta<code>*</code></label>
                     <div class="col-sm-8">
                         <select name="asal_cabang_peserta" id="asal_cabang_peserta" class="js-example-basic-single">
-                                <option value="" disabled selected>--Pilih--</option>
+                                <option value="" disabled selected>--PILIH--</option>
                             <?php foreach ($kantor_cabang as $key => $data) { ?>
                                 <option value="<?= $data['kantor_id'] ?>"><?= $data['nama_kantor'] ?></option>
                             <?php } ?>
@@ -40,7 +40,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Angkatan</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="angkatan" name="angkatan">
+                        <input type="number" class="form-control" id="angkatan" name="angkatan">
                         <div class="invalid-feedback errorAngkatan"></div>
                     </div>
                 </div>
@@ -60,9 +60,9 @@
                     <label for="" class="col-sm-4 col-form-label">Jenis Kelamin <code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="jenkel" name="jenkel">
-                            <option value="" disabled selected>--Pilih--</option>
-                            <option value="Ikhwan">Ikhwan</option>
-                            <option value="Akhwat">Akhwat</option>
+                            <option value="" disabled selected>--PILIH--</option>
+                            <option value="IKHWAN">IKHWAN</option>
+                            <option value="AKHWAT">AKHWAT</option>
                         </select>
                         <div class="invalid-feedback errorJenkel"></div>
                     </div>
@@ -92,13 +92,14 @@
                     <label class="col-sm-4 col-form-label">Pendidikan<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="pendidikan" name="pendidikan">
-                            <option value="" disabled selected>--Pilih--</option>
+                            <option value="" disabled selected>--PILIH--</option>
                             <option value="SD">SD</option>
                             <option value="SLTP">SLTP</option>
                             <option value="SLTA">SLTA</option>
-                            <option value="Diploma">Diploma</option>
-                            <option value="Sarjana">Sarjana (S1)</option>
-                            <option value="Magister">Magister (S2)</option>
+                            <option value="DIPLOMA">DIPLOMA</option>
+                            <option value="SARJANA">SARJANA (S1)</option>
+                            <option value="MAGISTER">MAGISTER (S2)</option>
+                            <option value="DOKTOR">DOKTOR (S3)</option>
                         </select>
                         <div class="invalid-feedback errorPendidikan"></div>
                     </div>
@@ -114,9 +115,9 @@
                     <label class="col-sm-4 col-form-label">Status Bekerja<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="status_kerja" name="status_kerja">
-                            <option value="" disabled selected>--Pilih--</option>
-                            <option value="0">Tidak Dalam Ikatan Kerja</option>
-                            <option value="1">Bekerja</option>
+                            <option value="" disabled selected>--PILIH--</option>
+                            <option value="0">TIDAK DALAM IKATAN KERJA</option>
+                            <option value="1">BEKERJA</option>
                         </select>
                         <div class="invalid-feedback errorStatus_kerja"></div>
                     </div>
@@ -125,7 +126,7 @@
                     <label class="col-sm-4 col-form-label">Pekerjaan<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="pekerjaan" name="pekerjaan">
-                            <option value="" disabled selected>--Pilih--</option>
+                            <option value="" disabled selected>--PILIH--</option>
                             <option value="WIRASWASTA">WIRASWASTA</option>
                             <option value="PEGAWAI SWASTA">PEGAWAI SWASTA</option>
                             <option value="PEMERINTAH/PNS">PEMERINTAH/PNS</option>
@@ -137,10 +138,11 @@
                             <option value="PENDIDIKAN">PENDIDIKAN</option>
                             <option value="OLAHRAGA/ATLET">OLAHRAGA/ATLET</option>
                             <option value="KESENIAN/ARTIS">KESENIAN/ARTIS</option>
-                            <option value="KEAGAMAAN/MAJELIS">KEAGAMAAN/MAJELIS</option>>
-                            <option value="PELAJAR/MAHASISWA">PELAJAR/MAHASISWA</option>>
+                            <option value="KEAGAMAAN/MAJELIS">KEAGAMAAN/MAJELIS</option>
+                            <option value="PELAJAR/MAHASISWA">PELAJAR/MAHASISWA</option>
                             <option value="KELUARGA/RUMAH TANGGA">KELUARGA/RUMAH TANGGA</option>
-                            <option value="FREELANCE">FREELANCE</option>>
+                            <option value="FREELANCE">FREELANCE</option>
+                            <option value="LAINNYA">LAINNYA</option>
                         </select>
                         <div class="invalid-feedback errorPekerjaan"></div>
                     </div>
@@ -160,10 +162,33 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Domisili<code>*</code></label>
+                    <div class="col-sm-8">
+                        <select class="form-control btn-square" id="domisili_peserta" name="domisili_peserta">
+                            <option value="" disabled selected>--PILIH--</option>
+                            <option value="BALIKPAPAN">BALIKPAPAN</option>
+                            <option value="LUAR BALIKPAPAN">LUAR BALIKPAPAN</option>
+                        </select>
+                        <div class="invalid-feedback errorDomisili_peserta"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Alamat<code>*</code></label>
                     <div class="col-sm-8">
                         <input class="form-control text-uppercase" type="text" id="alamat" name="alamat" >
                         <div class="invalid-feedback errorAlamat"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label">Status Peserta <code>*</code></label>
+                    <div class="col-sm-8">
+                        <select class="form-control btn-square" id="status_peserta" name="status_peserta">
+                            <option value="" disabled selected>--PILIH--</option>
+                            <option value="AKTIF">AKTIF</option>
+                            <option value="OFF">OFF</option>
+                            <option value="CUTI">CUTI</option>
+                        </select>
+                        <div class="invalid-feedback errorStatus_peserta"></div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -214,7 +239,9 @@
                     pekerjaan: $('select#pekerjaan').val(),
                     hp: $('input#hp').val(),
                     email: $('input#email').val(),
+                    domisili_peserta: $('select#domisili_peserta').val(),
                     alamat: $('input#alamat').val(),
+                    status_peserta: $('select#status_peserta').val(),
                     user_id: $('select#user_id').val(),
                 },
                 dataType: "json",
@@ -340,12 +367,28 @@
                             $('.errorEmail').html('');
                         }
 
+                        if (response.error.domisili_peserta) {
+                            $('#domisili_peserta').addClass('is-invalid');
+                            $('.errorDomisili_peserta').html(response.error.domisili_peserta);
+                        } else {
+                            $('#domisili_peserta').removeClass('is-invalid');
+                            $('.errorDomisili_peserta').html('');
+                        }
+
                         if (response.error.alamat) {
                             $('#alamat').addClass('is-invalid');
                             $('.errorAlamat').html(response.error.alamat);
                         } else {
                             $('#alamat').removeClass('is-invalid');
                             $('.errorAlamat').html('');
+                        }
+
+                        if (response.error.status_peserta) {
+                            $('#status_peserta').addClass('is-invalid');
+                            $('.errorStatus_peserta').html(response.error.status_peserta);
+                        } else {
+                            $('#status_peserta').removeClass('is-invalid');
+                            $('.errorStatus_peserta').html('');
                         }
 
                         if (response.error.user_id) {

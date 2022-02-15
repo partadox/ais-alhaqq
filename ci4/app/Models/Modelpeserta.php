@@ -8,7 +8,7 @@ class Modelpeserta extends Model
 {
     protected $table      = 'peserta';
     protected $primaryKey = 'peserta_id';
-    protected $allowedFields = ['user_id', 'asal_cabang_peserta','level_peserta','nama_peserta', 'nik', 'tmp_lahir', 'tgl_lahir', 'jenkel', 'pendidikan', 'jurusan', 'status_kerja','pekerjaan', 'alamat', 'hp', 'email', 'nis', 'angkatan'];
+    protected $allowedFields = ['user_id', 'asal_cabang_peserta','level_peserta','nama_peserta', 'status_peserta', 'nik', 'tmp_lahir', 'tgl_lahir', 'jenkel', 'pendidikan', 'jurusan', 'status_kerja','pekerjaan', 'domisili_peserta', 'alamat', 'hp', 'email', 'nis', 'angkatan', 'tgl_gabung'];
 
     //backend
 
@@ -29,6 +29,7 @@ class Modelpeserta extends Model
             ->getUnbufferedRow();
     }
 
+    //Untuk filter level - Daftar Program Peserta
     public function get_peserta_level($user_id)
     {
         return $this->table('peserta')
@@ -38,6 +39,7 @@ class Modelpeserta extends Model
             ->getUnbufferedRow();
     }
 
+    //Untuk filter jenis kelamin - Daftar Program Peserta
     public function get_peserta_jenkel($user_id)
     {
         return $this->table('peserta')
@@ -47,10 +49,21 @@ class Modelpeserta extends Model
             ->getUnbufferedRow();
     }
 
+    //Untuk filter status kerja - Daftar Program Peserta
     public function get_peserta_status_kerja($user_id)
     {
         return $this->table('peserta')
             ->select('status_kerja')
+            ->where('user_id', $user_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
+    //Untuk filter domisili - Daftar Program Peserta
+    public function get_peserta_domisili($user_id)
+    {
+        return $this->table('peserta')
+            ->select('domisili_peserta')
             ->where('user_id', $user_id)
             ->get()
             ->getUnbufferedRow();
@@ -77,10 +90,19 @@ class Modelpeserta extends Model
             ->get()->getResultArray();
     }
 
-    //Dashboaed - Admin
+    //Dashboard - Admin
     public function jml_peserta()
     {
         return $this->table('peserta')
         ->countAllResults();
+    }
+
+    //Cek data duplikat - import file excel pada data peserta
+    public function cek_duplikat_import($nis)
+    {
+        return $this->table('peserta')
+            ->where('nis', $nis)
+            ->get()
+            ->getRowArray();
     }
 }

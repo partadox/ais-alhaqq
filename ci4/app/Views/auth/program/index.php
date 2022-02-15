@@ -23,6 +23,7 @@
                 <th>Biaya Program</th>
                 <th>SPP Bulanan</th>
                 <th>Biaya Daftar</th>
+                <th>Biaya Modul</th>
                 <th>Status</th>
                 <th>Tindakan</th>
             </tr>
@@ -40,6 +41,7 @@
                     <td width="10%">Rp <?= rupiah($data['biaya_program']) ?></td>
                     <td width="10%">Rp <?= rupiah($data['biaya_bulanan']) ?></td>
                     <td width="10%">Rp <?= rupiah($data['biaya_daftar']) ?></td>
+                    <td width="10%">Rp <?= rupiah($data['biaya_modul']) ?></td>
                     <td width="10%">
                         <?php if($data['status_program'] == 'aktif') { ?>
                             <button class="btn btn-success btn-sm" disabled>Aktif</button> 

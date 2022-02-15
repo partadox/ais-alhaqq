@@ -15,7 +15,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Akun <code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nama" name="nama" value="<?= $nama ?>">
+                        <input type="text" class="form-control text-uppercase" id="nama" name="nama" value="<?= $nama ?>">
                         <div class="invalid-feedback errorNama"></div>
                     </div>
                 </div>
@@ -23,9 +23,9 @@
                     <label for="" class="col-sm-4 col-form-label">Level<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="level" name="level">
-                            <option value="4"  <?php if ($level == '4') echo "selected"; ?>>Peserta</option>
-                            <option value="5" <?php if ($level == '5') echo "selected"; ?>>Pengajar</option>
-                            <option value="6" <?php if ($level == '6') echo "selected"; ?>>Penguji</option>
+                            <option value="4"  <?php if ($level == '4') echo "selected"; ?>>PESERTA</option>
+                            <option value="5" <?php if ($level == '5') echo "selected"; ?>>PENGAJAR</option>
+                            <option value="6" <?php if ($level == '6') echo "selected"; ?>>PENGUJI</option>
                         </select>
                         <div class="invalid-feedback errorLevel"></div>
                     </div>

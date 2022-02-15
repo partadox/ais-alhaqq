@@ -15,7 +15,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Bank <code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nama_bank" name="nama_bank" value="<?= $nama_bank ?>">
+                        <input type="text" class="form-control text-uppercase" id="nama_bank" name="nama_bank" value="<?= $nama_bank ?>">
                         <div class="invalid-feedback errorNama_bank"></div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Atas Nama<code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="atas_nama_bank" name="atas_nama_bank" value="<?= $atas_nama_bank ?>">
+                        <input type="text" class="form-control text-uppercase" id="atas_nama_bank" name="atas_nama_bank" value="<?= $atas_nama_bank ?>">
                         <div class="invalid-feedback errorAtas_nama_bank"></div>
                     </div>
                 </div>

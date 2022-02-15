@@ -8,6 +8,34 @@
 
 <?= $this->section('isi') ?>
 
+<?php if ($peserta['level_peserta'] == '') { ?>
+  <p class="mt-1">Catatan :<br>
+      <i class="mdi mdi-information"></i> Anda harus memilih level kelas untuk peserta baru yg akan anda ikuti. <br>
+      <i class="mdi mdi-information"></i> Jadwal kelas akan muncul ketika anda telah memilih. <br>
+      <i class="mdi mdi-information"></i> Anda hanya dapat memilih satu kali, harap berhati-hati. <br>
+      <i class="mdi mdi-information"></i> Harap melihat petunjuk di web atau bertanya kepada admin. <br>
+  </p>
+  <?= form_open('daftar/simpandaftar_level', ['class' => 'formtambahlevel']) ?>
+  <?= csrf_field() ?>
+  <div class="form-group">
+  <input type="hidden" id="peserta_id" name="peserta_id" value="<?=$peserta['peserta_id'] ?>">
+    <div class="mb-3">
+      <label class="form-label">Kelas untuk Peserta Baru <code>*</code></label>
+        <select name="level_peserta" id="level_peserta" class="form-control btn-square js-example-basic-single">
+              <option value="" disabled selected>--PILIH LEVEL KELAS--</option>
+          <?php foreach ($tampil_ondaftar as $key => $data) { ?>
+              <option value="<?= $data['peserta_level_id'] ?>"><?= $data['nama_level'] ?></option>
+          <?php } ?>
+        </select>
+      <div class="invalid-feedback errorLevel_peserta">
+    </div>
+    <div class="row">
+      <input  class="btn btn-warning ml-3 mt-3 mb-6 mr-4" type="submit" value="Pilih" ></input>
+    </div>
+  </div>
+  <?= form_close() ?> 
+<?php } ?>
+
 <?php if ($cek1 != 0) { ?>
   <div class="alert alert-secondary alert-dismissible fade show" role="alert"> <i class="mdi mdi-account-multiple-outline"></i>
         <strong>Anda Sudah Memilih Program dan Perlu Menyelesaikan Pembayaran Pendaftaran.</strong> 
@@ -19,6 +47,7 @@
   <p class="mt-1">Catatan :<br>
       <i class="mdi mdi-information"></i> Pilih kelas yang masih memiliki kuota. <br>
   </p>
+  
    <div class="row">
       <?php
       foreach ($program as $data) :
@@ -100,5 +129,49 @@
                 }
         });
     }
+
+    $('.formtambahlevel').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "post",
+                url: $(this).attr('action'),
+                data: {
+                    peserta_id: $('input#peserta_id').val(),
+                    level_peserta: $('select#level_peserta').val(),
+                },
+                dataType: "json",
+                beforeSend: function() {
+                    $('.btnsimpan').attr('disable', 'disable');
+                    $('.btnsimpan').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> <i>Loading...</i>');
+                },
+                complete: function() {
+                    $('.btnsimpan').removeAttr('disable', 'disable');
+                    $('.btnsimpan').html('<i class="fa fa-share-square"></i>  Simpan');
+                },
+                success: function(response) {
+                    if (response.error) {
+
+                        if (response.error.level_peserta) {
+                            $('#level_peserta').addClass('is-invalid');
+                            $('.errorLevel_peserta').html(response.error.level_peserta);
+                        } else {
+                            $('#level_peserta').removeClass('is-invalid');
+                            $('.errorLevel_peserta').html('');
+                        }
+
+                    } else {
+                        Swal.fire({
+                            title: "Berhasil!",
+                            text: "Akun Anda berhasil Memilih Level Kelas!",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function() {
+                                window.location = response.sukses.link;
+                        });
+                    }
+                }
+            });
+        })
 </script>
 <?= $this->endSection('isi') ?>

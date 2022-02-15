@@ -18,6 +18,7 @@
             <tr>
                 <th>No.</th>
                 <th>Kelas</th>
+                <th>Angkatan</th>
                 <th>Program</th>
                 <th>Hari</th>
                 <th>Jam</th>
@@ -26,7 +27,7 @@
                 <th>Level</th>
                 <th>Jen. Kel.</th>
                 <th>Kuota Pendaftaran</th>
-                <th>Jml Peserta</th>
+                <!-- <th>Jml Peserta</th> -->
                 <th>Status Kelas</th>
                 <th>Tindakan</th>
             </tr>
@@ -37,25 +38,19 @@
             foreach ($list as $data) :
                 $nomor++; ?>
                 <tr>
-                    <td width="5%"><?= $nomor ?></td>
+                    <td width="3%"><?= $nomor ?></td>
                     <td width="15%"><?= $data['nama_kelas'] ?></td>
+                    <td width="5%"><?= $data['angkatan_kelas'] ?></td>
                     <td width="10%"><?= $data['nama_program'] ?></td>
-                    <td width="5%"><?= $data['hari_kelas'] ?> <br>
-                        <?php if($data['status_kerja'] == '0') { ?>
-                            <p>(Weekdays)</p>
-                        <?php } ?>
-                        <?php if($data['status_kerja'] == '1') { ?>
-                            <p>(Weekend)</p>
-                        <?php } ?>
-                    </td>
-                    <td width="5%"><?= $data['waktu_kelas'] ?></td>
+                    <td width="5%"><?= $data['hari_kelas'] ?></td>
+                    <td width="5%"><?= $data['waktu_kelas'] ?> <?= $data['zona_waktu_kelas'] ?></td>
                     <td width="7%"><?= $data['nama_pengajar'] ?></td>
                     <td width="5%">
-                        <?php if($data['metode_kelas'] == 'online') { ?>
-                            <button class="btn btn-primary btn-sm" disabled>Online</button> 
+                        <?php if($data['metode_kelas'] == 'ONLINE') { ?>
+                            <button class="btn btn-primary btn-sm" disabled>ONLINE</button> 
                         <?php } ?>
-                        <?php if($data['metode_kelas'] == 'offline') { ?>
-                            <button class="btn btn-info btn-sm" disabled>Offline</button> 
+                        <?php if($data['metode_kelas'] == 'OFFLINE') { ?>
+                            <button class="btn btn-info btn-sm" disabled>OFFLINE</button> 
                         <?php } ?>
                     </td>
                     <td  width="7%"><?= $data['nama_level'] ?></td>
@@ -64,7 +59,7 @@
                         <p>Kuota: <?= $data['kouta'] ?></p>
                         <p>Sisa Kuota: <?= $data['sisa_kouta'] ?></p>
                     </td>
-                    <td></td>
+                    <!-- <td></td> -->
                     <td width="5%">
                         <?php if($data['status_kelas'] == 'aktif') { ?>
                             <button class="btn btn-success btn-sm" disabled>Aktif</button> 

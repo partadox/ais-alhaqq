@@ -99,15 +99,15 @@ class Daftar extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
-                'alamat' => [
-                    'label' => 'alamat',
+                'domisili_peserta' => [
+                    'label' => 'domisili_peserta',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
-                'level_peserta' => [
-                    'label' => 'level_peserta',
+                'alamat' => [
+                    'label' => 'alamat',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
@@ -117,39 +117,43 @@ class Daftar extends BaseController
             if (!$valid) {
                 $msg = [
                     'error' => [
-                        'nama'      => $validation->getError('nama'),
-                        'nik'       => $validation->getError('nik'),
-                        'tmp_lahir'  => $validation->getError('tmp_lahir'),
-                        'tgl_lahir'  => $validation->getError('tgl_lahir'),
-                        'jenkel'     => $validation->getError('jenkel'),
-                        'pendidikan'  => $validation->getError('pendidikan'),
-                        'jurusan'     => $validation->getError('jurusan'),
-                        'status_kerja'=> $validation->getError('status_kerja'),
-                        'pekerjaan'   => $validation->getError('pekerjaan'),
-                        'hp'          => $validation->getError('hp'),
-                        'email'       => $validation->getError('email'),
-                        'alamat'      => $validation->getError('alamat'),
-                        'level_peserta'  => $validation->getError('level_peserta'),
+                        'nama'              => $validation->getError('nama'),
+                        'nik'               => $validation->getError('nik'),
+                        'tmp_lahir'         => $validation->getError('tmp_lahir'),
+                        'tgl_lahir'         => $validation->getError('tgl_lahir'),
+                        'jenkel'            => $validation->getError('jenkel'),
+                        'pendidikan'        => $validation->getError('pendidikan'),
+                        'jurusan'           => $validation->getError('jurusan'),
+                        'status_kerja'      => $validation->getError('status_kerja'),
+                        'pekerjaan'         => $validation->getError('pekerjaan'),
+                        'hp'                => $validation->getError('hp'),
+                        'email'             => $validation->getError('email'),
+                        'domisili_peserta'  => $validation->getError('domisili_peserta'),
+                        'alamat'            => $validation->getError('alamat'),
+                        // 'level_peserta'  => $validation->getError('level_peserta'),
                         
                     ]
                 ];
             } else {
                 $simpandata = [
                     'user_id'               => $this->request->getVar('user_id'),
-                    'nama_peserta'          => $this->request->getVar('nama'),
+                    'nama_peserta'          => strtoupper($this->request->getVar('nama')),
                     'asal_cabang_peserta'   => '1',
                     'nik'                   => $this->request->getVar('nik'),
-                    'tmp_lahir'             => $this->request->getVar('tmp_lahir'),
+                    'tmp_lahir'             => strtoupper($this->request->getVar('tmp_lahir')),
                     'tgl_lahir'             => $this->request->getVar('tgl_lahir'),
                     'jenkel'                => $this->request->getVar('jenkel'),
                     'pendidikan'            => $this->request->getVar('pendidikan'),
-                    'jurusan'               => $this->request->getVar('jurusan'),
+                    'jurusan'               => strtoupper($this->request->getVar('jurusan')),
                     'status_kerja'          => $this->request->getVar('status_kerja'),
                     'pekerjaan'             => $this->request->getVar('pekerjaan'),
                     'hp'                    => $this->request->getVar('hp'),
-                    'email'                 => $this->request->getVar('email'),
-                    'alamat'                => $this->request->getVar('alamat'),
-                    'level_peserta'         => $this->request->getVar('level_peserta'),
+                    'email'                 => strtolower($this->request->getVar('email')),
+                    'domisili_peserta'      => $this->request->getVar('domisili_peserta'),
+                    'alamat'                => strtoupper($this->request->getVar('alamat')),
+                    'status_peserta'        => 'AKTIF',
+                    'tgl_gabung'            => date("Y-m-d"),
+                    // 'level_peserta'         => $this->request->getVar('level_peserta'),
                 ];
 
                 $data_active = [
@@ -157,11 +161,51 @@ class Daftar extends BaseController
                 ];
 
                 $this->peserta->insert($simpandata);
+                //var_dump($simpandata);
                 $user_id = $this->request->getVar('user_id');
                 $this->user->update($user_id, $data_active);
                 $msg = [
                     'sukses' => [
                         'link' => 'dashboard'
+                    ]
+                ];
+            }
+            echo json_encode($msg);
+        }
+    }
+
+    // Simpan Daftar Level Kelas Peserta Baru - Di Halaman Memilih Program & Jadwal
+    public function simpandaftar_level()
+    {
+        if ($this->request->isAJAX()) {
+            $validation = \Config\Services::validation();
+            $valid = $this->validate([
+                'level_peserta' => [
+                    'label' => 'level_peserta',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => 'Harap Memilih Level Kelas',
+                    ]
+                ],
+            ]);
+            if (!$valid) {
+                $msg = [
+                    'error' => [
+                        'level_peserta'  => $validation->getError('level_peserta'),
+                        
+                    ]
+                ];
+            } else {
+                $simpandata = [
+                    'level_peserta'        => $this->request->getVar('level_peserta'),
+                ];
+
+                $peserta_id  = $this->request->getVar('peserta_id');
+
+                $this->peserta->update($peserta_id, $simpandata);
+                $msg = [
+                    'sukses' => [
+                        'link' => 'program'
                     ]
                 ];
             }
@@ -196,13 +240,31 @@ class Daftar extends BaseController
         $get_peserta_status_kerja = $this->peserta->get_peserta_status_kerja($user_id);
         $peserta_status_kerja = $get_peserta_status_kerja->status_kerja;
 
+        //Get data peserta jenis kelamin - FILTER PESERTA DOMISILI
+        $get_peserta_domisili = $this->peserta->get_peserta_domisili($user_id);
+        $peserta_domisili = $get_peserta_domisili->domisili_peserta;
+
         //Jika status bukan pekerja maka akan tampil kelas dengan status_kerja = 0 (Kelas di Weekdays saja)
         //Else status pekerja maka akan tampil kelas dengan status_kerja 1 dan 0 (Weekdays dan Weekend Akan Tampil)
+        // MAIN FILTER FUNGSI
+
         if($peserta_status_kerja == 0){
-            //Get All Data Program
-            $program = $this->program->aktif($peserta_level, $peserta_jenkel, $peserta_status_kerja);
+            if ($peserta_domisili == 'BALIKPAPAN') {
+                //Filter -> 1.level, 2.jenkel, 3.kerja=tidak, 4.domisili=balikpapan
+                $program = $this->program->aktif_balikpapan($peserta_level, $peserta_jenkel, $peserta_status_kerja);
+            } else {
+                //Filter -> 1.level, 2.jenkel, 3.kerja=tidak, 4.domisili=luar
+                $program = $this->program->aktif($peserta_level, $peserta_jenkel, $peserta_status_kerja);
+            }
+                
         }else{
-            $program = $this->program->aktif_pekerja($peserta_level, $peserta_jenkel);
+            if ($peserta_domisili == "BALIKPAPAN") {
+                //Filter -> 1.level, 2.jenkel, 3.kerja=ya, 4.domisili=balikpapan
+                $program = $this->program->aktif_pekerja_balikpapan($peserta_level, $peserta_jenkel);
+            } else {
+                //Filter -> 1.level, 2.jenkel, 3.kerja=ya, 4.domisili=luar
+                $program = $this->program->aktif_pekerja($peserta_level, $peserta_jenkel);
+            }
         } 
 
         // Cek ada data yang belum dibayar
@@ -212,6 +274,7 @@ class Daftar extends BaseController
         
         $data = [
             'title'     => 'Al-Haqq - Daftar Program',
+            'tampil_ondaftar' => $this->level->list_tampil_ondaftar(),
             'peserta'   => $get_peserta,
             'program'   => $program,
             'cek1'      => $cek1,
@@ -309,13 +372,6 @@ class Daftar extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
-                'infaq' => [
-                    'label' => 'infaq',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong',
-                    ]
-                ],
                 'spp2' => [
                     'label' => 'spp2',
                     'rules' => 'required',
@@ -332,6 +388,27 @@ class Daftar extends BaseController
                 ],
                 'spp4' => [
                     'label' => 'spp4',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'infaq' => [
+                    'label' => 'infaq',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'modul' => [
+                    'label' => 'modul',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'lain' => [
+                    'label' => 'lain',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
@@ -361,29 +438,35 @@ class Daftar extends BaseController
                  $get_awal_bayar         = $this->request->getVar('awal_bayar');
                  $get_awal_bayar_daftar  = $this->request->getVar('daftar');
                  $get_awal_bayar_spp1    = $this->request->getVar('spp1');
-                 $get_awal_bayar_infaq   = $this->request->getVar('infaq');
                  $get_awal_bayar_spp2    = $this->request->getVar('spp2');
                  $get_awal_bayar_spp3    = $this->request->getVar('spp3');
                  $get_awal_bayar_spp4    = $this->request->getVar('spp4');
+                 $get_awal_bayar_infaq   = $this->request->getVar('infaq');
+                 $get_awal_bayar_modul   = $this->request->getVar('modul');
+                 $get_awal_bayar_lain    = $this->request->getVar('lain');
 
                  //Replace Rp. and thousand separtor from input
                  $awal_bayar_int           = str_replace(str_split('Rp. .'), '', $get_awal_bayar);
                  $awal_bayar_daftar_int    = str_replace(str_split('Rp. .'), '', $get_awal_bayar_daftar);
                  $awal_bayar_spp1_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp1);
-                 $awal_bayar_infaq_int     = str_replace(str_split('Rp. .'), '', $get_awal_bayar_infaq);
                  $awal_bayar_spp2_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp2);
                  $awal_bayar_spp3_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp3);
                  $awal_bayar_spp4_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp4);
+                 $awal_bayar_infaq_int     = str_replace(str_split('Rp. .'), '', $get_awal_bayar_infaq);
+                 $awal_bayar_modul_int     = str_replace(str_split('Rp. .'), '', $get_awal_bayar_modul);
+                 $awal_bayar_lain_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_lain);
 
                  //Get Data from Input view
                  $bayar_id                = $this->request->getVar('bayar_id');
                  $awal_bayar              = $awal_bayar_int;
                  $awal_bayar_daftar       = $awal_bayar_daftar_int;
                  $awal_bayar_spp1         = $awal_bayar_spp1_int;
-                 $awal_bayar_infaq        = $awal_bayar_infaq_int;
                  $awal_bayar_spp2         = $awal_bayar_spp2_int;
                  $awal_bayar_spp3         = $awal_bayar_spp3_int;
                  $awal_bayar_spp4         = $awal_bayar_spp4_int;
+                 $awal_bayar_infaq        = $awal_bayar_infaq_int;
+                 $awal_bayar_modul        = $awal_bayar_modul_int;
+                 $awal_bayar_lain         = $awal_bayar_lain_int;
 
 
                 $data_bayar = [
@@ -395,10 +478,12 @@ class Daftar extends BaseController
                     'awal_bayar_spp2'           => $awal_bayar_spp2,
                     'awal_bayar_spp3'           => $awal_bayar_spp3,
                     'awal_bayar_spp4'           => $awal_bayar_spp4,
+                    'awal_bayar_modul'          => $awal_bayar_modul,
+                    'awal_bayar_lainnya'        => $awal_bayar_lain,
                     'bukti_bayar'               => $namafoto_new,
                     'tgl_bayar'                 => $tgl,
                     'waktu_bayar'               => $waktu,
-                    'keterangan_bayar'          =>  $this->request->getVar('keterangan_bayar'),
+                    'keterangan_bayar'          => strtoupper($this->request->getVar('keterangan_bayar')),
                     'tgl_bayar_konfirmasi'      => '1000-01-01',
                     'waktu_bayar_konfirmasi'    => '00:00:00',
                 ];

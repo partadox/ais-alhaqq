@@ -15,7 +15,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Peserta <code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nama" name="nama" value="<?= $nama ?>">
+                        <input type="text" class="form-control text-uppercase" id="nama" name="nama" value="<?= $nama ?>">
                         <div class="invalid-feedback errorNama"></div>
                     </div>
                 </div>
@@ -40,7 +40,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Angkatan</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="angkatan" name="angkatan" value="<?= $angkatan ?>">
+                        <input type="number" class="form-control" id="angkatan" name="angkatan" value="<?= $angkatan ?>">
                         <div class="invalid-feedback errorAngkatan"></div>
                     </div>
                 </div>
@@ -59,8 +59,8 @@
                     <label for="" class="col-sm-4 col-form-label">Jenis Kelamin <code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="jenkel" name="jenkel">
-                            <option value="Ikhwan"  <?php if ($jenkel == 'Ikhwan') echo "selected"; ?>>Ikhwan</option>
-                            <option value="Akhwat"  <?php if ($jenkel == 'Akhwat') echo "selected"; ?>>Akhwat</option>
+                            <option value="IKHWAN"  <?php if ($jenkel == 'IKHWAN') echo "selected"; ?>>IKHWAN</option>
+                            <option value="AKHWAT"  <?php if ($jenkel == 'AKHWAT') echo "selected"; ?>>AKHWAT</option>
                         </select>
                         <div class="invalid-feedback errorJenkel"></div>
                     </div>
@@ -75,7 +75,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Tempat Lahir<code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="tmp_lahir" name="tmp_lahir" value="<?= $tmp_lahir ?>">
+                        <input type="text" class="form-control text-uppercase" id="tmp_lahir" name="tmp_lahir" value="<?= $tmp_lahir ?>">
                         <div class="invalid-feedback errorTmp_lahir"></div>
                     </div>
                 </div>
@@ -91,11 +91,12 @@
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="pendidikan" name="pendidikan">
                             <option value="SD" <?php if ($pendidikan == 'SD') echo "selected"; ?>>SD</option>
-                            <option value="SLTP" <?php if ($pendidikan == 'SLTP') echo "selected"; ?>>SLTP</option>
+                            <option value="SLTP" <?php if ($pendidikan == 'SLPT') echo "selected"; ?>>SLTP</option>
                             <option value="SLTA" <?php if ($pendidikan == 'SLTA') echo "selected"; ?>>SLTA</option>
-                            <option value="Diploma" <?php if ($pendidikan == 'Diploma') echo "selected"; ?>>Diploma</option>
-                            <option value="Sarjana" <?php if ($pendidikan == 'Sarjana') echo "selected"; ?>>Sarjana (S1)</option>
-                            <option value="Magister" <?php if ($pendidikan == 'Magister') echo "selected"; ?>>Magister (S2)</option>
+                            <option value="DIPLOMA" <?php if ($pendidikan == 'DIPLOMA') echo "selected"; ?>>DIPLOMA</option>
+                            <option value="SARJANA" <?php if ($pendidikan == 'SARJANA') echo "selected"; ?>>SARJANA (S1)</option>
+                            <option value="MAGISTER" <?php if ($pendidikan == 'MAGISTER') echo "selected"; ?>>MAGISTER (S2)</option>
+                            <option value="DOKTOR" <?php if ($pendidikan == 'DOKTOR') echo "selected"; ?>>DOKTOR (S3)</option>
                         </select>
                         <div class="invalid-feedback errorPendidikan"></div>
                     </div>
@@ -103,7 +104,7 @@
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Jurusan Pendidikan Terakhir<code>*</code></label>
                     <div class="col-sm-8">
-                        <input class="form-control" type="text" id="jurusan" name="jurusan" value="<?= $jurusan ?>">
+                        <input class="form-control text-uppercase" type="text" id="jurusan" name="jurusan" value="<?= $jurusan ?>">
                         <div class="invalid-feedback errorJurusan"></div>
                     </div>
                 </div>
@@ -111,8 +112,8 @@
                     <label class="col-sm-4 col-form-label">Status Bekerja<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="status_kerja" name="status_kerja">
-                            <option value="0" <?php if ($status_kerja == '0') echo "selected"; ?>>Tidak Dalam Ikatan Kerja</option>
-                            <option value="1" <?php if ($status_kerja == '1') echo "selected"; ?>>Bekerja</option>
+                            <option value="0" <?php if ($status_kerja == '0') echo "selected"; ?>>TIDAK DALAM IKATAN KERJA</option>
+                            <option value="1" <?php if ($status_kerja == '1') echo "selected"; ?>>BEKERJA</option>
                         </select>
                         <div class="invalid-feedback errorStatus_kerja"></div>
                     </div>
@@ -132,17 +133,11 @@
                             <option value="PENDIDIKAN" <?php if ($pekerjaan == 'PENDIDIKAN') echo "selected"; ?>>PENDIDIKAN</option>
                             <option value="OLAHRAGA/ATLET" <?php if ($pekerjaan == 'OLAHRAGA/ATLET') echo "selected"; ?>>OLAHRAGA/ATLET</option>
                             <option value="KESENIAN/ARTIS" <?php if ($pekerjaan == 'KESENIAN/ARTIS') echo "selected"; ?>>KESENIAN/ARTIS</option>
-                            <option value="KEAGAMAAN/MAJELIS" <?php if ($pekerjaan == 'KEAGAMAAN/MAJELIS') echo "selected"; ?>>KEAGAMAAN/MAJELIS</option>>
-                            <option value="PELAJAR/MAHASISWA" <?php if ($pekerjaan == 'PELAJAR/MAHASISWA') echo "selected"; ?>>PELAJAR/MAHASISWA</option>>
+                            <option value="KEAGAMAAN/MAJELIS" <?php if ($pekerjaan == 'KEAGAMAAN/MAJELIS') echo "selected"; ?>>KEAGAMAAN/MAJELIS</option>
+                            <option value="PELAJAR/MAHASISWA" <?php if ($pekerjaan == 'PELAJAR/MAHASISWA') echo "selected"; ?>>PELAJAR/MAHASISWA</option>
                             <option value="KELUARGA/RUMAH TANGGA" <?php if ($pekerjaan == 'KELUARGA/RUMAH TANGGA') echo "selected"; ?>>KELUARGA/RUMAH TANGGA</option>
-                            <option value="FREELANCE" <?php if ($pekerjaan == 'FREELANCE') echo "selected"; ?>>FREELANCE</option>>
-
-                            <!-- <option value="Swasta"  <?php if ($pekerjaan == 'Swasta') echo "selected"; ?>>Swasta</option>
-                            <option value="Pegawai Swasta" <?php if ($pekerjaan == 'Pegawai Swasta') echo "selected"; ?>>Pegawai Swasta</option>
-                            <option value="Pegawai Negeri" <?php if ($pekerjaan == 'Pegawai Negeri') echo "selected"; ?>>Pegawai Negeri</option>
-                            <option value="Ibu Rumah Tangga" <?php if ($pekerjaan == 'Ibu Rumah Tangga') echo "selected"; ?>>Ibu Rumah Tangga</option>>
-                            <option value="Pelajar / Mahasiswa" <?php if ($pekerjaan == 'Pelajar / Mahasiswa') echo "selected"; ?>>Pelajar / Mahasiswa</option>>
-                            <option value="Freelance" <?php if ($pekerjaan == 'Freelance') echo "selected"; ?>>Freelance</option>> -->
+                            <option value="FREELANCE" <?php if ($pekerjaan == 'FREELANCE') echo "selected"; ?>>FREELANCE</option>
+                            <option value="LAINNYA" <?php if ($pekerjaan == 'LAINNYA') echo "selected"; ?>>LAINNYA</option>
                         </select>
                         <div class="invalid-feedback errorPekerjaan"></div>
                     </div>
@@ -157,15 +152,36 @@
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Email<code>*</code></label>
                     <div class="col-sm-8">
-                        <input class="form-control" type="text" id="email" name="email" value="<?= $email ?>">
+                        <input class="form-control text-lowercase" type="text" id="email" name="email" value="<?= $email ?>">
                         <div class="invalid-feedback errorEmail"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Domisili<code>*</code></label>
+                    <div class="col-sm-8">
+                        <select class="form-control btn-square" id="domisili_peserta" name="domisili_peserta">
+                            <option value="BALIKPAPAN" <?php if ($domisili_peserta == 'BALIKPAPAN') echo "selected"; ?>>BALIKPAPAN</option>
+                            <option value="LUAR BALIKPAPAN" <?php if ($domisili_peserta == 'LUAR BALIKPAPAN') echo "selected"; ?>>LUAR BALIKPAPAN</option>
+                        </select>
+                        <div class="invalid-feedback errorDomisili_peserta"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">Alamat<code>*</code></label>
                     <div class="col-sm-8">
-                        <input class="form-control" type="text" id="alamat" name="alamat" value="<?= $alamat ?>">
+                        <input class="form-control text-uppercase" type="text" id="alamat" name="alamat" value="<?= $alamat ?>">
                         <div class="invalid-feedback errorAlamat"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label">Status Peserta <code>*</code></label>
+                    <div class="col-sm-8">
+                        <select class="form-control btn-square" id="status_peserta" name="status_peserta">
+                            <option value="AKTIF" <?php if ($status_peserta == 'AKTIF') echo "selected"; ?>>AKTIF</option>
+                            <option value="OFF" <?php if ($status_peserta == 'OFF') echo "selected"; ?>>OFF</option>
+                            <option value="CUTI" <?php if ($status_peserta == 'CUTI') echo "selected"; ?>>CUTI</option>
+                        </select>
+                        <div class="invalid-feedback errorStatus_peserta"></div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -324,12 +340,28 @@
                             $('.errorEmail').html('');
                         }
 
+                        if (response.error.domisili_peserta) {
+                            $('#domisili_peserta').addClass('is-invalid');
+                            $('.errorDomisili_peserta').html(response.error.domisili_peserta);
+                        } else {
+                            $('#domisili_peserta').removeClass('is-invalid');
+                            $('.errorDomisili_peserta').html('');
+                        }
+
                         if (response.error.alamat) {
                             $('#alamat').addClass('is-invalid');
                             $('.errorAlamat').html(response.error.alamat);
                         } else {
                             $('#alamat').removeClass('is-invalid');
                             $('.errorAlamat').html('');
+                        }
+
+                        if (response.error.status_peserta) {
+                            $('#status_peserta').addClass('is-invalid');
+                            $('.errorStatus_peserta').html(response.error.status_peserta);
+                        } else {
+                            $('#status_peserta').removeClass('is-invalid');
+                            $('.errorStatus_peserta').html('');
                         }
 
                         if (response.error.user_id) {

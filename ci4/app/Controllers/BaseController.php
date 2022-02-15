@@ -40,6 +40,8 @@ use App\Models\Modelspp2;
 use App\Models\Modelspp3;
 use App\Models\Modelspp4;
 use App\Models\Modelinfaq;
+use App\Models\Modelbayarlain;
+use App\Models\Modelbayarmodul;
 use App\Models\Modelpesertakelas;
 use App\Models\Modelprogramdata;
 use App\Models\Modelpengajar;
@@ -95,6 +97,8 @@ class BaseController extends Controller
 		$this->spp3 = new Modelspp3;
 		$this->spp4 = new Modelspp4;
 		$this->infaq = new Modelinfaq;
+		$this->bayar_lain = new Modelbayarlain;
+		$this->bayar_modul = new Modelbayarmodul;
 		$this->peserta_kelas = new Modelpesertakelas;
 		$this->program_data = new Modelprogramdata;
 		$this->pengajar = new Modelpengajar;

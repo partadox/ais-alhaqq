@@ -67,9 +67,9 @@ class Bank extends BaseController
                 ];
             } else {
                 $simpandata = [
-                    'nama_bank'      => $this->request->getVar('nama_bank'),
+                    'nama_bank'      => strtoupper($this->request->getVar('nama_bank')),
                     'rekening_bank'  => $this->request->getVar('rekening_bank'),
-                    'atas_nama_bank' => $this->request->getVar('atas_nama_bank'),
+                    'atas_nama_bank' => strtoupper($this->request->getVar('atas_nama_bank')),
                 ];
 
                 $this->bank->insert($simpandata);
@@ -151,9 +151,9 @@ class Bank extends BaseController
                 ];
             } else {
                 $update_data = [
-                    'nama_bank'      => $this->request->getVar('nama_bank'),
+                    'nama_bank'      => strtoupper($this->request->getVar('nama_bank')),
                     'rekening_bank'  => $this->request->getVar('rekening_bank'),
-                    'atas_nama_bank' => $this->request->getVar('atas_nama_bank'),
+                    'atas_nama_bank' => strtoupper($this->request->getVar('atas_nama_bank')),
                 ];
 
                 $bank_id = $this->request->getVar('bank_id');

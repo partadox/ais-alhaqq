@@ -11,10 +11,11 @@
             <?= form_open('program/simpan_kelas', ['class' => 'formtambah']) ?>
             <?= csrf_field(); ?>
             <div class="modal-body">
-            <p class="mt-3">Catatan :<br> 
-                    <i class="mdi mdi-information"></i> Status Kerja merupakan parameter yang berfungsi untuk filter peserta Bekerja / Tidak. <br>
+            <p class="mt-1">Catatan :<br> 
+                    <!-- <i class="mdi mdi-information"></i> Status Kerja merupakan parameter yang berfungsi untuk filter peserta Bekerja / Tidak. <br>
                     <i class="mdi mdi-information"></i> Peserta status dalam ikatan kerja maka dapat memilih kelas pada hari weekdays dan weekend. <br>
-                    <i class="mdi mdi-information"></i> Peserta status <code>tidak</code> dalam ikatan kerja maka hanya dapat memilih kelas pada hari-hari weekdays. <br>
+                    <i class="mdi mdi-information"></i> Peserta status <code>tidak</code> dalam ikatan kerja maka hanya dapat memilih kelas pada hari-hari weekdays. <br> -->
+                    <i class="mdi mdi-information"></i> Nama Kelas Harus Unik, Format Penamaan Angkatan-Level-Jenkel-Waktu. Contoh A01-TAJWIDI-1-AKHWAT-SENIN18 <br>
                 </p>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Program <code>*</code></label>
@@ -31,8 +32,15 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Kelas <code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nama_kelas" name="nama_kelas">
+                        <input type="text" class="form-control text-uppercase" id="nama_kelas" name="nama_kelas" placeholder="Cth: A01-TAJWIDI-1-AKHWAT-SENIN18">
                         <div class="invalid-feedback errorNamakelas"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label">Angkatan Kelas <code>*</code></label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" id="angkatan_kelas" name="angkatan_kelas">
+                        <div class="invalid-feedback errorAngkatankelas"></div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -51,23 +59,51 @@
                     <label for="" class="col-sm-4 col-form-label">Hari <code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="hari_kelas" name="hari_kelas">
-                            <option value="" disabled selected>--Pilih--</option>
-                            <option value="Senin">Senin</option>
-                            <option value="Selasa">Selasa</option>
-                            <option value="Rabu">Rabu</option>
-                            <option value="Kamis">Kamis</option>>
-                            <option value="Jumat">Jumat</option>>
-                            <option value="Sabtu">Sabtu</option>>
-                            <option value="Minggu">Minggu</option>>
+                            <option value="" disabled selected>--PILIH--</option>
+                            <option value="SENIN">SENIN</option>
+                            <option value="SELASA">SELASA</option>
+                            <option value="RABU">RABU</option>
+                            <option value="KAMIS">KAMIS</option>
+                            <option value="JUMAT">JUMAT</option>
+                            <option value="SABTU">SABTU</option>
+                            <option value="MINGGU">MINGGU</option>
                         </select>
                         <div class="invalid-feedback errorHarikelas"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Waktu <code>*</code></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="waktu_kelas" name="waktu_kelas" placeholder="Cth: 18:30 WITA">
+                    <div class="col-sm-4">
+                        <select class="form-control btn-square" id="waktu_kelas" name="waktu_kelas">
+                            <option value="" disabled selected>--WAKTU--</option>
+                            <option value="05:00">05:00</option>
+                            <option value="06:00">06:00</option>
+                            <option value="07:00">07:00</option>
+                            <option value="08:00">08:00</option>
+                            <option value="09:00">09:00</option>
+                            <option value="10:00">10:00</option>
+                            <option value="11:00">11:00</option>
+                            <option value="12:00">12:00</option>
+                            <option value="13:00">13:00</option>
+                            <option value="14:00">14:00</option>
+                            <option value="15:00">15:00</option>
+                            <option value="16:00">16:00</option>
+                            <option value="17:00">17:00</option>
+                            <option value="18:00">18:00</option>
+                            <option value="19:00">19:00</option>
+                            <option value="20:00">20:00</option>
+                            <option value="21:00">21:00</option>
+                        </select>
                         <div class="invalid-feedback errorWaktukelas"></div>
+                    </div>
+                    <div class="col-sm-4">
+                        <select class="form-control btn-square" id="zona_waktu_kelas" name="zona_waktu_kelas">
+                            <option value="" disabled selected>--ZONA--</option>
+                            <option value="WITA">WITA</option>
+                            <option value="WIB">WIB</option>
+                            <option value="WIT">WIT</option>
+                        </select>
+                        <div class="invalid-feedback errorZonawaktukelas"></div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -86,24 +122,24 @@
                     <label for="" class="col-sm-4 col-form-label">Jenis Kelamin <code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="jenkel" name="jenkel">
-                            <option value="" disabled selected>--Pilih--</option>
-                            <option value="Ikhwan">Ikhwan</option>
-                            <option value="Akhwat">Akhwat</option>
+                            <option value="" disabled selected>--PILIH--</option>
+                            <option value="IKHWAN">IKHWAN</option>
+                            <option value="AKHWAT">AKHWAT</option>
                         </select>
                         <div class="invalid-feedback errorJenkel"></div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Kat. Pilihan Waktu<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="status_kerja" name="status_kerja">
-                            <option value="" disabled selected>--Pilih--</option>
-                            <option value="0">Weekdays (Non-Pekerja)</option>
-                            <option value="1">Weekdays & Weekend (Pekerja)</option>
+                            <option value="" disabled selected>--PILIH--</option>
+                            <option value="1">WEEKDAYS & WEEKEND (PEKERJA)</option>
+                            <option value="0">WEEKDAYS (NON-PEKERJA)</option>
                         </select>
                         <div class="invalid-feedback errorStatuskerja"></div>
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Kuota <code>*</code></label>
                     <div class="col-sm-8">
@@ -115,9 +151,9 @@
                     <label for="" class="col-sm-4 col-form-label">Metode Tatap Muka<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="metode_kelas" name="metode_kelas">
-                            <option value="" disabled selected>--Pilih--</option>
-                            <option value="online">Online</option>
-                            <option value="offline">Offline</option>
+                            <option value="" disabled selected>--PILIH--</option>
+                            <option value="ONLINE">ONLINE</option>
+                            <option value="OFFLINE">OFFLINE</option>
                         </select>
                         <div class="invalid-feedback errorMetodekelas"></div>
                     </div>
@@ -126,9 +162,9 @@
                     <label for="" class="col-sm-4 col-form-label">Status Kelas <code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="status_kelas" name="status_kelas">
-                            <option value="" disabled selected>--Pilih--</option>
-                            <option value="aktif">Aktif</option>
-                            <option value="nonaktif">Nonaktif</option>
+                            <option value="" disabled selected>--PILIH--</option>
+                            <option value="aktif">AKTIF</option>
+                            <option value="nonaktif">NONAKTIF</option>
                         </select>
                         <div class="invalid-feedback errorStatuskelas"></div>
                     </div>
@@ -156,12 +192,14 @@
                 data: {
                     program_id: $('select#program_id').val(),
                     nama_kelas: $('input#nama_kelas').val(),
+                    angkatan_kelas: $('input#angkatan_kelas').val(),
                     pengajar_id: $('select#pengajar_id').val(),
                     hari_kelas: $('select#hari_kelas').val(),
-                    waktu_kelas: $('input#waktu_kelas').val(),
+                    waktu_kelas: $('select#waktu_kelas').val(),
+                    zona_waktu_kelas: $('select#zona_waktu_kelas').val(),
                     peserta_level: $('select#peserta_level').val(),
                     jenkel: $('select#jenkel').val(),
-                    status_kerja: $('select#status_kerja').val(),
+                    // status_kerja: $('select#status_kerja').val(),
                     kouta: $('input#kouta').val(),
                     metode_kelas: $('select#metode_kelas').val(),
                     status_kelas: $('select#status_kelas').val(),
@@ -193,6 +231,14 @@
                             $('.errorNamakelas').html('');
                         }
 
+                        if (response.error.angkatan_kelas) {
+                            $('#angkatan_kelas').addClass('is-invalid');
+                            $('.errorAngkatankelas').html(response.error.angkatan_kelas);
+                        } else {
+                            $('#angkatan_kelas').removeClass('is-invalid');
+                            $('.errorAngkatankelas').html('');
+                        }
+
                         if (response.error.pengajar_id) {
                             $('#pengajar_id').addClass('is-invalid');
                             $('.errorPengajar').html(response.error.pengajar_id);
@@ -217,6 +263,14 @@
                             $('.errorWaktukelas').html('');
                         }
 
+                        if (response.error.zona_waktu_kelas) {
+                            $('#zona_waktu_kelas').addClass('is-invalid');
+                            $('.errorZonawaktukelas').html(response.error.zona_waktu_kelas);
+                        } else {
+                            $('#zona_waktu_kelas').removeClass('is-invalid');
+                            $('.errorZonawaktukelas').html('');
+                        }
+
                         if (response.error.peserta_level) {
                             $('#peserta_level').addClass('is-invalid');
                             $('.errorPesertalevel').html(response.error.peserta_level);
@@ -233,13 +287,13 @@
                             $('.errorJenkel').html('');
                         }
 
-                        if (response.error.status_kerja) {
-                            $('#status_kerja').addClass('is-invalid');
-                            $('.errorStatuskerja').html(response.error.status_kerja);
-                        } else {
-                            $('#status_kerja').removeClass('is-invalid');
-                            $('.errorStatuskerja').html('');
-                        }
+                        // if (response.error.status_kerja) {
+                        //     $('#status_kerja').addClass('is-invalid');
+                        //     $('.errorStatuskerja').html(response.error.status_kerja);
+                        // } else {
+                        //     $('#status_kerja').removeClass('is-invalid');
+                        //     $('.errorStatuskerja').html('');
+                        // }
 
                         if (response.error.kouta) {
                             $('#kouta').addClass('is-invalid');

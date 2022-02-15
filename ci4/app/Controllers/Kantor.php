@@ -75,9 +75,9 @@ class Kantor extends BaseController
                 ];
             } else {
                 $simpandata = [
-                    'nama_kantor'   => $this->request->getVar('nama_kantor'),
-                    'kota_kantor'   => $this->request->getVar('kota_kantor'),
-                    'alamat_kantor' => $this->request->getVar('alamat_kantor'),
+                    'nama_kantor'   => strtoupper($this->request->getVar('nama_kantor')),
+                    'kota_kantor'   => strtoupper($this->request->getVar('kota_kantor')),
+                    'alamat_kantor' => strtoupper($this->request->getVar('alamat_kantor')),
                     'kontak_kantor' => $this->request->getVar('kontak_kantor'),
                 ];
 
@@ -169,9 +169,9 @@ class Kantor extends BaseController
                 ];
             } else {
                 $update_data = [
-                    'nama_kantor'   => $this->request->getVar('nama_kantor'),
-                    'kota_kantor'   => $this->request->getVar('kota_kantor'),
-                    'alamat_kantor' => $this->request->getVar('alamat_kantor'),
+                    'nama_kantor'   => strtoupper($this->request->getVar('nama_kantor')),
+                    'kota_kantor'   => strtoupper($this->request->getVar('kota_kantor')),
+                    'alamat_kantor' => strtoupper($this->request->getVar('alamat_kantor')),
                     'kontak_kantor' => $this->request->getVar('kontak_kantor'),
                 ];
 

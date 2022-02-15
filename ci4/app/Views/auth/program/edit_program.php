@@ -15,7 +15,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Program <code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" value="<?= $nama_program ?>" id="nama_program" name="nama_program">
+                        <input type="text" class="form-control text-uppercase" value="<?= $nama_program ?>" id="nama_program" name="nama_program">
                         <div class="invalid-feedback errorNamaprogram"></div>
                     </div>
                 </div>
@@ -23,9 +23,9 @@
                     <label for="" class="col-sm-4 col-form-label">Jenis Program <code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="jenis_program" name="jenis_program">
-                            <option value="Umum"  <?php if ($jenis_program == 'Umum') echo "selected"; ?>>Umum</option>
-                            <option value="Khusus" <?php if ($jenis_program == 'Khusus') echo "selected"; ?>>Khusus</option>
-                            <option value="Kemitraan" <?php if ($jenis_program == 'Kemitraan') echo "selected"; ?>>Kemitraan</option>
+                            <option value="UMUM"  <?php if ($jenis_program == 'UMUM') echo "selected"; ?>>UMUM</option>
+                            <option value="KHUSUS" <?php if ($jenis_program == 'KHUSUS') echo "selected"; ?>>KHUSUS</option>
+                            <option value="KEMITRAAN" <?php if ($jenis_program == 'KEMITRAAN') echo "selected"; ?>>KEMITRAAN</option>
                         </select>
                         <div class="invalid-feedback errorJenisprogram"></div>
                     </div>
@@ -34,8 +34,9 @@
                     <label for="" class="col-sm-4 col-form-label">Kategori Program <code>*untuk jenis umum</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="kategori_program" name="kategori_program">
-                            <option value="Reguler" <?php if ($kategori_program == 'Reguler') echo "selected"; ?>>Reguler</option>
-                            <option value="Non-Reguler" <?php if ($kategori_program == 'Non-Reguler') echo "selected"; ?>>Non-Reguler</option>
+                            <option value="" <?php if ($kategori_program == '') echo "selected"; ?>>-</option>
+                            <option value="REGULER" <?php if ($kategori_program == 'REGULER') echo "selected"; ?>>REGULER</option>
+                            <option value="NON-REGULER" <?php if ($kategori_program == 'NON-REGULER') echo "selected"; ?>>NON-REGULER</option>
                         </select>
                     </div>
                 </div>
@@ -61,11 +62,18 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label">Biaya Modul <code>*</code></label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" value="<?= rupiah($biaya_modul) ?>" id="biaya_modul" name="biaya_modul">
+                        <div class="invalid-feedback errorBiayamodul"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Status Program <code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="status_program" name="status_program">
-                            <option value="aktif" <?php if ($status_program == 'aktif') echo "selected"; ?>>Aktif</option>
-                            <option value="nonaktif" <?php if ($status_program == 'nonaktif') echo "selected"; ?>>Nonaktif</option>
+                            <option value="aktif" <?php if ($status_program == 'aktif') echo "selected"; ?>>AKTIF</option>
+                            <option value="nonaktif" <?php if ($status_program == 'nonaktif') echo "selected"; ?>>NONAKTIF</option>
                         </select>
                         <div class="invalid-feedback errorStatusprogram"></div>
                     </div>
@@ -142,6 +150,14 @@
                             $('.errorBiayadaftar').html('');
                         }
 
+                        if (response.error.biaya_modul) {
+                            $('#biaya_modul').addClass('is-invalid');
+                            $('.errorBiayamodul').html(response.error.biaya_modul);
+                        } else {
+                            $('#biaya_modul').removeClass('is-invalid');
+                            $('.errorBiayamodul').html('');
+                        }
+
                         if (response.error.status_program) {
                             $('#status_program').addClass('is-invalid');
                             $('.errorStatusprogram').html(response.error.status_program);
@@ -170,5 +186,6 @@
     $('#biaya_program').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
     $('#biaya_daftar').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
     $('#biaya_bulanan').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
+    $('#biaya_modul').maskMoney({prefix:'Rp. ', thousands:'.', decimal:',', precision:0, allowZero:true});
   });
 </script>

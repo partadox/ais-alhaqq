@@ -133,6 +133,8 @@ class Pembayaran extends BaseController
                 'awal_bayar_spp2'     => $pembayaran['awal_bayar_spp2'],
                 'awal_bayar_spp3'     => $pembayaran['awal_bayar_spp3'],
                 'awal_bayar_spp4'     => $pembayaran['awal_bayar_spp4'],
+                'awal_bayar_modul'    => $pembayaran['awal_bayar_modul'],
+                'awal_bayar_lainnya'  => $pembayaran['awal_bayar_lainnya'],
                 'keterangan_bayar'    => $pembayaran['keterangan_bayar'],
             ];
             $msg = [
@@ -185,13 +187,6 @@ class Pembayaran extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
-                'bayar_infaq' => [
-                    'label' => 'bayar_infaq',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong',
-                    ]
-                ],
                 'bayar_spp2' => [
                     'label' => 'bayar_spp2',
                     'rules' => 'required',
@@ -213,6 +208,27 @@ class Pembayaran extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
+                'bayar_infaq' => [
+                    'label' => 'bayar_infaq',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'bayar_modul' => [
+                    'label' => 'bayar_modul',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'bayar_lain' => [
+                    'label' => 'bayar_lain',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
             ]);
             if (!$valid) {
                 $msg = [
@@ -220,10 +236,12 @@ class Pembayaran extends BaseController
                         'nominal_bayar' => $validation->getError('nominal_bayar'),
                         'bayar_daftar'  => $validation->getError('bayar_daftar'),
                         'bayar_spp1'    => $validation->getError('bayar_spp1'),
-                        'bayar_infaq'   => $validation->getError('bayar_infaq'),
                         'bayar_spp2'    => $validation->getError('bayar_spp2'),
                         'bayar_spp3'    => $validation->getError('bayar_spp3'),
                         'bayar_spp4'    => $validation->getError('bayar_spp4'),
+                        'bayar_infaq'   => $validation->getError('bayar_infaq'),
+                        'bayar_modul'   => $validation->getError('bayar_modul'),
+                        'bayar_lain'    => $validation->getError('bayar_lain'),
                     ]
                 ];
             } else {
@@ -232,28 +250,34 @@ class Pembayaran extends BaseController
                 $get_nominal_bayar = $this->request->getVar('nominal_bayar');
                 $get_bayar_daftar  = $this->request->getVar('bayar_daftar');
                 $get_bayar_spp1    = $this->request->getVar('bayar_spp1');
-                $get_bayar_infaq   = $this->request->getVar('bayar_infaq');
                 $get_bayar_spp2    = $this->request->getVar('bayar_spp2');
                 $get_bayar_spp3    = $this->request->getVar('bayar_spp3');
                 $get_bayar_spp4    = $this->request->getVar('bayar_spp4');
+                $get_bayar_infaq   = $this->request->getVar('bayar_infaq');
+                $get_bayar_modul   = $this->request->getVar('bayar_modul');
+                $get_bayar_lain    = $this->request->getVar('bayar_lain');
 
                 //Replace Rp. and thousand separtor from input
                 $nominal_bayar_int   = str_replace(str_split('Rp. .'), '', $get_nominal_bayar);
                 $bayar_daftar_int    = str_replace(str_split('Rp. .'), '', $get_bayar_daftar);
                 $bayar_spp1_int      = str_replace(str_split('Rp. .'), '', $get_bayar_spp1);
-                $bayar_infaq_int     = str_replace(str_split('Rp. .'), '', $get_bayar_infaq);
                 $bayar_spp2_int      = str_replace(str_split('Rp. .'), '', $get_bayar_spp2);
                 $bayar_spp3_int      = str_replace(str_split('Rp. .'), '', $get_bayar_spp3);
                 $bayar_spp4_int      = str_replace(str_split('Rp. .'), '', $get_bayar_spp4);
+                $bayar_infaq_int     = str_replace(str_split('Rp. .'), '', $get_bayar_infaq);
+                $bayar_modul_int     = str_replace(str_split('Rp. .'), '', $get_bayar_modul);
+                $bayar_lain_int      = str_replace(str_split('Rp. .'), '', $get_bayar_lain);
 
                 //Get Data from Input view
                 $nominal_bayar      = $nominal_bayar_int;
                 $bayar_daftar       = $bayar_daftar_int;
                 $bayar_spp1         = $bayar_spp1_int;
-                $bayar_infaq        = $bayar_infaq_int;
                 $bayar_spp2         = $bayar_spp2_int;
                 $bayar_spp3         = $bayar_spp3_int;
                 $bayar_spp4         = $bayar_spp4_int;
+                $bayar_infaq        = $bayar_infaq_int;
+                $bayar_modul        = $bayar_modul_int;
+                $bayar_lain         = $bayar_lain_int;
 
                 $databayar = [
                     'status_bayar'              => 'Lunas',
@@ -270,9 +294,9 @@ class Pembayaran extends BaseController
                 if($bayar_daftar != 0 || $bayar_spp1 != 0){
                     $data_spp1 = [
                         'spp1_bayar_id' => $bayar_id,
-                        'bayar_daftar' => $bayar_daftar,
-                        'bayar_spp1'   => $bayar_spp1,
-                        'status_spp1'  => 'Lunas',
+                        'bayar_daftar'  => $bayar_daftar,
+                        'bayar_spp1'    => $bayar_spp1,
+                        'status_spp1'   => 'Lunas',
                     ];
 
                     $datakelas = [
@@ -326,6 +350,26 @@ class Pembayaran extends BaseController
                         'status_spp4'      => 'Lunas',
                     ];
                     $this->spp4->insert($data_spp4);
+                }
+
+                //Cek isian form untuk modul
+                if($bayar_modul != 0){
+                    $data_modul = [
+                        'bayar_modul_id'        => $bayar_id,
+                        'bayar_modul'           => $bayar_modul,
+                        'status_bayar_modul'    => 'Lunas',
+                    ];
+                    $this->bayar_modul->insert($data_modul);
+                }
+
+                //Cek isian form untuk lain
+                if($bayar_lain != 0){
+                    $data_lain = [
+                        'lainnya_bayar_id'        => $bayar_id,
+                        'bayar_lainnya'           => $bayar_lain,
+                        'status_bayar_lainnya'    => 'Lunas',
+                    ];
+                    $this->bayar_lain->insert($data_lain);
                 }
 
                 // Data Log START

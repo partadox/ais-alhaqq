@@ -14,7 +14,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Level <code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nama_level" name="nama_level">
+                        <input type="text" class="form-control text-uppercase" id="nama_level" name="nama_level">
                         <div class="invalid-feedback errorNama_level"></div>
                     </div>
                 </div>

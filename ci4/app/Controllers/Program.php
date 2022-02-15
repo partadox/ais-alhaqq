@@ -69,6 +69,13 @@ class Program extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
+                'biaya_modul' => [
+                    'label' => 'biaya_modul',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
                 'status_program' => [
                     'label' => 'status_program',
                     'rules' => 'required',
@@ -85,6 +92,7 @@ class Program extends BaseController
                         'biaya_program'  => $validation->getError('biaya_program'),
                         'biaya_bulanan'  => $validation->getError('biaya_bulanan'),
                         'biaya_daftar'   => $validation->getError('biaya_daftar'),
+                        'biaya_modul'    => $validation->getError('biaya_modul'),
                         'status_program' => $validation->getError('status_program'),
                     ]
                 ];
@@ -94,24 +102,28 @@ class Program extends BaseController
                 $get_biaya_program  = $this->request->getVar('biaya_program');
                 $get_biaya_daftar   = $this->request->getVar('biaya_daftar');
                 $get_biaya_bulanan  = $this->request->getVar('biaya_bulanan');
+                $get_biaya_modul    = $this->request->getVar('biaya_modul');
 
                 //Replace Rp. and thousand separtor from input
                 $biaya_program_int   = str_replace(str_split('Rp. .'), '', $get_biaya_program);
                 $biaya_daftar_int    = str_replace(str_split('Rp. .'), '', $get_biaya_daftar);
                 $biaya_bulanan_int   = str_replace(str_split('Rp. .'), '', $get_biaya_bulanan);
+                $biaya_modul_int     = str_replace(str_split('Rp. .'), '', $get_biaya_modul);
 
                 //Variable int nominal rupiah
                 $biaya_program  = $biaya_program_int;
                 $biaya_daftar   = $biaya_daftar_int;
                 $biaya_bulanan  = $biaya_bulanan_int;
+                $biaya_modul    = $biaya_modul_int;
 
                 $simpandata = [
-                    'nama_program'    => $this->request->getVar('nama_program'),
+                    'nama_program'    => strtoupper($this->request->getVar('nama_program')),
                     'jenis_program'   => $this->request->getVar('jenis_program'),
                     'kategori_program'=> $this->request->getVar('kategori_program'),
                     'biaya_program'   => $biaya_program,
                     'biaya_bulanan'   => $biaya_bulanan,
                     'biaya_daftar'    => $biaya_daftar,
+                    'biaya_modul'     => $biaya_modul, 
                     'status_program'  => $this->request->getVar('status_program'),
                 ];
 
@@ -152,6 +164,7 @@ class Program extends BaseController
                 'biaya_program'     => $program['biaya_program'],
                 'biaya_daftar'      => $program['biaya_daftar'],
                 'biaya_bulanan'     => $program['biaya_bulanan'],
+                'biaya_modul'       => $program['biaya_modul'],
                 'status_program'    => $program['status_program'],
             ];
             $msg = [
@@ -201,6 +214,13 @@ class Program extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
+                'biaya_modul' => [
+                    'label' => 'biaya_modul',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
                 'status_program' => [
                     'label' => 'status_program',
                     'rules' => 'required',
@@ -217,6 +237,7 @@ class Program extends BaseController
                         'biaya_program'  => $validation->getError('biaya_program'),
                         'biaya_bulanan'  => $validation->getError('biaya_bulanan'),
                         'biaya_daftar'   => $validation->getError('biaya_daftar'),
+                        'biaya_modul'    => $validation->getError('biaya_modul'),
                         'status_program' => $validation->getError('status_program'),
                     ]
                 ];
@@ -226,24 +247,28 @@ class Program extends BaseController
                 $get_biaya_program  = $this->request->getVar('biaya_program');
                 $get_biaya_daftar   = $this->request->getVar('biaya_daftar');
                 $get_biaya_bulanan  = $this->request->getVar('biaya_bulanan');
+                $get_biaya_modul    = $this->request->getVar('biaya_modul');
 
                 //Replace Rp. and thousand separtor from input
                 $biaya_program_int   = str_replace(str_split('Rp. .'), '', $get_biaya_program);
                 $biaya_daftar_int    = str_replace(str_split('Rp. .'), '', $get_biaya_daftar);
                 $biaya_bulanan_int   = str_replace(str_split('Rp. .'), '', $get_biaya_bulanan);
+                $biaya_modul_int     = str_replace(str_split('Rp. .'), '', $get_biaya_modul);
 
                 //Variable int nominal rupiah
                 $biaya_program  = $biaya_program_int;
                 $biaya_daftar   = $biaya_daftar_int;
                 $biaya_bulanan  = $biaya_bulanan_int;
+                $biaya_modul    = $biaya_modul_int;
 
                 $updatedata = [
-                    'nama_program'    => $this->request->getVar('nama_program'),
+                    'nama_program'    => strtoupper($this->request->getVar('nama_program')),
                     'jenis_program'   => $this->request->getVar('jenis_program'),
                     'kategori_program'=> $this->request->getVar('kategori_program'),
                     'biaya_program'   => $biaya_program,
                     'biaya_bulanan'   => $biaya_bulanan,
                     'biaya_daftar'    => $biaya_daftar,
+                    'biaya_modul'     => $biaya_modul,
                     'status_program'  => $this->request->getVar('status_program'),
                 ];
 
@@ -273,8 +298,8 @@ class Program extends BaseController
     public function kelas()
     {
         $data = [
-            'title' => 'Al-Haqq - Kelas',
-            'list' => $this->program->list()
+            'title'             => 'Al-Haqq - Kelas',
+            'list'              => $this->program->list(),
         ];
         //var_dump($data);
         return view('auth/program_kelas/index', $data);
@@ -317,6 +342,13 @@ class Program extends BaseController
                         'is_unique' => '{field} harus unik, sudah ada yang menggunakan {field} ini',
                     ]
                 ],
+                'angkatan_kelas' => [
+                    'label' => 'angkatan_kelas',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
                 'pengajar_id' => [
                     'label' => 'pengajar_id',
                     'rules' => 'required',
@@ -338,6 +370,13 @@ class Program extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
+                'zona_waktu_kelas' => [
+                    'label' => 'zona_waktu_kelas',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
                 'peserta_level' => [
                     'label' => 'peserta_level',
                     'rules' => 'required',
@@ -352,13 +391,13 @@ class Program extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
-                'status_kerja' => [
-                    'label' => 'status_kerja',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong',
-                    ]
-                ],
+                // 'status_kerja' => [
+                //     'label' => 'status_kerja',
+                //     'rules' => 'required',
+                //     'errors' => [
+                //         'required' => '{field} tidak boleh kosong',
+                //     ]
+                // ],
                 'kouta' => [
                     'label' => 'kouta',
                     'rules' => 'required',
@@ -384,33 +423,46 @@ class Program extends BaseController
             if (!$valid) {
                 $msg = [
                     'error' => [
-                        'program_id'    => $validation->getError('program_id'),
-                        'nama_kelas'    => $validation->getError('nama_kelas'),
-                        'pengajar_id'   => $validation->getError('pengajar_id'),
-                        'hari_kelas'    => $validation->getError('hari_kelas'),
-                        'waktu_kelas'   => $validation->getError('waktu_kelas'),
-                        'peserta_level' => $validation->getError('peserta_level'),
-                        'jenkel'        => $validation->getError('jenkel'),
-                        'status_kerja'  => $validation->getError('status_kerja'),
-                        'kouta'         => $validation->getError('kouta'),
-                        'metode_kelas'  => $validation->getError('metode_kelas'),
-                        'status_kelas'  => $validation->getError('status_kelas'),
+                        'program_id'        => $validation->getError('program_id'),
+                        'nama_kelas'        => $validation->getError('nama_kelas'),
+                        'angkatan_kelas'    => $validation->getError('angkatan_kelas'),
+                        'pengajar_id'       => $validation->getError('pengajar_id'),
+                        'hari_kelas'        => $validation->getError('hari_kelas'),
+                        'waktu_kelas'       => $validation->getError('waktu_kelas'),
+                        'zona_waktu_kelas'  => $validation->getError('zona_waktu_kelas'),
+                        'peserta_level'     => $validation->getError('peserta_level'),
+                        'jenkel'            => $validation->getError('jenkel'),
+                        // 'status_kerja'      => $validation->getError('status_kerja'),
+                        'kouta'             => $validation->getError('kouta'),
+                        'metode_kelas'      => $validation->getError('metode_kelas'),
+                        'status_kelas'      => $validation->getError('status_kelas'),
                     ]
                 ];
             } else {
+                
+                $hari_kelas     = $this->request->getVar('hari_kelas');
+
+                if($hari_kelas == 'SABTU' || $hari_kelas == 'MINGGU'){
+                    $status_kerja   = '1';
+                } else{
+                    $status_kerja   = '0';
+                }
+
                 $simpandata = [
-                    'program_id'    => $this->request->getVar('program_id'),
-                    'nama_kelas'    => $this->request->getVar('nama_kelas'),
-                    'pengajar_id'   => $this->request->getVar('pengajar_id'),
-                    'hari_kelas'    => $this->request->getVar('hari_kelas'),
-                    'waktu_kelas'   => $this->request->getVar('waktu_kelas'),
-                    'peserta_level' => $this->request->getVar('peserta_level'),
-                    'jenkel'        => $this->request->getVar('jenkel'),
-                    'status_kerja'  => $this->request->getVar('status_kerja'),
-                    'kouta'         => $this->request->getVar('kouta'),
-                    'sisa_kouta'    => $this->request->getVar('kouta'),
-                    'metode_kelas'  => $this->request->getVar('metode_kelas'),
-                    'status_kelas'  => $this->request->getVar('status_kelas'),
+                    'program_id'        => $this->request->getVar('program_id'),
+                    'nama_kelas'        => strtoupper($this->request->getVar('nama_kelas')),
+                    'angkatan_kelas'    => $this->request->getVar('angkatan_kelas'),
+                    'pengajar_id'       => $this->request->getVar('pengajar_id'),
+                    'hari_kelas'        => $this->request->getVar('hari_kelas'),
+                    'waktu_kelas'       => $this->request->getVar('waktu_kelas'),
+                    'zona_waktu_kelas'  => $this->request->getVar('zona_waktu_kelas'),
+                    'peserta_level'     => $this->request->getVar('peserta_level'),
+                    'jenkel'            => $this->request->getVar('jenkel'),
+                    'status_kerja'      => $status_kerja,
+                    'kouta'             => $this->request->getVar('kouta'),
+                    'sisa_kouta'        => $this->request->getVar('kouta'),
+                    'metode_kelas'      => $this->request->getVar('metode_kelas'),
+                    'status_kelas'      => $this->request->getVar('status_kelas'),
                 ];
 
                 $this->program->insert($simpandata);
@@ -451,10 +503,11 @@ class Program extends BaseController
                 'peserta_level'     => $kelas['peserta_level'],
                 'pengajar_id'       => $kelas['pengajar_id'],
                 'nama_kelas'        => $kelas['nama_kelas'],
+                'angkatan_kelas'    => $kelas['angkatan_kelas'],
                 'hari_kelas'        => $kelas['hari_kelas'],
                 'waktu_kelas'       => $kelas['waktu_kelas'],
+                'zona_waktu_kelas'  => $kelas['zona_waktu_kelas'],
                 'jenkel'            => $kelas['jenkel'],
-                'status_kerja'      => $kelas['status_kerja'],
                 'kouta'             => $kelas['kouta'],
                 'metode_kelas'      => $kelas['metode_kelas'],
                 'status_kelas'      => $kelas['status_kelas'],
@@ -485,6 +538,13 @@ class Program extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
+                'angkatan_kelas' => [
+                    'label' => 'angkatan_kelas',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
                 'pengajar_id' => [
                     'label' => 'pengajar_id',
                     'rules' => 'required',
@@ -506,6 +566,13 @@ class Program extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
+                'zona_waktu_kelas' => [
+                    'label' => 'zona_waktu_kelas',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
                 'peserta_level' => [
                     'label' => 'peserta_level',
                     'rules' => 'required',
@@ -515,13 +582,6 @@ class Program extends BaseController
                 ],
                 'jenkel' => [
                     'label' => 'jenkel',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong',
-                    ]
-                ],
-                'status_kerja' => [
-                    'label' => 'status_kerja',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
@@ -552,34 +612,45 @@ class Program extends BaseController
             if (!$valid) {
                 $msg = [
                     'error' => [
-                        'program_id'    => $validation->getError('program_id'),
-                        'nama_kelas'    => $validation->getError('nama_kelas'),
-                        'pengajar_id'   => $validation->getError('pengajar_id'),
-                        'hari_kelas'    => $validation->getError('hari_kelas'),
-                        'waktu_kelas'   => $validation->getError('waktu_kelas'),
-                        'peserta_level' => $validation->getError('peserta_level'),
-                        'jenkel'        => $validation->getError('jenkel'),
-                        'status_kerja'  => $validation->getError('status_kerja'),
-                        'kouta'         => $validation->getError('kouta'),
-                        'metode_kelas'  => $validation->getError('metode_kelas'),
-                        'status_kelas'  => $validation->getError('status_kelas'),
+                        'program_id'        => $validation->getError('program_id'),
+                        'nama_kelas'        => $validation->getError('nama_kelas'),
+                        'angkatan_kelas'    => $validation->getError('angkatan_kelas'),
+                        'pengajar_id'       => $validation->getError('pengajar_id'),
+                        'hari_kelas'        => $validation->getError('hari_kelas'),
+                        'waktu_kelas'       => $validation->getError('waktu_kelas'),
+                        'zona_waktu_kelas'  => $validation->getError('zona_waktu_kelas'),
+                        'peserta_level'     => $validation->getError('peserta_level'),
+                        'jenkel'            => $validation->getError('jenkel'),
+                        'kouta'             => $validation->getError('kouta'),
+                        'metode_kelas'      => $validation->getError('metode_kelas'),
+                        'status_kelas'      => $validation->getError('status_kelas'),
                     ]
                 ];
             } else {
 
+                $hari_kelas     = $this->request->getVar('hari_kelas');
+
+                if($hari_kelas == 'SABTU' || $hari_kelas == 'MINGGU'){
+                    $status_kerja   = '1';
+                } else{
+                    $status_kerja   = '0';
+                }
+
                 $updatedata = [
-                    'program_id'    => $this->request->getVar('program_id'),
-                    'nama_kelas'    => $this->request->getVar('nama_kelas'),
-                    'pengajar_id'   => $this->request->getVar('pengajar_id'),
-                    'hari_kelas'    => $this->request->getVar('hari_kelas'),
-                    'waktu_kelas'   => $this->request->getVar('waktu_kelas'),
-                    'peserta_level' => $this->request->getVar('peserta_level'),
-                    'jenkel'        => $this->request->getVar('jenkel'),
-                    'status_kerja'  => $this->request->getVar('status_kerja'),
-                    'kouta'         => $this->request->getVar('kouta'),
-                    'sisa_kouta'    => $this->request->getVar('kouta'),
-                    'metode_kelas'  => $this->request->getVar('metode_kelas'),
-                    'status_kelas'  => $this->request->getVar('status_kelas'),
+                    'program_id'        => $this->request->getVar('program_id'),
+                    'nama_kelas'        => strtoupper($this->request->getVar('nama_kelas')),
+                    'angkatan_kelas'    => $this->request->getVar('angkatan_kelas'),
+                    'pengajar_id'       => $this->request->getVar('pengajar_id'),
+                    'hari_kelas'        => $this->request->getVar('hari_kelas'),
+                    'waktu_kelas'       => $this->request->getVar('waktu_kelas'),
+                    'zona_waktu_kelas'  => $this->request->getVar('zona_waktu_kelas'),
+                    'peserta_level'     => $this->request->getVar('peserta_level'),
+                    'jenkel'            => $this->request->getVar('jenkel'),
+                    'status_kerja'      => $status_kerja,
+                    'kouta'             => $this->request->getVar('kouta'),
+                    'sisa_kouta'        => $this->request->getVar('kouta'),
+                    'metode_kelas'      => $this->request->getVar('metode_kelas'),
+                    'status_kelas'      => $this->request->getVar('status_kelas'),
                 ];
 
                 $kelas_id = $this->request->getVar('kelas_id');
@@ -665,7 +736,7 @@ class Program extends BaseController
                 ];
             } else {
                 $simpandata = [
-                    'nama_level'        => $this->request->getVar('nama_level'),
+                    'nama_level'        => strtoupper($this->request->getVar('nama_level')),
                     'urutan_level'      => $this->request->getVar('urutan_level'),
                     'tampil_ondaftar'   => $this->request->getVar('tampil_ondaftar'),
                 ];
@@ -750,7 +821,7 @@ class Program extends BaseController
             } else {
 
                 $updatedata = [
-                    'nama_level'        => $this->request->getVar('nama_level'),
+                    'nama_level'        => strtoupper($this->request->getVar('nama_level')),
                     'urutan_level'      => $this->request->getVar('urutan_level'),
                     'tampil_ondaftar'   => $this->request->getVar('tampil_ondaftar'),
                 ];
@@ -845,6 +916,8 @@ class Program extends BaseController
                 $peserta_kelas_id = $this->request->getVar('peserta_kelas_id');
                 $this->peserta_kelas->update($peserta_kelas_id, $updatedata);
 
+                $asal_kelas_id = $this->request->getVar('asal_kelas_id');
+
                 // Data Log START
                 $log = [
                     'username_log' => session()->get('username'),
@@ -857,7 +930,7 @@ class Program extends BaseController
 
                 $msg = [
                     'sukses' => [
-                        'link' => $peserta_kelas_id
+                        'link' => $asal_kelas_id
                     ]
                 ];
             }

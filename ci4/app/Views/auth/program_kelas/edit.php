@@ -27,8 +27,15 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Kelas <code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" value="<?= $nama_kelas ?>" id="nama_kelas" name="nama_kelas">
+                        <input type="text" class="form-control text-uppercase" value="<?= $nama_kelas ?>" id="nama_kelas" name="nama_kelas">
                         <div class="invalid-feedback errorNamakelas"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label">Angkatan Kelas <code>*</code></label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control" value="<?= $angkatan_kelas ?>" id="angkatan_kelas" name="angkatan_kelas">
+                        <div class="invalid-feedback errorAngkatankelas"></div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -47,22 +54,48 @@
                     <label for="" class="col-sm-4 col-form-label">Hari <code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="hari_kelas" name="hari_kelas">
-                            <option value="Senin"  <?php if ($hari_kelas == 'Senin') echo "selected"; ?>>Senin</option>
-                            <option value="Selasa" <?php if ($hari_kelas == 'Selasa') echo "selected"; ?>>Selasa</option>
-                            <option value="Rabu"   <?php if ($hari_kelas == 'Rabu') echo "selected"; ?>>Rabu</option>
-                            <option value="Kamis"  <?php if ($hari_kelas == 'Kamis') echo "selected"; ?>>Kamis</option>>
-                            <option value="Jumat"  <?php if ($hari_kelas == 'Jumat') echo "selected"; ?>>Jumat</option>>
-                            <option value="Sabtu"  <?php if ($hari_kelas == 'Sabtu') echo "selected"; ?>>Sabtu</option>>
-                            <option value="Minggu" <?php if ($hari_kelas == 'Minggu') echo "selected"; ?>>Minggu</option>>
+                            <option value="SENIN"  <?php if ($hari_kelas == 'SENIN') echo "selected"; ?>>SENIN</option>
+                            <option value="SELASA" <?php if ($hari_kelas == 'SELASA') echo "selected"; ?>>SELASA</option>
+                            <option value="RABU"   <?php if ($hari_kelas == 'RABU') echo "selected"; ?>>RABU</option>
+                            <option value="KAMIS"  <?php if ($hari_kelas == 'KAMIS') echo "selected"; ?>>KAMIS</option>>
+                            <option value="JUMAT"  <?php if ($hari_kelas == 'JUMAT') echo "selected"; ?>>JUMAT</option>>
+                            <option value="SABTU"  <?php if ($hari_kelas == 'SABTU') echo "selected"; ?>>SABTU</option>>
+                            <option value="MINGGU" <?php if ($hari_kelas == 'MINGGU') echo "selected"; ?>>MINGGU</option>>
                         </select>
                         <div class="invalid-feedback errorHarikelas"></div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Waktu <code>*</code></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" value="<?= $waktu_kelas ?>" id="waktu_kelas" name="waktu_kelas" placeholder="Cth: 18:30 WITA">
+                    <div class="col-sm-4">
+                        <select class="form-control btn-square" id="waktu_kelas" name="waktu_kelas">
+                            <option value="05:00" <?php if ($waktu_kelas == '05:00') echo "selected"; ?>>05:00</option>
+                            <option value="06:00" <?php if ($waktu_kelas == '06:00') echo "selected"; ?>>06:00</option>
+                            <option value="07:00" <?php if ($waktu_kelas == '07:00') echo "selected"; ?>>07:00</option>
+                            <option value="08:00" <?php if ($waktu_kelas == '08:00') echo "selected"; ?>>08:00</option>
+                            <option value="09:00" <?php if ($waktu_kelas == '09:00') echo "selected"; ?>>09:00</option>
+                            <option value="10:00" <?php if ($waktu_kelas == '10:00') echo "selected"; ?>>10:00</option>
+                            <option value="11:00" <?php if ($waktu_kelas == '11:00') echo "selected"; ?>>11:00</option>
+                            <option value="12:00" <?php if ($waktu_kelas == '12:00') echo "selected"; ?>>12:00</option>
+                            <option value="13:00" <?php if ($waktu_kelas == '13:00') echo "selected"; ?>>13:00</option>
+                            <option value="14:00" <?php if ($waktu_kelas == '14:00') echo "selected"; ?>>14:00</option>
+                            <option value="15:00" <?php if ($waktu_kelas == '15:00') echo "selected"; ?>>15:00</option>
+                            <option value="16:00" <?php if ($waktu_kelas == '16:00') echo "selected"; ?>>16:00</option>
+                            <option value="17:00" <?php if ($waktu_kelas == '17:00') echo "selected"; ?>>17:00</option>
+                            <option value="18:00" <?php if ($waktu_kelas == '18:00') echo "selected"; ?>>18:00</option>
+                            <option value="19:00" <?php if ($waktu_kelas == '19:00') echo "selected"; ?>>19:00</option>
+                            <option value="20:00" <?php if ($waktu_kelas == '20:00') echo "selected"; ?>>20:00</option>
+                            <option value="21:00" <?php if ($waktu_kelas == '21:00') echo "selected"; ?>>21:00</option>
+                        </select>
                         <div class="invalid-feedback errorWaktukelas"></div>
+                    </div>
+                    <div class="col-sm-4">
+                        <select class="form-control btn-square" id="zona_waktu_kelas" name="zona_waktu_kelas">
+                            <option value="WITA" <?php if ($zona_waktu_kelas == 'WITA') echo "selected"; ?>>WITA</option>
+                            <option value="WIB" <?php if ($zona_waktu_kelas == 'WIB') echo "selected"; ?>>WIB</option>
+                            <option value="WIT" <?php if ($zona_waktu_kelas == 'WIT') echo "selected"; ?>>WIT</option>
+                        </select>
+                        <div class="invalid-feedback errorZonawaktukelas"></div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -81,20 +114,10 @@
                     <label for="" class="col-sm-4 col-form-label">Jenis Kelamin <code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="jenkel" name="jenkel">
-                            <option value="Ikhwan" <?php if ($jenkel == 'Ikhwan') echo "selected"; ?>>Ikhwan</option>
-                            <option value="Akhwat" <?php if ($jenkel == 'Akhwat') echo "selected"; ?>>Akhwat</option>
+                            <option value="IKHWAN" <?php if ($jenkel == 'IKHWAN') echo "selected"; ?>>IKHWAN</option>
+                            <option value="AKHWAT" <?php if ($jenkel == 'AKHWAT') echo "selected"; ?>>AKHWAT</option>
                         </select>
                         <div class="invalid-feedback errorJenkel"></div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="" class="col-sm-4 col-form-label">Status Kerja <code>*</code></label>
-                    <div class="col-sm-8">
-                        <select class="form-control btn-square" id="status_kerja" name="status_kerja">
-                            <option value="0" <?php if ($status_kerja == '0') echo "selected"; ?>>Non-Pekerja (Weekdays)</option>
-                            <option value="1" <?php if ($status_kerja == '1') echo "selected"; ?>>Pekerja (Weekdays & Weekend)</option>
-                        </select>
-                        <div class="invalid-feedback errorStatuskerja"></div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -108,8 +131,8 @@
                     <label for="" class="col-sm-4 col-form-label">Metode Tatap Muka<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="metode_kelas" name="metode_kelas">
-                            <option value="online" <?php if ($metode_kelas == 'online') echo "selected"; ?>>Online</option>
-                            <option value="offline" <?php if ($metode_kelas == 'offline') echo "selected"; ?>>Offline</option>
+                            <option value="ONLINE" <?php if ($metode_kelas == 'ONLINE') echo "selected"; ?>>ONLINE</option>
+                            <option value="OFFLINE" <?php if ($metode_kelas == 'OFFLINE') echo "selected"; ?>>OFFLINE</option>
                         </select>
                         <div class="invalid-feedback errorMetodekelas"></div>
                     </div>
@@ -172,6 +195,14 @@
                             $('.errorNamakelas').html('');
                         }
 
+                        if (response.error.angkatan_kelas) {
+                            $('#angkatan_kelas').addClass('is-invalid');
+                            $('.errorAngkatankelas').html(response.error.angkatan_kelas);
+                        } else {
+                            $('#angkatan_kelas').removeClass('is-invalid');
+                            $('.errorAngkatankelas').html('');
+                        }
+
                         if (response.error.pengajar_id) {
                             $('#pengajar_id').addClass('is-invalid');
                             $('.errorPengajar').html(response.error.pengajar_id);
@@ -196,6 +227,14 @@
                             $('.errorWaktukelas').html('');
                         }
 
+                        if (response.error.zona_waktu_kelas) {
+                            $('#zona_waktu_kelas').addClass('is-invalid');
+                            $('.errorZonawaktukelas').html(response.error.zona_waktu_kelas);
+                        } else {
+                            $('#zona_waktu_kelas').removeClass('is-invalid');
+                            $('.errorZonawaktukelas').html('');
+                        }
+
                         if (response.error.peserta_level) {
                             $('#peserta_level').addClass('is-invalid');
                             $('.errorPesertalevel').html(response.error.peserta_level);
@@ -210,14 +249,6 @@
                         } else {
                             $('#jenkel').removeClass('is-invalid');
                             $('.errorJenkel').html('');
-                        }
-
-                        if (response.error.status_kerja) {
-                            $('#status_kerja').addClass('is-invalid');
-                            $('.errorStatuskerja').html(response.error.status_kerja);
-                        } else {
-                            $('#status_kerja').removeClass('is-invalid');
-                            $('.errorStatuskerja').html('');
                         }
 
                         if (response.error.kouta) {

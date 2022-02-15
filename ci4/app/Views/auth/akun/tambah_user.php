@@ -14,7 +14,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Akun <code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nama" name="nama">
+                        <input type="text" class="form-control text-uppercase" id="nama" name="nama">
                         <div class="invalid-feedback errorNama"></div>
                     </div>
                 </div>
@@ -22,10 +22,10 @@
                     <label for="" class="col-sm-4 col-form-label">Level<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="level" name="level">
-                            <option value="" disabled selected>--Pilih--</option>
-                            <option value="4">Peserta</option>
-                            <option value="5">Pengajar</option>
-                            <option value="6">Penguji</option>
+                            <option value="" disabled selected>--PILIH--</option>
+                            <option value="4">PESERTA</option>
+                            <option value="5">PENGAJAR</option>
+                            <option value="6">PENGUJI</option>
                         </select>
                         <div class="invalid-feedback errorLevel"></div>
                     </div>
@@ -33,7 +33,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Username<code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="username" name="username">
+                        <input type="text" class="form-control text-lowercase" id="username" name="username">
                         <div class="invalid-feedback errorUsername"></div>
                     </div>
                 </div>

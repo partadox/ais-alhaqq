@@ -15,7 +15,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Akun <code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nama" name="nama" value="<?= $nama ?>">
+                        <input type="text" class="form-control text-uppercase" id="nama" name="nama" value="<?= $nama ?>">
                         <div class="invalid-feedback errorNama"></div>
                     </div>
                 </div>

@@ -35,14 +35,14 @@
                   <div class="form-group">
                     <div class="mb-3">
                       <label class="form-label">Nama Lengkap (Sesuai KTP) <code>*</code> </label>
-                      <input class="form-control" type="text" id="nama" name="nama" placeholder="Masukan nama lengkap anda">
+                      <input class="form-control text-uppercase" type="text" id="nama" name="nama" placeholder="Masukan nama lengkap anda">
                       <div class="invalid-feedback errorNama">
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="mb-3">
                       <label class="form-label">NIK KTP (16 Digit)<code>*</code></label>
-                      <input class="form-control" type="text" id="nik" name="nik" placeholder="Masukan nomor NIK anda">
+                      <input class="form-control" type="text" id="nik" name="nik" placeholder="MASUKAN NOMOR NIK ANDA">
                       <div class="invalid-feedback errorNik">
                     </div>
                   </div>
@@ -50,7 +50,7 @@
                     <div class="mb-3">
                         <div class="form-group">
                           <label class="form-label">Tempat Lahir<code>*</code></label>
-                          <input class="form-control" type="text" id="tmp_lahir" name="tmp_lahir" placeholder="Masukan kota tempat lahir anda">
+                          <input class="form-control text-uppercase" type="text" id="tmp_lahir" name="tmp_lahir" placeholder="Masukan kota tempat lahir anda">
                           <div class="invalid-feedback errorTmp_lahir">
                         </div>
                     </div>
@@ -68,9 +68,9 @@
                     <div class="mb-3">
                       <label class="form-label">Jenis Kelamin<code>*</code></label>
                       <select class="form-control btn-square" id="jenkel" name="jenkel">
-                        <option value="" disabled selected>--Pilih--</option>
-                        <option value="Ikhwan">Ikhwan</option>
-                        <option value="Akhwat">Akhwat</option>
+                        <option value="" disabled selected>--PILIH--</option>
+                        <option value="IKHWAN">IKHWAN</option>
+                        <option value="AKHWAT">AKHWAT</option>
                       </select>
                       <div class="invalid-feedback errorJenkel">
                     </div>
@@ -79,13 +79,14 @@
                     <div class="mb-3">
                       <label class="form-label">Pendidikan Terakhir<code>*</code></label>
                       <select class="form-control btn-square" id="pendidikan" name="pendidikan">
-                        <option value="" disabled selected>--Pilih--</option>
+                        <option value="" disabled selected>--PILIH--</option>
                         <option value="SD">SD</option>
                         <option value="SLTP">SLTP</option>
                         <option value="SLTA">SLTA</option>
-                        <option value="Diploma">Diploma</option>
-                        <option value="Sarjana">Sarjana (S1)</option>
-                        <option value="Magister">Magister (S2)</option>
+                        <option value="DIPLOMA">DIPLOMA</option>
+                        <option value="SARJANA">SARJANA (S1)</option>
+                        <option value="MAGISTER">MAGISTER (S2)</option>
+                        <option value="DOKTOR">DOKTOR (S3)</option>
                       </select>
                       <div class="invalid-feedback errorPendidikan">
                     </div>
@@ -93,7 +94,7 @@
                   <div class="form-group">
                     <div class="mb-3">
                       <label class="form-label">Jurusan Pendidikan Terakhir<code>*</code></label>
-                      <input class="form-control" type="text" id="jurusan" name="jurusan" placeholder="Masukan jurusan pendidikan terakhir anda">
+                      <input class="form-control text-uppercase" type="text" id="jurusan" name="jurusan" placeholder="Masukan jurusan pendidikan terakhir anda">
                       <div class="invalid-feedback errorJurusan">
                     </div>
                   </div>
@@ -101,9 +102,9 @@
                     <div class="mb-3">
                       <label class="form-label">Status Bekerja<code>*</code></label>
                       <select class="form-control btn-square" id="status_kerja" name="status_kerja">
-                        <option value="" disabled selected>--Pilih--</option>
-                        <option value="0">Tidak Dalam Ikatan Kerja</option>
-                        <option value="1">Bekerja</option>
+                        <option value="" disabled selected>--PILIH--</option>
+                        <option value="0">TIDAK DALAM IKATAN KERJA</option>
+                        <option value="1">BEKERJA</option>
                       </select>
                       <div class="invalid-feedback errorStatuskerja">
                     </div>
@@ -124,10 +125,11 @@
                         <option value="PENDIDIKAN">PENDIDIKAN</option>
                         <option value="OLAHRAGA/ATLET">OLAHRAGA/ATLET</option>
                         <option value="KESENIAN/ARTIS">KESENIAN/ARTIS</option>
-                        <option value="KEAGAMAAN/MAJELIS">KEAGAMAAN/MAJELIS</option>>
-                        <option value="PELAJAR/MAHASISWA">PELAJAR/MAHASISWA</option>>
+                        <option value="KEAGAMAAN/MAJELIS">KEAGAMAAN/MAJELIS</option>
+                        <option value="PELAJAR/MAHASISWA">PELAJAR/MAHASISWA</option>
                         <option value="KELUARGA/RUMAH TANGGA">KELUARGA/RUMAH TANGGA</option>
-                        <option value="FREELANCE">FREELANCE</option>>
+                        <option value="FREELANCE">FREELANCE</option>
+                        <option value="LAINNYA">LAINNYA</option>>
                       </select>
                       <div class="invalid-feedback errorPekerjaan">
                     </div>
@@ -135,34 +137,33 @@
                   <div class="form-group">
                     <div class="mb-3">
                       <label class="form-label"> No. HP (WhatsApp)<code>*</code></label>
-                      <input class="form-control" type="text" id="hp" name="hp" placeholder="Masukan nomor WA anda">
+                      <input class="form-control" type="text" id="hp" name="hp" placeholder="MASUKAN NOMOR HP/WA">
                       <div class="invalid-feedback errorHp">
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="mb-3">
                       <label class="form-label">E-Mail<code>*</code></label>
-                      <input class="form-control" type="text" id="email" name="email" placeholder="Masukan alamat email anda jika ada">
+                      <input class="form-control text-lowercase" type="text" id="email" name="email" placeholder="Masukan alamat email anda jika ada">
                       <div class="invalid-feedback errorEmail">
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="mb-3">
-                      <label class="form-label">Alamat<code>*</code></label>
-                      <input class="form-control" type="text-area" id="alamat" name="alamat" placeholder="Masukan alamat domisili anda">
-                      <div class="invalid-feedback errorAlamat">
+                      <label class="form-label">Domisili<code>*</code></label>
+                      <select class="form-control btn-square" id="domisili_peserta" name="domisili_peserta">
+                        <option value="" disabled selected>--PILIH--</option>
+                        <option value="BALIKPAPAN">BALIKPAPAN</option>
+                        <option value="LUAR BALIKPAPAN">LUAR BALIKPAPAN</option>
+                      </select>
+                      <div class="invalid-feedback errorDomisili_peserta">
                     </div>
                   </div>
                   <div class="form-group">
                     <div class="mb-3">
-                      <label class="form-label">Program untuk Peserta Baru<code>*</code></label>
-                      <select name="level_peserta" id="level_peserta" class="form-control btn-square js-example-basic-single">
-                              <option value="" disabled selected>--Pilih Level--</option>
-                          <?php foreach ($tampil_ondaftar as $key => $data) { ?>
-                              <option value="<?= $data['peserta_level_id'] ?>"><?= $data['nama_level'] ?></option>
-                          <?php } ?>
-                        </select>
-                      <div class="invalid-feedback errorLevel_peserta">
+                      <label class="form-label">Alamat<code>*</code></label>
+                      <input class="form-control text-uppercase" type="text-area" id="alamat" name="alamat" placeholder="Masukan alamat domisili anda">
+                      <div class="invalid-feedback errorAlamat">
                     </div>
                   </div>
               </div>
@@ -178,8 +179,8 @@
 
 <script>
     $(document).ready(function() {
+
         $('.formtambah').submit(function(e) {
-            let title = $('input#judul_berita').val()
             e.preventDefault();
             $.ajax({
                 type: "post",
@@ -197,8 +198,9 @@
                     pekerjaan: $('select#pekerjaan').val(),
                     hp: $('input#hp').val(),
                     email: $('input#email').val(),
+                    domisili_peserta: $('select#domisili_peserta').val(),
                     alamat: $('input#alamat').val(),
-                    level_peserta: $('select#level_peserta').val(),
+                    // level_peserta: $('select#level_peserta').val(),
                 },
                 dataType: "json",
                 beforeSend: function() {
@@ -299,6 +301,14 @@
                             $('.errorEmail').html('');
                         }
 
+                        if (response.error.domisili_peserta) {
+                            $('#domisili_peserta').addClass('is-invalid');
+                            $('.errorDomisili_peserta').html(response.error.domisili_peserta);
+                        } else {
+                            $('#domisili_peserta').removeClass('is-invalid');
+                            $('.errorDomisili_peserta').html('');
+                        }
+
                         if (response.error.alamat) {
                             $('#alamat').addClass('is-invalid');
                             $('.errorAlamat').html(response.error.alamat);
@@ -307,13 +317,13 @@
                             $('.errorAlamat').html('');
                         }
 
-                        if (response.error.level_peserta) {
-                            $('#level_peserta').addClass('is-invalid');
-                            $('.errorLevel_peserta').html(response.error.level_peserta);
-                        } else {
-                            $('#level_peserta').removeClass('is-invalid');
-                            $('.errorLevel_peserta').html('');
-                        }
+                        // if (response.error.level_peserta) {
+                        //     $('#level_peserta').addClass('is-invalid');
+                        //     $('.errorLevel_peserta').html(response.error.level_peserta);
+                        // } else {
+                        //     $('#level_peserta').removeClass('is-invalid');
+                        //     $('.errorLevel_peserta').html('');
+                        // }
 
                     } else {
                         Swal.fire({
@@ -325,12 +335,11 @@
                         }).then(function() {
                                 window.location = response.sukses.link;
                         });
-                        $('#modaltambah').modal('hide');
-                        listuser();
                     }
                 }
             });
         })
+        
     });
 </script>
 <?= $this->endSection('isi') ?>
