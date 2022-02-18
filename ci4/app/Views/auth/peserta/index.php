@@ -17,7 +17,7 @@
     <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#importexcel" ><i class=" fa fa-file-excel"></i> Import File Excel</button>
 </a>
 
-<a href="/peserta/export"> 
+<a href="<?= base_url('peserta/export') ?>"> 
     <button type="button" class="btn btn-secondary mb-3"><i class=" fa fa-file-download"></i> Download Data</button>
 </a>
 
