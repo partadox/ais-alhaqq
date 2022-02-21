@@ -59,10 +59,20 @@ if (session()->getFlashdata('pesan_sukses')) {
                 $nomor++; ?>
                 <tr>
                     <td width="5%"><?= $nomor ?></td>
-                    <td width="5%"><?= $data['pengajar_id'] ?></td>
+                    <td width="5%"><?= $data['user_id'] ?></td>
                     <td width="14%"><?= $data['nama_pengajar'] ?></td>
                     <td width="8%"><?= $data['nama_kantor'] ?></td>
-                    <td width="8%"><?= $data['tipe_pengajar'] ?></td>
+                    <td width="8%">
+                        <?php if($data['tipe_pengajar'] == 'PENGAJAR') { ?>
+                            <button class="btn btn-success btn-sm" disabled>PENGAJAR</button> 
+                        <?php } ?>
+                        <?php if($data['tipe_pengajar'] == 'PENGUJI') { ?>
+                            <button class="btn btn-info btn-sm" disabled>PENGUJI</button> 
+                        <?php } ?>
+                        <?php if($data['tipe_pengajar'] == 'PENGAJAR & PENGUJI') { ?>
+                            <button class="btn btn-secondary btn-sm" disabled>PENGAJAR & PENGUJI</button> 
+                        <?php } ?>
+                    </td>
                     <td width="8%"><?= $data['jenkel_pengajar'] ?></td>
                     <td width="8%"><?= $data['nik_pengajar'] ?></td>
                     <td width="5%"><?= umur($data['tgl_lahir_pengajar']) ?> Tahun</td>

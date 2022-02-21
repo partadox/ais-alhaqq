@@ -517,4 +517,263 @@ class Pengajar extends BaseController
             echo json_encode($msg);
         }
     }
+
+    public function import_file()
+    {
+        $file   = $this->request->getFile('file_excel');
+        $ext    = $file->getClientExtension();
+
+        if ($ext == 'xls') {
+            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else{
+            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+
+        $spreadsheet = $render->load($file);
+        $sheet       = $spreadsheet->getActiveSheet()->toArray();
+
+        $jumlaherror   = 0;
+        $jumlahsukses  = 0;
+
+        foreach ($sheet as $x => $excel) {
+
+            //Skip row pertama - keempat (judul tabel)
+            if ($x == 0) {
+                continue;
+            }
+            if ($x == 1) {
+                continue;
+            }
+            if ($x == 2) {
+                continue;
+            }
+            if ($x == 3) {
+                continue;
+            }
+
+            //Skip data duplikat
+            $nik    = $this->pengajar->cek_duplikat_import($excel['5']);
+            if ($nik != 0 ) {
+                $jumlaherror++;
+            } elseif($nik == 0) {
+
+                $jumlahsukses++;
+
+                $data   = [
+                    'user_id'               => $excel['1'],
+                    'asal_kantor'           => $excel['2'],
+                    'tipe_pengajar'         => $excel['3'],
+                    'nama_pengajar'         => $excel['4'],
+                    'nik_pengajar'          => $excel['5'],
+                    'jenkel_pengajar'       => $excel['6'],
+                    'tmp_lahir_pengajar'    => $excel['7'],
+                    'tgl_lahir_pengajar'    => $excel['8'],
+                    'suku_bangsa'           => $excel['9'],
+                    'status_nikah'          => $excel['10'],
+                    'jumlah_anak'           => $excel['11'],
+                    'pendidikan_pengajar'   => $excel['12'],
+                    'jurusan_pengajar'      => $excel['13'],
+                    'tgl_gabung_pengajar'   => $excel['14'],
+                    'hp_pengajar'           => $excel['15'],
+                    'email_pengajar'        => $excel['16'],
+                    'alamat_pengajar'       => $excel['17'],
+                    'foto_pengajar'         => 'default.png',
+                ];
+
+                $this->pengajar->insert($data);
+
+                //Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'aktivitas_log'=> 'Buat Data Pengajar via Import Excel, Nama Pengajar : ' .  $excel['4'],
+                ];
+                $this->log->insert($log);
+                //Data Log END
+            }
+        }
+
+        $this->session->setFlashdata('pesan_sukses', "Data Excel Berhasil Import = $jumlahsukses <br> Data Gagal Import = $jumlaherror");
+        return redirect()->to('index');
+    }
+
+    public function export()
+    {
+        $pengajar =  $this->pengajar->list();
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $styleColumn = [
+            'font' => [
+                'bold' => true,
+                'size' => 14,
+            ],
+            'alignment' => [
+                'horizontal'    => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical'      => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ]
+        ];
+
+        $border = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $sheet->setCellValue('A1', "DATA PENGAJAR & PENGUJI ALHAQQ - ACADEMIC ALHAQQ INFORMATION SYSTEM");
+        $sheet->mergeCells('A1:U1');
+        $sheet->getStyle('A1')->applyFromArray($styleColumn);
+
+        $sheet->setCellValue('A2', date("Y-m-d"));
+        $sheet->mergeCells('A2:U2');
+        $sheet->getStyle('A2')->applyFromArray($styleColumn);
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A4', 'PENGAJAR ID')
+            ->setCellValue('B4', 'USER ID')
+            ->setCellValue('C4', 'ASAL CABANG')
+            ->setCellValue('D4', 'TIPE PENGAJAR/PENGUJI')
+            ->setCellValue('E4', 'NAMA')
+            ->setCellValue('F4', 'NIK')
+            ->setCellValue('G4', 'JENKEL')
+            ->setCellValue('H4', 'TMP. LAHIR')
+            ->setCellValue('I4', 'TGL. LAHIR')
+            ->setCellValue('J4', 'SUKU BANGSA')
+            ->setCellValue('K4', 'STATUS NIKAH')
+            ->setCellValue('L4', 'JUMLAH ANAK')
+            ->setCellValue('M4', 'PENDIDIKAN')
+            ->setCellValue('N4', 'JURUSAN')
+            ->setCellValue('O4', 'TGL. GABUNG')
+            ->setCellValue('P4', 'NO. HP')
+            ->setCellValue('Q4', 'EMAIL')
+            ->setCellValue('R4', 'ALAMAT');
+        
+        $sheet->getStyle('A4')->applyFromArray($styleColumn);
+        $sheet->getStyle('A4')->applyFromArray($border);
+        $sheet->getStyle('B4')->applyFromArray($styleColumn);
+        $sheet->getStyle('B4')->applyFromArray($border);
+        $sheet->getStyle('C4')->applyFromArray($styleColumn);
+        $sheet->getStyle('C4')->applyFromArray($border);
+        $sheet->getStyle('D4')->applyFromArray($styleColumn);
+        $sheet->getStyle('D4')->applyFromArray($border);
+        $sheet->getStyle('E4')->applyFromArray($styleColumn);
+        $sheet->getStyle('E4')->applyFromArray($border);
+        $sheet->getStyle('F4')->applyFromArray($styleColumn);
+        $sheet->getStyle('F4')->applyFromArray($border);
+        $sheet->getStyle('G4')->applyFromArray($styleColumn);
+        $sheet->getStyle('G4')->applyFromArray($border);
+        $sheet->getStyle('H4')->applyFromArray($styleColumn);
+        $sheet->getStyle('H4')->applyFromArray($border);
+        $sheet->getStyle('I4')->applyFromArray($styleColumn);
+        $sheet->getStyle('I4')->applyFromArray($border);
+        $sheet->getStyle('J4')->applyFromArray($styleColumn);
+        $sheet->getStyle('J4')->applyFromArray($border);
+        $sheet->getStyle('K4')->applyFromArray($styleColumn);
+        $sheet->getStyle('K4')->applyFromArray($border);
+        $sheet->getStyle('L4')->applyFromArray($styleColumn);
+        $sheet->getStyle('L4')->applyFromArray($border);
+        $sheet->getStyle('M4')->applyFromArray($styleColumn);
+        $sheet->getStyle('M4')->applyFromArray($border);
+        $sheet->getStyle('N4')->applyFromArray($styleColumn);
+        $sheet->getStyle('N4')->applyFromArray($border);
+        $sheet->getStyle('O4')->applyFromArray($styleColumn);
+        $sheet->getStyle('O4')->applyFromArray($border);
+        $sheet->getStyle('P4')->applyFromArray($styleColumn);
+        $sheet->getStyle('P4')->applyFromArray($border);
+        $sheet->getStyle('Q4')->applyFromArray($styleColumn);
+        $sheet->getStyle('Q4')->applyFromArray($border);
+        $sheet->getStyle('R4')->applyFromArray($styleColumn);
+        $sheet->getStyle('R4')->applyFromArray($border);
+
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('P')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);
+
+        $row = 5;
+
+        foreach ($pengajar as $pgjdata) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $row, $pgjdata['pengajar_id'])
+                ->setCellValue('B' . $row, $pgjdata['user_id'])
+                ->setCellValue('C' . $row, $pgjdata['asal_kantor'])
+                ->setCellValue('D' . $row, $pgjdata['tipe_pengajar'])
+                ->setCellValue('E' . $row, $pgjdata['nama_pengajar'])
+                ->setCellValue('F' . $row, $pgjdata['nik_pengajar'])
+                ->setCellValue('G' . $row, $pgjdata['jenkel_pengajar'])
+                ->setCellValue('H' . $row, $pgjdata['tmp_lahir_pengajar'])
+                ->setCellValue('I' . $row, $pgjdata['tgl_lahir_pengajar'])
+                ->setCellValue('J' . $row, $pgjdata['suku_bangsa'])
+                ->setCellValue('K' . $row, $pgjdata['status_nikah'])
+                ->setCellValue('L' . $row, $pgjdata['jumlah_anak'])
+                ->setCellValue('M' . $row, $pgjdata['pendidikan_pengajar'])
+                ->setCellValue('N' . $row, $pgjdata['jurusan_pengajar'])
+                ->setCellValue('O' . $row, $pgjdata['tgl_gabung_pengajar'])
+                ->setCellValue('P' . $row, $pgjdata['hp_pengajar'])
+                ->setCellValue('Q' . $row, $pgjdata['email_pengajar'])
+                ->setCellValue('R' . $row, $pgjdata['alamat_pengajar']);
+
+            $sheet->getStyle('F' . $row)->getNumberFormat()
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
+
+            $sheet->getStyle('A' . $row)->applyFromArray($border);
+            $sheet->getStyle('B' . $row)->applyFromArray($border);
+            $sheet->getStyle('C' . $row)->applyFromArray($border);
+            $sheet->getStyle('D' . $row)->applyFromArray($border);
+            $sheet->getStyle('E' . $row)->applyFromArray($border);
+            $sheet->getStyle('F' . $row)->applyFromArray($border);
+            $sheet->getStyle('G' . $row)->applyFromArray($border);
+            $sheet->getStyle('H' . $row)->applyFromArray($border);
+            $sheet->getStyle('I' . $row)->applyFromArray($border);
+            $sheet->getStyle('J' . $row)->applyFromArray($border);
+            $sheet->getStyle('K' . $row)->applyFromArray($border);
+            $sheet->getStyle('L' . $row)->applyFromArray($border);
+            $sheet->getStyle('M' . $row)->applyFromArray($border);
+            $sheet->getStyle('N' . $row)->applyFromArray($border);
+            $sheet->getStyle('O' . $row)->applyFromArray($border);
+            $sheet->getStyle('P' . $row)->applyFromArray($border);
+            $sheet->getStyle('Q' . $row)->applyFromArray($border);
+            $sheet->getStyle('R' . $row)->applyFromArray($border);
+
+            $row++;
+        }
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $filename =  'Data-Pengajar_Penguji-'. date('Y-m-d-His');
+
+        // Data Log START
+        $log = [
+            'username_log' => session()->get('username'),
+            'tgl_log'      => date("Y-m-d"),
+            'waktu_log'    => date("H:i:s"),
+            'aktivitas_log'=> 'Download Data Pengajar / Penguji via Export Excel, Waktu : ' .  date('Y-m-d-H:i:s'),
+        ];
+        $this->log->insert($log);
+        // Data Log END
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
 }

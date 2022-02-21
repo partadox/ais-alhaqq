@@ -37,11 +37,11 @@ class Modelpengajar extends Model
         ->countAllResults();
     }
 
-    // public function listjoin()
-    // {
-    //     return $this->table('kelas')
-    //         ->join('guru', 'guru.guru_id = kelas.guru_id')
-    //         ->orderBy('kelas_id', 'ASC')
-    //         ->get()->getResultArray();
-    // }
+    //Cek data duplikat - import file excel pada data peserta
+    public function cek_duplikat_import($nik)
+    {
+        return $this->table('pengajar')
+            ->where('nik', $nik)
+            ->countAllResults();
+    }
 }
