@@ -59,7 +59,8 @@ $routes->get('/auth/program/kelas', 'Program::kelas', ['filter' => 'Validasilogi
 $routes->get('/auth/program/level', 'Program::level', ['filter' => 'Validasilogin']);
 $routes->get('/auth/peserta', 'Peserta::Index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pengajar', 'Pengajar::Index', ['filter' => 'Validasilogin']);
-$routes->get('/auth/akun/user', 'Akun::user', ['filter' => 'Validasilogin']);
+$routes->get('/auth/akun/user_peserta', 'Akun::user_peserta', ['filter' => 'Validasilogin']);
+$routes->get('/auth/akun/user_pengajar', 'Akun::user_pengajar', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akun/admin', 'Akun::admin', ['filter' => 'Validasilogin']);
 $routes->get('/auth/kantor', 'Kantor::Index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/bank', 'Bank::Index', ['filter' => 'Validasilogin']);
@@ -70,6 +71,9 @@ $routes->get('/auth/program/kelas_peserta/(:num)', 'Program::kelas_peserta/$1', 
 
 $routes->get('/auth/akademik', 'Akademik::Index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akun/biodata_peserta', 'Akun::biodata_peserta', ['filter' => 'Validasilogin']);
+
+//Strange Bug
+$routes->get('/auth/peserta/peserta', 'Peserta::Index', ['filter' => 'Validasilogin']);
 
 // $routes->get('/auth/staf', 'Staf::index', ['filter' => 'Validasilogin']);
 // $routes->get('/auth/guru', 'Guru::index', ['filter' => 'Validasilogin']);

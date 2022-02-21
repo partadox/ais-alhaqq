@@ -118,11 +118,14 @@
         <a href="<?= base_url('auth/peserta') ?>" class="waves-effect">
             <i class="mdi mdi-account"></i> <span> Data Peserta </span>
         </a>
+        <a href="<?= base_url('auth/akun/user_peserta') ?>" class="waves-effect">
+            <i class="mdi mdi-account-badge"></i> <span> Akun Peserta</span>
+        </a>
         <a href="<?= base_url('auth/pengajar') ?>" class="waves-effect">
             <i class="mdi mdi-account-tie"></i> <span> Data Pengajar </span>
         </a>
-        <a href="<?= base_url('auth/akun/user') ?>" class="waves-effect">
-            <i class="mdi mdi-account-badge"></i> <span> Akun User</span>
+        <a href="<?= base_url('auth/akun/user_pengajar') ?>" class="waves-effect">
+            <i class="mdi mdi-account-tie"></i> <span> Akun Pengajar</span>
         </a>
     </li>
     <li class="menu-title"> Al-Haqq</li>

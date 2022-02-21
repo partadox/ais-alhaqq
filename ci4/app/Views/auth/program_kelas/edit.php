@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="" class="col-sm-4 col-form-label">Angkatan Kelas <code>*</code></label>
+                    <label for="" class="col-sm-4 col-form-label">Angkatan Perkuliahan <code>*</code></label>
                     <div class="col-sm-8">
                         <input type="number" class="form-control" value="<?= $angkatan_kelas ?>" id="angkatan_kelas" name="angkatan_kelas">
                         <div class="invalid-feedback errorAngkatankelas"></div>

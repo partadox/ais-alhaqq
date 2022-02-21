@@ -94,4 +94,12 @@ class Modeluser extends Model
             ->get()->getResultArray();
     }
 
+    //Cek data duplikat - import file excel pada data akun user peserta
+    public function cek_duplikat_import_akun_peserta($username)
+    {
+        return $this->table('user')
+            ->where('username', $username)
+            ->countAllResults();
+    }
+
 }

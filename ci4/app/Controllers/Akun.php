@@ -11,31 +11,123 @@ class Akun extends BaseController
         
     }
 
-    public function user()
+    public function user_peserta()
     {
         $data = [
-            'title' => 'Al-Haqq - Akun User Peserta, Pengajar, Penguji',
-            'list' => $this->user->list_peserta_pengajar()
+            'title' => 'Al-Haqq - Akun User Peserta',
+            'list' => $this->user->list_peserta()
         ];
         //var_dump($data);
-        return view('auth/akun/user', $data);
+        return view('auth/akun/user_peserta', $data);
     }
 
-    public function input_user()
+    public function user_pengajar()
+    {
+        $data = [
+            'title' => 'Al-Haqq - Akun User Pengajar & Penguji',
+            'list' => $this->user->list_pengajar()
+        ];
+        //var_dump($data);
+        return view('auth/akun/user_pengajar', $data);
+    }
+
+    public function input_user_peserta()
     {
         if ($this->request->isAJAX()) {
 
             $data = [
-                'title'   => 'Form Input Akun User Baru',
+                'title'   => 'Form Input Akun User Peserta Baru',
             ];
             $msg = [
-                'sukses' => view('auth/akun/tambah_user', $data)
+                'sukses' => view('auth/akun/tambah_user_peserta', $data)
             ];
             echo json_encode($msg);
         }
     }
 
-    public function simpan_user()
+    public function input_user_pengajar()
+    {
+        if ($this->request->isAJAX()) {
+
+            $data = [
+                'title'   => 'Form Input Akun User Peserta Baru',
+            ];
+            $msg = [
+                'sukses' => view('auth/akun/tambah_user_pengajar', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function simpan_user_peserta()
+    {
+        if ($this->request->isAJAX()) {
+            $validation = \Config\Services::validation();
+            $valid = $this->validate([
+                'username' => [
+                    'label' => 'Username',
+                    'rules' => 'required|is_unique[user.username]',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                        'is_unique' => 'sudah ada yang menggunakan {field} ini',
+                    ]
+                ],
+                'nama' => [
+                    'label' => 'Nama',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'password' => [
+                    'label' => 'Password',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ]
+            ]);
+            if (!$valid) {
+                $msg = [
+                    'error' => [
+                        'username'  => $validation->getError('username'),
+                        'nama'      => $validation->getError('nama'),
+                        'password'  => $validation->getError('password'),
+                    ]
+                ];
+            } else {
+                $simpandata = [
+                    'username'     => strtolower($this->request->getVar('username')),
+                    'nama'         => strtoupper($this->request->getVar('nama')),
+                    'password'     => (password_hash($this->request->getVar('password'), PASSWORD_BCRYPT)),
+                    'level'        => '4',
+                    'foto'         => 'default.png',
+                    'active'       => '0',
+                ];
+
+                $this->user->insert($simpandata);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'aktivitas_log'=> 'Buat Data Akun User Username : ' . $this->request->getVar('username'),
+                ];
+                $this->log->insert($log);
+                // Data Log END
+
+                $msg = [
+                    'sukses' => [
+                        'link' => 'user_peserta'
+                    ]
+                ];
+            }
+            echo json_encode($msg);
+        }
+    }
+
+    public function simpan_user_pengajar()
     {
         if ($this->request->isAJAX()) {
             $validation = \Config\Services::validation();
@@ -56,7 +148,7 @@ class Akun extends BaseController
                     ]
                 ],
                 'level' => [
-                    'label' => 'level',
+                    'label' => 'Level',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
@@ -103,7 +195,7 @@ class Akun extends BaseController
 
                 $msg = [
                     'sukses' => [
-                        'link' => 'user'
+                        'link' => 'user_pengajar'
                     ]
                 ];
             }
@@ -111,7 +203,25 @@ class Akun extends BaseController
         }
     }
 
-    public function edit_user()
+    public function edit_user_peserta()
+    {
+        if ($this->request->isAJAX()) {
+
+            $user_id = $this->request->getVar('user_id');
+            $user =  $this->user->find($user_id);
+            $data = [
+                'title'      => 'Ubah Data Akun User Peserta',
+                'user_id'    => $user['user_id'],
+                'nama'       => $user['nama'],
+            ];
+            $msg = [
+                'sukses' => view('auth/akun/edit_user_peserta', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function edit_user_pengajar()
     {
         if ($this->request->isAJAX()) {
 
@@ -124,13 +234,71 @@ class Akun extends BaseController
                 'level'      => $user['level'],
             ];
             $msg = [
-                'sukses' => view('auth/akun/edit_user', $data)
+                'sukses' => view('auth/akun/edit_user_pengajar', $data)
             ];
             echo json_encode($msg);
         }
     }
 
-    public function update_user()
+    public function update_user_peserta()
+    {
+        if ($this->request->isAJAX()) {
+            $validation = \Config\Services::validation();
+            $valid = $this->validate([
+                'nama' => [
+                    'label' => 'Nama',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+            ]);
+            if (!$valid) {
+                $msg = [
+                    'error' => [
+                        'nama'      => $validation->getError('nama'),
+                    ]
+                ];
+            } else {
+                $cek_password = $this->request->getVar('password');
+                if($cek_password == ''){
+                    $update_data = [
+                        'nama'         => strtoupper($this->request->getVar('nama')),
+                    ];
+    
+                    $user_id = $this->request->getVar('user_id');
+                    $this->user->update($user_id, $update_data);
+                } else{
+                    $update_data = [
+                        'nama'         => strtoupper($this->request->getVar('nama')),
+                        'password'     => (password_hash($this->request->getVar('password'), PASSWORD_BCRYPT)),
+                    ];
+    
+                    $user_id = $this->request->getVar('user_id');
+                    $this->user->update($user_id, $update_data);
+                }
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'aktivitas_log'=> 'Edit Data Akun User Nama : ' . $this->request->getVar('nama'),
+                ];
+                $this->log->insert($log);
+                // Data Log END
+
+                $msg = [
+                    'sukses' => [
+                        'link' => 'user_peserta'
+                    ]
+                ];
+            }
+            echo json_encode($msg);
+        }
+    }
+
+    public function update_user_pengajar()
     {
         if ($this->request->isAJAX()) {
             $validation = \Config\Services::validation();
@@ -190,7 +358,7 @@ class Akun extends BaseController
 
                 $msg = [
                     'sukses' => [
-                        'link' => 'user'
+                        'link' => 'user_pengajar'
                     ]
                 ];
             }
@@ -198,25 +366,43 @@ class Akun extends BaseController
         }
     }
 
-    public function edit_user_username()
+    public function edit_user_username_peserta()
     {
         if ($this->request->isAJAX()) {
 
             $user_id = $this->request->getVar('user_id');
             $user =  $this->user->find($user_id);
             $data = [
-                'title'      => 'Ubah Username',
+                'title'      => 'Ubah Username Peserta',
                 'user_id'    => $user['user_id'],
                 'username'   => $user['username'],
             ];
             $msg = [
-                'sukses' => view('auth/akun/edit_user_username', $data)
+                'sukses' => view('auth/akun/edit_user_username_peserta', $data)
             ];
             echo json_encode($msg);
         }
     }
 
-    public function update_user_username()
+    public function edit_user_username_pengajar()
+    {
+        if ($this->request->isAJAX()) {
+
+            $user_id = $this->request->getVar('user_id');
+            $user =  $this->user->find($user_id);
+            $data = [
+                'title'      => 'Ubah Username Pengajar',
+                'user_id'    => $user['user_id'],
+                'username'   => $user['username'],
+            ];
+            $msg = [
+                'sukses' => view('auth/akun/edit_user_username_pengajar', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function update_user_username_peserta()
     {
         if ($this->request->isAJAX()) {
             $validation = \Config\Services::validation();
@@ -257,7 +443,7 @@ class Akun extends BaseController
 
                 $msg = [
                     'sukses' => [
-                        'link' => 'user'
+                        'link' => 'user_peserta'
                     ]
                 ];
             }
@@ -266,7 +452,57 @@ class Akun extends BaseController
         }
     }
 
-    public function hapus_user()
+    public function update_user_username_pengajar()
+    {
+        if ($this->request->isAJAX()) {
+            $validation = \Config\Services::validation();
+            $valid = $this->validate([
+                'username' => [
+                    'label' => 'Username',
+                    'rules' => 'required|is_unique[user.username]',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                        'is_unique' => 'sudah ada yang menggunakan {field} ini',
+                    ]
+                ],
+            ]);
+            if (!$valid) {
+                $msg = [
+                    'error' => [
+                        'username'   => $validation->getError('username'),
+                    ]
+                ];
+            } else {
+
+                $update_data = [
+                    'username'  => strtolower($this->request->getVar('username')),
+                ];
+
+                $user_id = $this->request->getVar('user_id');
+                $this->user->update($user_id, $update_data);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'aktivitas_log'=> 'Edit Data Akun User Username : ' . $this->request->getVar('username'),
+                ];
+                $this->log->insert($log);
+                // Data Log END
+
+                $msg = [
+                    'sukses' => [
+                        'link' => 'user_pengajar'
+                    ]
+                ];
+            }
+
+            echo json_encode($msg);
+        }
+    }
+
+    public function hapus_user_peserta()
     {
         if ($this->request->isAJAX()) {
 
@@ -287,7 +523,35 @@ class Akun extends BaseController
 
             $msg = [
                 'sukses' => [
-                    'link' => 'user'
+                    'link' => 'user_peserta'
+                ]
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function hapus_user_pengajar()
+    {
+        if ($this->request->isAJAX()) {
+
+            $user_id = $this->request->getVar('user_id');
+
+            // Hapus Akun User Juga
+            $this->user->delete($user_id);
+
+            // Data Log START
+            $log = [
+                'username_log' => session()->get('username'),
+                'tgl_log'      => date("Y-m-d"),
+                'waktu_log'    => date("H:i:s"),
+                'aktivitas_log'=> 'Hapus Data Akun User ID : ' .  $this->request->getVar('user_id'),
+            ];
+            $this->log->insert($log);
+            // Data Log END
+
+            $msg = [
+                'sukses' => [
+                    'link' => 'user_pengajar'
                 ]
             ];
             echo json_encode($msg);
@@ -855,4 +1119,279 @@ class Akun extends BaseController
             echo json_encode($msg);
         }
     }
+
+    public function import_file()
+    {
+        $pst_or_pgj = $this->request->getVar('pst_or_pgj');
+        $file   = $this->request->getFile('file_excel');
+        $ext    = $file->getClientExtension();
+
+        if ($ext == 'xls') {
+            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else{
+            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+
+        $spreadsheet = $render->load($file);
+        $sheet       = $spreadsheet->getActiveSheet()->toArray();
+
+        $jumlaherror   = 0;
+        $jumlahsukses  = 0;
+
+        foreach ($sheet as $x => $excel) {
+
+            //Skip row pertama - keempat (judul tabel)
+            if ($x == 0) {
+                continue;
+            }
+            if ($x == 1) {
+                continue;
+            }
+            if ($x == 2) {
+                continue;
+            }
+            if ($x == 3) {
+                continue;
+            }
+
+            //Skip data akun username duplikat
+            $username    = $this->user->cek_duplikat_import_akun_peserta($excel['2']);
+            if ($username != 0 ) {
+                $jumlaherror++;
+            } elseif($username == 0) {
+
+                $jumlahsukses++;
+
+                $data   = [
+                    'nama'                  => $excel['1'],
+                    'username'              => $excel['2'],
+                    'password'              => (password_hash($excel['3'], PASSWORD_BCRYPT)),
+                    'foto'                  => 'default.png',
+                    'level'                 => $excel['4'],
+                    'active'                => '1',
+                ];
+
+                $this->user->insert($data);
+
+                //Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'aktivitas_log'=> 'Buat Data Akun via Import Excel, Nama Peserta : ' .  $excel['1'] . $pst_or_pgj,
+                ];
+                $this->log->insert($log);
+                //Data Log END
+            }
+        }
+
+        $this->session->setFlashdata('pesan_sukses', "Data Excel Berhasil Import = $jumlahsukses <br> Data Gagal Import = $jumlaherror");
+        if($pst_or_pgj == 'peserta'){
+            return redirect()->to('user_peserta');
+        } elseif($pst_or_pgj == 'pengajar') {
+            return redirect()->to('user_pengajar');
+        }
+        
+    }
+
+    public function export_peserta()
+    {
+
+        $user =  $this->user->list_peserta();
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $styleColumn = [
+            'font' => [
+                'bold' => true,
+                'size' => 14,
+            ],
+            'alignment' => [
+                'horizontal'    => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical'      => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ]
+        ];
+
+        $border = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $sheet->setCellValue('A1', "DATA AKUN PESERTA ALHAQQ - ACADEMIC ALHAQQ INFORMATION SYSTEM");
+        $sheet->mergeCells('A1:E1');
+        $sheet->getStyle('A1')->applyFromArray($styleColumn);
+
+        $sheet->setCellValue('A2', date("Y-m-d"));
+        $sheet->mergeCells('A2:E2');
+        $sheet->getStyle('A2')->applyFromArray($styleColumn);
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A4', 'USER ID')
+            ->setCellValue('B4', 'NAMA')
+            ->setCellValue('C4', 'USERNAME')
+            ->setCellValue('D4', 'PASSWORD')
+            ->setCellValue('E4', 'LEVEL');
+        
+        $sheet->getStyle('A4')->applyFromArray($styleColumn);
+        $sheet->getStyle('A4')->applyFromArray($border);
+        $sheet->getStyle('B4')->applyFromArray($styleColumn);
+        $sheet->getStyle('B4')->applyFromArray($border);
+        $sheet->getStyle('C4')->applyFromArray($styleColumn);
+        $sheet->getStyle('C4')->applyFromArray($border);
+        $sheet->getStyle('D4')->applyFromArray($styleColumn);
+        $sheet->getStyle('D4')->applyFromArray($border);
+        $sheet->getStyle('E4')->applyFromArray($styleColumn);
+        $sheet->getStyle('E4')->applyFromArray($border);
+
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+
+        $row = 5;
+
+        foreach ($user as $userdata) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $row, $userdata['user_id'])
+                ->setCellValue('B' . $row, $userdata['nama'])
+                ->setCellValue('C' . $row, $userdata['username'])
+                ->setCellValue('D' . $row, $userdata['password'])
+                ->setCellValue('E' . $row, $userdata['level']);
+
+            $sheet->getStyle('A' . $row)->applyFromArray($border);
+            $sheet->getStyle('B' . $row)->applyFromArray($border);
+            $sheet->getStyle('C' . $row)->applyFromArray($border);
+            $sheet->getStyle('D' . $row)->applyFromArray($border);
+            $sheet->getStyle('E' . $row)->applyFromArray($border);
+
+            $row++;
+        }
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+
+        $filename =  'Data-Akun-Peserta-'. date('Y-m-d-His');
+
+        // Data Log START
+        $log = [
+            'username_log' => session()->get('username'),
+            'tgl_log'      => date("Y-m-d"),
+            'waktu_log'    => date("H:i:s"),
+            'aktivitas_log'=> 'Download Data via Export Excel' .  $filename,
+        ];
+        $this->log->insert($log);
+        // Data Log END
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function export_pengajar()
+    {
+
+        $user =  $this->user->list_pengajar();
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $styleColumn = [
+            'font' => [
+                'bold' => true,
+                'size' => 14,
+            ],
+            'alignment' => [
+                'horizontal'    => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical'      => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ]
+        ];
+
+        $border = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $sheet->setCellValue('A1', "DATA AKUN PENGAJAR & PENGUJI ALHAQQ - ACADEMIC ALHAQQ INFORMATION SYSTEM");
+        $sheet->mergeCells('A1:E1');
+        $sheet->getStyle('A1')->applyFromArray($styleColumn);
+
+        $sheet->setCellValue('A2', date("Y-m-d"));
+        $sheet->mergeCells('A2:E2');
+        $sheet->getStyle('A2')->applyFromArray($styleColumn);
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A4', 'USER ID')
+            ->setCellValue('B4', 'NAMA')
+            ->setCellValue('C4', 'USERNAME')
+            ->setCellValue('D4', 'PASSWORD')
+            ->setCellValue('E4', 'LEVEL');
+        
+        $sheet->getStyle('A4')->applyFromArray($styleColumn);
+        $sheet->getStyle('A4')->applyFromArray($border);
+        $sheet->getStyle('B4')->applyFromArray($styleColumn);
+        $sheet->getStyle('B4')->applyFromArray($border);
+        $sheet->getStyle('C4')->applyFromArray($styleColumn);
+        $sheet->getStyle('C4')->applyFromArray($border);
+        $sheet->getStyle('D4')->applyFromArray($styleColumn);
+        $sheet->getStyle('D4')->applyFromArray($border);
+        $sheet->getStyle('E4')->applyFromArray($styleColumn);
+        $sheet->getStyle('E4')->applyFromArray($border);
+
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+
+        $row = 5;
+
+        foreach ($user as $userdata) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $row, $userdata['user_id'])
+                ->setCellValue('B' . $row, $userdata['nama'])
+                ->setCellValue('C' . $row, $userdata['username'])
+                ->setCellValue('D' . $row, $userdata['password'])
+                ->setCellValue('E' . $row, $userdata['level']);
+
+            $sheet->getStyle('A' . $row)->applyFromArray($border);
+            $sheet->getStyle('B' . $row)->applyFromArray($border);
+            $sheet->getStyle('C' . $row)->applyFromArray($border);
+            $sheet->getStyle('D' . $row)->applyFromArray($border);
+            $sheet->getStyle('E' . $row)->applyFromArray($border);
+
+            $row++;
+        }
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+
+        $filename =  'Data-Akun-Pengajar-'. date('Y-m-d-His');
+
+        // Data Log START
+        $log = [
+            'username_log' => session()->get('username'),
+            'tgl_log'      => date("Y-m-d"),
+            'waktu_log'    => date("H:i:s"),
+            'aktivitas_log'=> 'Download Data via Export Excel' .  $filename,
+        ];
+        $this->log->insert($log);
+        // Data Log END
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
 }

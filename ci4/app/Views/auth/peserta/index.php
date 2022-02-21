@@ -21,20 +21,17 @@
     <button type="button" class="btn btn-secondary mb-3"><i class=" fa fa-file-download"></i> Download Data</button>
 </a>
 
+<a href="<?= base_url('/template/Template_Peserta_v2.xlsx') ?>"> 
+    <button type="button" class="btn btn-info mb-3"><i class=" fa fa-file-excel"></i> Template Import File Excel</button>
+</a>
+
+
 <?php
-// if (session()->getFlashdata('pesan_error')) {
-//     echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-//     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-//         <span aria-hidden="true">×</span>
-//     </button> <i class="mdi mdi-alert-circle"></i> <strong>';
-//     echo session()->getFlashdata('pesan_error');
-//     echo ' </strong> </div>';
-// }
 if (session()->getFlashdata('pesan_sukses')) {
-    echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+    echo '<div class="alert alert-secondary alert-dismissible fade show" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">×</span>
-    </button> <i class="mdi mdi-check-circle"></i> <strong>';
+    </button> <strong>';
     echo session()->getFlashdata('pesan_sukses');
     echo ' </strong> </div>';
 }
@@ -48,7 +45,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                 <th>NIS</th>
                 <th>Nama</th>
                 <th>NIK</th>
-                <th>Asal Cb.</th>
+                <th>Asal Cabang</th>
                 <th>Jenis Kelamin</th>
                 <th>No. HP</th>
                 <th>Level</th> 

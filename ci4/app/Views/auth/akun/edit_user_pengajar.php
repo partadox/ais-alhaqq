@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div class="modal fade" id="modalakuntambah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modaledit" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,13 +8,14 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <?= form_open('akun/simpan_user', ['class' => 'formtambah']) ?>
+            <?= form_open('akun/update_user_pengajar', ['class' => 'formedit']) ?>
             <?= csrf_field(); ?>
             <div class="modal-body">
+                <input type="hidden" class="form-control" id="user_id" value="<?= $user_id ?>" name="user_id" readonly>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Akun <code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control text-uppercase" id="nama" name="nama">
+                        <input type="text" class="form-control text-uppercase" id="nama" name="nama" value="<?= $nama ?>">
                         <div class="invalid-feedback errorNama"></div>
                     </div>
                 </div>
@@ -22,25 +23,16 @@
                     <label for="" class="col-sm-4 col-form-label">Level<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="level" name="level">
-                            <option value="" disabled selected>--PILIH--</option>
-                            <option value="4">PESERTA</option>
-                            <option value="5">PENGAJAR</option>
-                            <option value="6">PENGUJI</option>
+                            <option value="5" <?php if ($level == '5') echo "selected"; ?>>PENGAJAR</option>
+                            <option value="6" <?php if ($level == '6') echo "selected"; ?>>PENGUJI</option>
                         </select>
                         <div class="invalid-feedback errorLevel"></div>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="" class="col-sm-4 col-form-label">Username<code>*</code></label>
+                    <label for="" class="col-sm-4 col-form-label">Reset Password</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control text-lowercase" id="username" name="username">
-                        <div class="invalid-feedback errorUsername"></div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="" class="col-sm-4 col-form-label">Password<code>*</code></label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="password" name="password">
+                        <input type="password" class="form-control" id="password" name="password" placholder="Masukan password baru jika ingin reset password!">
                         <div class="invalid-feedback errorPassword"></div>
                     </div>
                 </div>
@@ -49,27 +41,22 @@
                 <button type="submit" class="btn btn-primary btnsimpan"><i class="fa fa-share-square"></i> Simpan</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
+
             <?= form_close() ?>
         </div>
     </div>
 </div>
-
 <script>
     $(document).ready(function() {
-        $('.js-example-basic-single').select2({
+        $('.js-example-basic-single-edit').select2({
             theme: "bootstrap4"
         });
-        $('.formtambah').submit(function(e) {
+        $('.formedit').submit(function(e) {
             e.preventDefault();
             $.ajax({
                 type: "post",
                 url: $(this).attr('action'),
-                data: {
-                    username: $('input#username').val(),
-                    nama: $('input#nama').val(),
-                    level: $('select#level').val(),
-                    password: $('input#password').val(),
-                },
+                data: $(this).serialize(),
                 dataType: "json",
                 beforeSend: function() {
                     $('.btnsimpan').attr('disable', 'disable');
@@ -81,13 +68,6 @@
                 },
                 success: function(response) {
                     if (response.error) {
-                        if (response.error.username) {
-                            $('#username').addClass('is-invalid');
-                            $('.errorUsername').html(response.error.username);
-                        } else {
-                            $('#username').removeClass('is-invalid');
-                            $('.errorUsername').html('');
-                        }
 
                         if (response.error.nama) {
                             $('#nama').addClass('is-invalid');
@@ -104,18 +84,10 @@
                             $('#level').removeClass('is-invalid');
                             $('.errorLevel').html('');
                         }
-
-                        if (response.error.password) {
-                            $('#password').addClass('is-invalid');
-                            $('.errorPassword').html(response.error.password);
-                        } else {
-                            $('#password').removeClass('is-invalid');
-                            $('.errorPassword').html('');
-                        }
                     } else {
                         Swal.fire({
                             title: "Berhasil!",
-                            text: "Berhasil Tambah Akun User",
+                            text: "Berhasil Edit Data Akun",
                             icon: "success",
                             showConfirmButton: false,
                             timer: 1500

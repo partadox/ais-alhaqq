@@ -18,7 +18,7 @@
             <tr>
                 <th>No.</th>
                 <th>Kelas</th>
-                <th>Angkatan</th>
+                <th>Angkatan Perkuliahan</th>
                 <th>Program</th>
                 <th>Hari</th>
                 <th>Jam</th>

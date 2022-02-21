@@ -73,7 +73,7 @@
                     <div class="form-group">
                       <div class="mb-3">
                         <label class="form-label">Nama Lengkap (Sesuai KTP) <code>*</code> </label>
-                        <input class="form-control text-uppercase" type="text" id="nama" name="nama"  value="<?= $nama ?>">
+                        <input class="form-control text-uppercase" type="text" id="nama" name="nama"  value="<?= $nama ?>" disabled>
                         <div class="invalid-feedback errorNama">
                       </div>
                     </div>
@@ -98,10 +98,7 @@
                     <div class="form-group">
                       <div class="mb-3">
                         <label class="form-label">Jenis Kelamin<code>*</code></label>
-                        <select class="form-control btn-square" id="jenkel" name="jenkel">
-                            <option value="IKHWAN"  <?php if ($jenkel == 'IKHWAN') echo "selected"; ?>>IKHWAN</option>
-                            <option value="AKHWAT"  <?php if ($jenkel == 'AKHWAT') echo "selected"; ?>>AKHWAT</option>
-                        </select>
+                        <input class="form-control text-uppercase" type="text" id="jenkel" name="jenkel"  value="<?= $jenkel ?>" disabled>
                         <div class="invalid-feedback errorJenkel">
                       </div>
                     </div>
@@ -171,7 +168,7 @@
                     <div class="form-group">
                       <div class="mb-3">
                         <label class="form-label">E-Mail<code>*</code></label>
-                        <input class="form-control text-lowercase" type="text" id="email" name="email" value="<?= $email ?>">
+                        <input class="form-control text-lowercase" type="text" id="email" name="email" value="<?= $email ?>" disabled>
                         <div class="invalid-feedback errorEmail">
                       </div>
                     </div>

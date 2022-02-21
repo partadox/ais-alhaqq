@@ -9,8 +9,32 @@
 
 <?= $this->section('isi') ?>
 <a> 
-    <button type="button" class="btn btn-primary mb-3" onclick="tambah('')" ><i class=" fa fa-plus-circle"></i> Tambah Akun User</button>
+    <button type="button" class="btn btn-primary mb-3" onclick="tambah('')" ><i class=" fa fa-plus-circle"></i> Tambah Akun Pengajar/Penguji</button>
 </a>
+
+<a class="ml-5"> 
+    <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#importexcelakunpengajar" ><i class=" fa fa-file-excel"></i> Import File Excel</button>
+</a>
+
+<a href="<?= base_url('akun/export_pengajar') ?>"> 
+    <button type="button" class="btn btn-secondary mb-3"><i class=" fa fa-file-download"></i> Download Data</button>
+</a>
+
+<a href="<?= base_url('/template/Template_Akun_Pengajar_v1.xlsx') ?>"> 
+    <button type="button" class="btn btn-info mb-3"><i class=" fa fa-file-excel"></i> Template Import File Excel</button>
+</a>
+
+<?php
+if (session()->getFlashdata('pesan_sukses')) {
+    echo '<div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button> <strong>';
+    echo session()->getFlashdata('pesan_sukses');
+    echo ' </strong> </div>';
+}
+?>
+
 
 <div class="table-responsive">
     <table id="datatable" class="table table-striped table-bordered nowrap mt-5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -34,9 +58,6 @@
                     <td width="5%"><?= $nomor ?></td>
                     <td width="6%"><?= $data['user_id'] ?></td>
                     <td width="10%">
-                        <?php if($data['level'] == '4') { ?>
-                            <button class="btn btn-primary btn-sm" disabled>Peserta</button> 
-                        <?php } ?>
                         <?php if($data['level'] == '5') { ?>
                             <button class="btn btn-success btn-sm" disabled>Pengajar</button> 
                         <?php } ?>
@@ -82,11 +103,42 @@
 <div class="viewmodaldataedit">
 </div>
 
+<!-- Start Modal Import File Excel -->
+<div class="modal fade" id="importexcelakunpengajar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Import File Excel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php echo form_open_multipart('/akun/import_file');
+            ?>
+            <?= csrf_field() ?>
+            <input type="hidden" class="form-control" id="pst_or_pgj" value="pengajar" name="pst_or_pgj" readonly>
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label>Pilih File Excel</label>
+                        <input type="file" class="form-control" name="file_excel" accept=".xls, .xlsx">
+                    </div>
+            </div>    
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success btnsimpan"><i class="fa fa-file-upload"></i> Import</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+            <?php echo form_close() ?>
+        </div>
+    </div>
+</div>
+<!-- End Modal Import File Excel -->
+
 <script>
     function tambah() {
         $.ajax({
             type: "post",
-            url: "<?= site_url('akun/input_user') ?>",
+            url: "<?= site_url('akun/input_user_pengajar') ?>",
             data: {
             },
             dataType: "json",
@@ -102,7 +154,7 @@
     function edit(user_id) {
         $.ajax({
             type: "post",
-            url: "<?= site_url('akun/edit_user') ?>",
+            url: "<?= site_url('akun/edit_user_pengajar') ?>",
             data: {
                 user_id : user_id
             },
@@ -119,7 +171,7 @@
     function edit_username(user_id) {
         $.ajax({
             type: "post",
-            url: "<?= site_url('akun/edit_user_username') ?>",
+            url: "<?= site_url('akun/edit_user_username_pengajar') ?>",
             data: {
                 user_id : user_id
             },
@@ -146,7 +198,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "<?= site_url('akun/hapus_user') ?>",
+                    url: "<?= site_url('akun/hapus_user_pengajar') ?>",
                     type: "post",
                     dataType: "json",
                     data: {

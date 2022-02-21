@@ -102,7 +102,6 @@ class Modelpeserta extends Model
     {
         return $this->table('peserta')
             ->where('nis', $nis)
-            ->get()
-            ->getRowArray();
+            ->countAllResults();
     }
 }

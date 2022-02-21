@@ -12,6 +12,29 @@
     <button type="button" class="btn btn-primary mb-3" onclick="tambah('')" ><i class=" fa fa-plus-circle"></i> Tambah Pengajar</button>
 </a>
 
+<!-- <a class="ml-5"> 
+    <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#importexcel" ><i class=" fa fa-file-excel"></i> Import File Excel</button>
+</a>
+
+<a href="<?= base_url('pengajar/export') ?>"> 
+    <button type="button" class="btn btn-secondary mb-3"><i class=" fa fa-file-download"></i> Download Data</button>
+</a>
+
+<a href="<?= base_url('/template/Template_Pengajar_v1.xlsx') ?>"> 
+    <button type="button" class="btn btn-info mb-3"><i class=" fa fa-file-excel"></i> Template Import File Excel</button>
+</a>
+
+<?php
+if (session()->getFlashdata('pesan_sukses')) {
+    echo '<div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button> <strong>';
+    echo session()->getFlashdata('pesan_sukses');
+    echo ' </strong> </div>';
+}
+?> -->
+
 <div class="table-responsive">
     <table id="datatable" class="table table-striped table-bordered nowrap mt-5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
         <thead>
@@ -66,6 +89,37 @@
 
 <div class="viewmodaldataedit">
 </div>
+
+<!-- Start Modal Import File Excel -->
+<div class="modal fade" id="importexcel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Import File Excel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php echo form_open_multipart('/pengajar/import_file');
+            ?>
+            <?= csrf_field() ?>
+            <input type="hidden" class="form-control" id="pst_or_pgj" value="peserta" name="pst_or_pgj" readonly>
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label>Pilih File Excel</label>
+                        <input type="file" class="form-control" name="file_excel" accept=".xls, .xlsx">
+                    </div>
+            </div>    
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success btnsimpan"><i class="fa fa-file-upload"></i> Import</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+            <?php echo form_close() ?>
+        </div>
+    </div>
+</div>
+<!-- End Modal Import File Excel -->
 
 <script>
     function tambah() {

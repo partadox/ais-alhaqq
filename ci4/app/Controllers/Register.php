@@ -60,9 +60,8 @@ class Register extends BaseController
                 ];
             } else {
                 $simpandata = [
-                    'username'     => $this->request->getVar('username'),
-                    'nama'         => $this->request->getVar('nama'),
-                    'isi'          => $this->request->getVar('isi'),
+                    'username'     => strtolower($this->request->getVar('username')),
+                    'nama'         => strtoupper($this->request->getVar('nama')),
                     'password'     => (password_hash($this->request->getVar('password'), PASSWORD_BCRYPT)),
                     'level'        => $this->request->getVar('level'),
                     'foto'         => $this->request->getVar('foto'),

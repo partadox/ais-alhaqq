@@ -40,11 +40,11 @@ $konfigurasi = $this->konfigurasi->orderBy('konfigurasi_id')->first();
                     <?= form_open('register/simpanuser', ['class' => 'formtambah']) ?>
                     <?= csrf_field() ?>
                         <div class="form-group">
-                            <input type="text" placeholder="Nama" name="nama" id="nama" class="fadeIn " />
+                            <input type="text" placeholder="Nama" name="nama" id="nama" class="fadeIn text-uppercase" />
                             <div class="invalid-feedback errorNama">
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Username" name="username" id="username" class="fadeIn " />
+                            <input type="text" placeholder="Username" name="username" id="username" class="fadeIn text-lowercase" />
                             <div class="invalid-feedback errorUser">
                         </div>
                         <div class="form-group">

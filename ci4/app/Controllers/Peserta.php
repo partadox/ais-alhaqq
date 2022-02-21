@@ -553,6 +553,9 @@ class Peserta extends BaseController
         $spreadsheet = $render->load($file);
         $sheet       = $spreadsheet->getActiveSheet()->toArray();
 
+        $jumlaherror   = 0;
+        $jumlahsukses  = 0;
+
         foreach ($sheet as $x => $excel) {
 
             //Skip row pertama - keempat (judul tabel)
@@ -571,43 +574,56 @@ class Peserta extends BaseController
 
             //Skip data duplikat
             $nis    = $this->peserta->cek_duplikat_import($excel['3']);
-            if ($excel['3'] == $nis['nis']) {
-                continue;
+            if ($nis != 0 ) {
+                $jumlaherror++;
+            } elseif($nis == 0) {
+
+                $jumlahsukses++;
+
+                $data   = [
+                    'user_id'               => $excel['1'],
+                    'angkatan'              => $excel['2'],
+                    'nis'                   => $excel['3'],
+                    'nama_peserta'          => $excel['4'],
+                    'nik'                   => $excel['5'],
+                    'level_peserta'         => $excel['6'],
+                    'status_peserta'        => $excel['7'],
+                    'asal_cabang_peserta'   => $excel['8'],
+                    'tmp_lahir'             => $excel['9'],
+                    'tgl_lahir'             => $excel['10'],
+                    'jenkel'                => $excel['11'],
+                    'pendidikan'            => $excel['12'],
+                    'jurusan'               => $excel['13'],
+                    'status_kerja'          => $excel['14'],
+                    'pekerjaan'             => $excel['15'],
+                    'domisili_peserta'      => $excel['16'],
+                    'alamat'                => $excel['17'],
+                    'hp'                    => $excel['18'],
+                    'email'                 => $excel['19'],
+                    'tgl_gabung'            => $excel['20'],
+                ];
+
+                $this->peserta->insert($data);
+
+                //Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'aktivitas_log'=> 'Buat Data Peserta via Import Excel, Nama Peserta : ' .  $excel['4'],
+                ];
+                $this->log->insert($log);
+                //Data Log END
             }
-
-            $data   = [
-                'user_id'               => $excel['1'],
-                'angkatan'              => $excel['2'],
-                'nis'                   => $excel['3'],
-                'nama_peserta'          => $excel['4'],
-                'nik'                   => $excel['5'],
-                'level_peserta'         => $excel['6'],
-                'status_peserta'        => $excel['7'],
-                'asal_cabang_peserta'   => $excel['8'],
-                'tmp_lahir'             => $excel['9'],
-                'tgl_lahir'             => $excel['10'],
-                'jenkel'                => $excel['11'],
-                'pendidikan'            => $excel['12'],
-                'jurusan'               => $excel['13'],
-                'status_kerja'          => $excel['14'],
-                'pekerjaan'             => $excel['15'],
-                'domisili_peserta'      => $excel['16'],
-                'alamat'                => $excel['17'],
-                'hp'                    => $excel['18'],
-                'email'                 => $excel['19'],
-                'tgl_gabung'            => $excel['20'],
-            ];
-
-            $this->peserta->insert($data);
         }
 
-        $this->session->setFlashdata('pesan_sukses', 'Data Excel Berhasil Di-import!');
+        $this->session->setFlashdata('pesan_sukses', "Data Excel Berhasil Import = $jumlahsukses <br> Data Gagal Import = $jumlaherror");
         return redirect()->to('index');
     }
 
     public function export()
     {
-        $peserta =  $this->peserta->findAll();
+        $peserta =  $this->peserta->list();
 
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 
@@ -739,7 +755,7 @@ class Peserta extends BaseController
                 ->setCellValue('F' . $row, $psrtdata['nik'])
                 ->setCellValue('G' . $row, $psrtdata['level_peserta'])
                 ->setCellValue('H' . $row, $psrtdata['status_peserta'])
-                ->setCellValue('I' . $row, $psrtdata['asal_cabang_peserta'])
+                ->setCellValue('I' . $row, $psrtdata['nama_kantor'])
                 ->setCellValue('J' . $row, $psrtdata['tmp_lahir'])
                 ->setCellValue('K' . $row, $psrtdata['tgl_lahir'])
                 ->setCellValue('L' . $row, $psrtdata['jenkel'])
@@ -783,6 +799,16 @@ class Peserta extends BaseController
 
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
         $filename =  'Data-Peserta-'. date('Y-m-d-His');
+
+        // Data Log START
+        $log = [
+            'username_log' => session()->get('username'),
+            'tgl_log'      => date("Y-m-d"),
+            'waktu_log'    => date("H:i:s"),
+            'aktivitas_log'=> 'Download Data Peserta via Export Excel, Waktu : ' .  date('Y-m-d-H:i:s'),
+        ];
+        $this->log->insert($log);
+        // Data Log END
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');

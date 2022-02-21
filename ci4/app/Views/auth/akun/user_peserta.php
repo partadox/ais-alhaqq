@@ -9,8 +9,32 @@
 
 <?= $this->section('isi') ?>
 <a> 
-    <button type="button" class="btn btn-primary mb-3" onclick="tambah('')" ><i class=" fa fa-plus-circle"></i> Tambah Akun Admin Pusat</button>
+    <button type="button" class="btn btn-primary mb-3" onclick="tambah('')" ><i class=" fa fa-plus-circle"></i> Tambah Akun Peserta</button>
 </a>
+
+<a class="ml-5"> 
+    <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#importexcelakunpeserta" ><i class=" fa fa-file-excel"></i> Import File Excel</button>
+</a>
+
+<a href="<?= base_url('akun/export_peserta') ?>"> 
+    <button type="button" class="btn btn-secondary mb-3"><i class=" fa fa-file-download"></i> Download Data</button>
+</a>
+
+<a href="<?= base_url('/template/Template_Akun_Peserta_v1.xlsx') ?>"> 
+    <button type="button" class="btn btn-info mb-3"><i class=" fa fa-file-excel"></i> Template Import File Excel</button>
+</a>
+
+<?php
+if (session()->getFlashdata('pesan_sukses')) {
+    echo '<div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button> <strong>';
+    echo session()->getFlashdata('pesan_sukses');
+    echo ' </strong> </div>';
+}
+?>
+
 
 <div class="table-responsive">
     <table id="datatable" class="table table-striped table-bordered nowrap mt-5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -18,7 +42,6 @@
             <tr>
                 <th>No.</th>
                 <th>User Id</th>
-                <th>Roles</th>
                 <th>Nama</th>
                 <th>Username</th> 
                 <th>Status Aktif</th>
@@ -33,17 +56,6 @@
                 <tr>
                     <td width="5%"><?= $nomor ?></td>
                     <td width="6%"><?= $data['user_id'] ?></td>
-                    <td width="10%">
-                        <?php if($data['level'] == '2') { ?>
-                            <button class="btn btn-success btn-sm" disabled>Admin Pusat</button> 
-                        <?php } ?>
-                        <?php if($data['level'] == '3') { ?>
-                            <button class="btn btn-primary btn-sm" disabled>Admin TU</button> 
-                        <?php } ?>
-                        <?php if($data['level'] == '7') { ?>
-                            <button class="btn btn-warning btn-sm" disabled>Admin Cabang</button> 
-                        <?php } ?>
-                    </td>
                     <td width="20%"><?= $data['nama'] ?></td>
                     <td width="15%">
                         <h6><?= $data['username'] ?></h6>
@@ -59,10 +71,12 @@
                         <?php } ?>
                     </td>
                     <td width="5%">
-                        <button type="button" class="btn btn-warning mb-2" onclick="edit('<?= $data['user_id'] ?>')" >
-                        <i class=" fa fa-edit mr-1"></i>Edit</button> <br>
-                        <button type="button" class="btn btn-danger" onclick="hapus('<?= $data['user_id'] ?>')" >
-                        <i class=" fa fa-trash mr-1"></i>Hapus</button>
+                        <button type="button" class="btn btn-warning" onclick="edit('<?= $data['user_id'] ?>')" >
+                        <i class=" fa fa-edit mr-1"></i>Edit</button> 
+                        <?php if($data['active'] == '0') { ?>
+                            <button type="button" class="btn btn-danger" onclick="hapus('<?= $data['user_id'] ?>')" >
+                            <i class=" fa fa-trash mr-1"></i>Hapus</button>
+                        <?php } ?>
                     </td>
                 </tr>
 
@@ -74,17 +88,48 @@
 <div class="modalakuntambah">
 </div>
 
+<div class="viewmodaldataeditusername">
+</div>
+
 <div class="viewmodaldataedit">
 </div>
 
-<div class="viewmodaldataeditusername">
+<!-- Start Modal Import File Excel -->
+<div class="modal fade" id="importexcelakunpeserta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Import File Excel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php echo form_open_multipart('/akun/import_file');
+            ?>
+            <?= csrf_field() ?>
+            <input type="hidden" class="form-control" id="pst_or_pgj" value="peserta" name="pst_or_pgj" readonly>
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label>Pilih File Excel</label>
+                        <input type="file" class="form-control" name="file_excel" accept=".xls, .xlsx">
+                    </div>
+            </div>    
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success btnsimpan"><i class="fa fa-file-upload"></i> Import</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+            <?php echo form_close() ?>
+        </div>
+    </div>
 </div>
+<!-- End Modal Import File Excel -->
 
 <script>
     function tambah() {
         $.ajax({
             type: "post",
-            url: "<?= site_url('akun/input_admin') ?>",
+            url: "<?= site_url('akun/input_user_peserta') ?>",
             data: {
             },
             dataType: "json",
@@ -100,7 +145,7 @@
     function edit(user_id) {
         $.ajax({
             type: "post",
-            url: "<?= site_url('akun/edit_admin') ?>",
+            url: "<?= site_url('akun/edit_user_peserta') ?>",
             data: {
                 user_id : user_id
             },
@@ -117,7 +162,7 @@
     function edit_username(user_id) {
         $.ajax({
             type: "post",
-            url: "<?= site_url('akun/edit_admin_username') ?>",
+            url: "<?= site_url('akun/edit_user_username_peserta') ?>",
             data: {
                 user_id : user_id
             },
@@ -133,8 +178,8 @@
 
     function hapus(user_id) {
         Swal.fire({
-            title: 'Hapus Akun Admin?',
-            text: `Apakah anda yakin mmenghapus akun admin ini?`,
+            title: 'Yakin Hapus Data Akun User ini?',
+            text: `Data Akun User Akan Dihapus.`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -144,17 +189,17 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "<?= site_url('akun/hapus_admin') ?>",
+                    url: "<?= site_url('akun/hapus_user_peserta') ?>",
                     type: "post",
                     dataType: "json",
                     data: {
-                        user_id: user_id
+                        user_id : user_id
                     },
                     success: function(response) {
                         if (response.sukses) {
                             Swal.fire({
                                 title: "Berhasil!",
-                                text: "Anda berhasil menghapus akun ini!",
+                                text: "Anda berhasil menghapus data akun user peserta!",
                                 icon: "success",
                                 showConfirmButton: false,
                                 timer: 1500
