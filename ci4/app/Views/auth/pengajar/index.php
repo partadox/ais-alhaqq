@@ -12,7 +12,7 @@
     <button type="button" class="btn btn-primary mb-3" onclick="tambah('')" ><i class=" fa fa-plus-circle"></i> Tambah Pengajar</button>
 </a>
 
-<!-- <a class="ml-5"> 
+<a class="ml-5"> 
     <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#importexcel" ><i class=" fa fa-file-excel"></i> Import File Excel</button>
 </a>
 
@@ -33,13 +33,14 @@ if (session()->getFlashdata('pesan_sukses')) {
     echo session()->getFlashdata('pesan_sukses');
     echo ' </strong> </div>';
 }
-?> -->
+?>
 
 <div class="table-responsive">
     <table id="datatable" class="table table-striped table-bordered nowrap mt-5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
         <thead>
             <tr>
                 <th>No.</th>
+                <th>User Id</th>
                 <th>Nama</th>
                 <th>Kantor</th>
                 <th>Tipe</th> 
@@ -58,6 +59,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                 $nomor++; ?>
                 <tr>
                     <td width="5%"><?= $nomor ?></td>
+                    <td width="5%"><?= $data['pengajar_id'] ?></td>
                     <td width="14%"><?= $data['nama_pengajar'] ?></td>
                     <td width="8%"><?= $data['nama_kantor'] ?></td>
                     <td width="8%"><?= $data['tipe_pengajar'] ?></td>

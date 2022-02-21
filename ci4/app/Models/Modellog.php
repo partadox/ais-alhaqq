@@ -15,8 +15,15 @@ class Modellog extends Model
     {
         return $this->table('log_admin')
             ->orderBy('log_id', 'DESC')
-            ->where('tgl_log BETWEEN CURDATE() - INTERVAL 14 DAY AND NOW()')
+            ->where('tgl_log BETWEEN CURDATE() - INTERVAL 15 DAY AND NOW()')
             ->get()->getResultArray();
+    }
+
+    public function hapus_log_14day()
+    {
+        return $this->table('log_admin')
+            ->where('tgl_log < DATE_SUB(NOW(), INTERVAL 15 DAY)')
+            ->delete();
     }
 
 }

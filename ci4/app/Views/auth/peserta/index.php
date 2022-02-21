@@ -21,7 +21,7 @@
     <button type="button" class="btn btn-secondary mb-3"><i class=" fa fa-file-download"></i> Download Data</button>
 </a>
 
-<a href="<?= base_url('/template/Template_Peserta_v2.xlsx') ?>"> 
+<a href="<?= base_url('/template/Template_Peserta_v3.xlsx') ?>"> 
     <button type="button" class="btn btn-info mb-3"><i class=" fa fa-file-excel"></i> Template Import File Excel</button>
 </a>
 
