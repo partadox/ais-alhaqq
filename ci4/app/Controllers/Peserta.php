@@ -576,6 +576,15 @@ class Peserta extends BaseController
             $nis    = $this->peserta->cek_duplikat_import($excel['3']);
             if ($nis != 0 ) {
                 $jumlaherror++;
+                //Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'aktivitas_log'=> 'GAGAL - Buat Data Peserta via Import Excel, Nama Peserta : ' .  $excel['4'],
+                ];
+                $this->log->insert($log);
+                //Data Log END
             } elseif($nis == 0) {
 
                 $jumlahsukses++;
@@ -584,22 +593,22 @@ class Peserta extends BaseController
                     'user_id'               => $excel['1'],
                     'angkatan'              => $excel['2'],
                     'nis'                   => $excel['3'],
-                    'nama_peserta'          => $excel['4'],
+                    'nama_peserta'          => strtoupper($excel['4']),
                     'nik'                   => $excel['5'],
                     'level_peserta'         => $excel['6'],
                     'status_peserta'        => $excel['7'],
                     'asal_cabang_peserta'   => $excel['8'],
-                    'tmp_lahir'             => $excel['9'],
+                    'tmp_lahir'             => strtoupper($excel['9']),
                     'tgl_lahir'             => $excel['10'],
                     'jenkel'                => $excel['11'],
                     'pendidikan'            => $excel['12'],
-                    'jurusan'               => $excel['13'],
+                    'jurusan'               => strtoupper($excel['13']),
                     'status_kerja'          => $excel['14'],
                     'pekerjaan'             => $excel['15'],
                     'domisili_peserta'      => $excel['16'],
-                    'alamat'                => $excel['17'],
+                    'alamat'                => strtoupper($excel['17']),
                     'hp'                    => $excel['18'],
-                    'email'                 => $excel['19'],
+                    'email'                 => strtolower($excel['19']),
                     'tgl_gabung'            => $excel['20'],
                 ];
 
@@ -610,7 +619,7 @@ class Peserta extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'Buat Data Peserta via Import Excel, Nama Peserta : ' .  $excel['4'],
+                    'aktivitas_log'=> 'BERHASIL - Buat Data Peserta via Import Excel, Nama Peserta : ' .  $excel['4'],
                 ];
                 $this->log->insert($log);
                 //Data Log END

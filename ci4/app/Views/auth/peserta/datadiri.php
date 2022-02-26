@@ -46,6 +46,13 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="" class="col-sm-3 col-form-label">Status Kerja </label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" 
+                        value="<?php if ($status_kerja == '0') echo "TIDAK BEKERJA" ?> <?php if ($status_kerja == '1') echo "BEKERJA" ?>" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="" class="col-sm-3 col-form-label">Pekerjaan </label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" value="<?= $pekerjaan ?>" readonly>

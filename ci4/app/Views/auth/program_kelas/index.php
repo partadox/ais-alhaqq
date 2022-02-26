@@ -18,7 +18,7 @@
             <tr>
                 <th>No.</th>
                 <th>Kelas</th>
-                <th>Angkatan Perkuliahan</th>
+                <th>Angkatan <br> Perkuliahan</th>
                 <th>Program</th>
                 <th>Hari</th>
                 <th>Jam</th>
@@ -26,8 +26,8 @@
                 <th>Metode TM</th>
                 <th>Level</th>
                 <th>Jen. Kel.</th>
-                <th>Kuota Pendaftaran</th>
-                <!-- <th>Jml Peserta</th> -->
+                <th>Kuota <br> Pendaftaran</th>
+                <th>Jml. <br> Peserta</th>
                 <th>Status Kelas</th>
                 <th>Tindakan</th>
             </tr>
@@ -59,7 +59,7 @@
                         <p>Kuota: <?= $data['kouta'] ?></p>
                         <p>Sisa Kuota: <?= $data['sisa_kouta'] ?></p>
                     </td>
-                    <!-- <td></td> -->
+                    <td><?= $data['jumlah_peserta'] ?></td>
                     <td width="5%">
                         <?php if($data['status_kelas'] == 'aktif') { ?>
                             <button class="btn btn-success btn-sm" disabled>Aktif</button> 

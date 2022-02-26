@@ -19,7 +19,7 @@
 <h5 style="text-align:center;">Kelas <?= $detail_kelas[0]['nama_kelas'] ?></h5>
 <h6 style="text-align:center;"><?= $detail_kelas[0]['hari_kelas'] ?>, <?= $detail_kelas[0]['waktu_kelas'] ?> - <?= $detail_kelas[0]['metode_kelas'] ?></h6>
 <h6 style="text-align:center;"><?= $detail_kelas[0]['nama_pengajar'] ?></h6>
-<h6 style="text-align:center;">Jumlah Peserta = <?= $jumlah_peserta ?></h6>
+<h6 style="text-align:center;">Jumlah Peserta = <?= $detail_kelas[0]['jumlah_peserta'] ?></h6>
 
 <div class="table-responsive">
     <table id="datatable" class="table table-striped table-bordered nowrap mt-1" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -45,7 +45,7 @@
                     <td width="10%"><?= $data['nis'] ?></td>
                     <td width="10%"><?= $data['nik'] ?></td>
                     <td width="15%"><?= $data['nama_peserta'] ?></td>
-                    <td width="10%"></td>
+                    <td width="10%"><?= $data['domisili_peserta'] ?></td>
                     <td width="10%"><?= $data['hp'] ?></td>
                     <td width="10%">
                         <?php if($data['status_peserta_kelas'] == 'Belum Lulus') { ?>

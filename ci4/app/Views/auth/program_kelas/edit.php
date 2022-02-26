@@ -128,6 +128,13 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label">Sisa Kuota <code>*</code></label>
+                    <div class="col-sm-8">
+                        <input type="number" class="form-control"  value="<?= $sisa_kouta ?>" id="sisa_kouta" name="sisa_kouta" placeholder="">
+                        <div class="invalid-feedback errorSisakouta"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Metode Tatap Muka<code>*</code></label>
                     <div class="col-sm-8">
                         <select class="form-control btn-square" id="metode_kelas" name="metode_kelas">
@@ -257,6 +264,14 @@
                         } else {
                             $('#kouta').removeClass('is-invalid');
                             $('.errorKouta').html('');
+                        }
+
+                        if (response.error.sisa_kouta) {
+                            $('#sisa_kouta').addClass('is-invalid');
+                            $('.errorSisakouta').html(response.error.sisa_kouta);
+                        } else {
+                            $('#sisa_kouta').removeClass('is-invalid');
+                            $('.errorSisakouta').html('');
                         }
 
                         if (response.error.metode_kelas) {

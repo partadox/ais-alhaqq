@@ -461,6 +461,7 @@ class Program extends BaseController
                     'status_kerja'      => $status_kerja,
                     'kouta'             => $this->request->getVar('kouta'),
                     'sisa_kouta'        => $this->request->getVar('kouta'),
+                    'jumlah_peserta'    => '0',
                     'metode_kelas'      => $this->request->getVar('metode_kelas'),
                     'status_kelas'      => $this->request->getVar('status_kelas'),
                 ];
@@ -509,6 +510,7 @@ class Program extends BaseController
                 'zona_waktu_kelas'  => $kelas['zona_waktu_kelas'],
                 'jenkel'            => $kelas['jenkel'],
                 'kouta'             => $kelas['kouta'],
+                'sisa_kouta'        => $kelas['sisa_kouta'],
                 'metode_kelas'      => $kelas['metode_kelas'],
                 'status_kelas'      => $kelas['status_kelas'],
             ];
@@ -594,6 +596,13 @@ class Program extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
+                'sisa_kouta' => [
+                    'label' => 'sisa_kouta',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
                 'metode_kelas' => [
                     'label' => 'metode_kelas',
                     'rules' => 'required',
@@ -622,6 +631,7 @@ class Program extends BaseController
                         'peserta_level'     => $validation->getError('peserta_level'),
                         'jenkel'            => $validation->getError('jenkel'),
                         'kouta'             => $validation->getError('kouta'),
+                        'sisa_kouta'        => $validation->getError('sisa_kouta'),
                         'metode_kelas'      => $validation->getError('metode_kelas'),
                         'status_kelas'      => $validation->getError('status_kelas'),
                     ]
@@ -648,7 +658,7 @@ class Program extends BaseController
                     'jenkel'            => $this->request->getVar('jenkel'),
                     'status_kerja'      => $status_kerja,
                     'kouta'             => $this->request->getVar('kouta'),
-                    'sisa_kouta'        => $this->request->getVar('kouta'),
+                    'sisa_kouta'        => $this->request->getVar('sisa_kouta'),
                     'metode_kelas'      => $this->request->getVar('metode_kelas'),
                     'status_kelas'      => $this->request->getVar('status_kelas'),
                 ];
@@ -879,7 +889,8 @@ class Program extends BaseController
                 'data_kelas_id'     => $peserta_kelas['data_kelas_id'],
                 'kelas'             => $this->program->list(),
                 'nama_peserta'      => $data_peserta[0]['nama_peserta'],
-                'nis'               => $data_peserta[0]['nis']
+                'nis'               => $data_peserta[0]['nis'],
+                'domisili'          => $data_peserta[0]['domisili_peserta']
             ];
             $msg = [
                 'sukses' => view('auth/program_kelas/kelas_peserta_pindah', $data)
@@ -909,21 +920,75 @@ class Program extends BaseController
                 ];
             } else {
 
+                $tujuan_kelas_id = $this->request->getVar('data_kelas_id');
+                $asal_kelas_id = $this->request->getVar('asal_kelas_id');
+
                 $updatedata = [
-                    'data_kelas_id'        => $this->request->getVar('data_kelas_id'),
+                    'data_kelas_id'        => $tujuan_kelas_id,
                 ];
 
                 $peserta_kelas_id = $this->request->getVar('peserta_kelas_id');
                 $this->peserta_kelas->update($peserta_kelas_id, $updatedata);
 
-                $asal_kelas_id = $this->request->getVar('asal_kelas_id');
+                $variable1 = 1;
+                //1. START - Ubah sisa kouta kelas asal (tambah)
+                $find_kelas_asal                =  $this->program->get_sisa_kouta_asal($asal_kelas_id);
+                $get_sisa_kuota_kelas_asal      = $find_kelas_asal->sisa_kouta;
+                $sisa_kuota_kelas_asal          = $get_sisa_kuota_kelas_asal  + $variable1;
+                $updatedata_kuota_kelas_asal    = [
+                    'sisa_kouta'        => $sisa_kuota_kelas_asal ,
+                ];
+                $this->program->update($asal_kelas_id, $updatedata_kuota_kelas_asal);
+                //END - Ubah sisa kouta kelas asal (tambah)
+
+                //1. START - Ubah sisa kouta kelas tujuan (kurang)
+                $find_kelas_tujuan            =  $this->program->get_sisa_kouta_tujuan($tujuan_kelas_id);
+                $get_sisa_kuota_kelas_tujuan  = $find_kelas_tujuan->sisa_kouta;
+                $sisa_kuota_kelas_tujuan      = $get_sisa_kuota_kelas_tujuan - $variable1;
+                $updatedata_kuota_kelas_tujuan   = [
+                    'sisa_kouta'        => $sisa_kuota_kelas_tujuan ,
+                ];
+                $this->program->update($tujuan_kelas_id, $updatedata_kuota_kelas_tujuan);
+                //END - Ubah sisa kouta kelas tujuan (kurang)
+
+                //2. START - Ubah jumlah peserta kelas asal (kurang)
+                $find_kelas_asal_jml            =  $this->program->get_jumlah_peserta_asal($asal_kelas_id);
+                $get_jumlah_peserta_kelas_asal  = $find_kelas_asal_jml ->jumlah_peserta;
+                $jumlah_peserta_kelas_asal      = $get_jumlah_peserta_kelas_asal  - $variable1;
+                $updatedata_jumlah_peserta_asal = [
+                    'jumlah_peserta'        => $jumlah_peserta_kelas_asal ,
+                ];
+                $this->program->update($asal_kelas_id, $updatedata_jumlah_peserta_asal);
+                //END - Ubah jumlah peserta kelas asal (kurang)
+
+                //2. START - Ubah jumlah peserta kelas tujuan (tamnbah)
+                $find_kelas_tujuan_jml              =  $this->program->get_jumlah_peserta_tujuan($tujuan_kelas_id);
+                $get_jumlah_peserta_kelas_tujuan    = $find_kelas_tujuan_jml ->jumlah_peserta;
+                $jumlah_peserta_kelas_tujuan        = $get_jumlah_peserta_kelas_tujuan + $variable1;
+                $updatedata_jumlah_peserta_tujuan      = [
+                    'jumlah_peserta'        => $jumlah_peserta_kelas_tujuan  ,
+                ];
+                $this->program->update($tujuan_kelas_id, $updatedata_jumlah_peserta_tujuan);
+                //END - Ubah jumlah peserta kelas tujuan (tambah)
+
+                //3. START - Get Nama peserta, Nama kelas asal dan nama kelas tujuan
+                $find_kelas_asal_nama       = $this->program->find($asal_kelas_id);
+                $nama_kelas_asal            = $find_kelas_asal_nama['nama_kelas'];
+                $find_kelas_tujuan_nama     = $this->program->find($tujuan_kelas_id);
+                $nama_kelas_tujuan          = $find_kelas_tujuan_nama['nama_kelas'];
+                $find_peserta_id            = $this->peserta_kelas->find($peserta_kelas_id);
+                $get_peserta_id             = $find_peserta_id['data_peserta_id'];
+                $peserta_data               = $this->peserta->find($get_peserta_id);
+                $nama_peserta               = $peserta_data['nama_peserta'];
+                //END - Get Nama peserta, Nama kelas asal dan nama kelas tujuan
+
 
                 // Data Log START
                 $log = [
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'Memindahkan Peserta ke Kelas : ' .  $this->request->getVar('data_kelas_id'),
+                    'aktivitas_log'=> 'Pindah Peserta Nama : ' . $nama_peserta . ' Dipindahkan Ke Kelas ' . $nama_kelas_tujuan   . ' Dari Kelas ' . $nama_kelas_asal,
                 ];
                 $this->log->insert($log);
                 // Data Log END
@@ -937,24 +1002,5 @@ class Program extends BaseController
             echo json_encode($msg);
         }
     }
-
-    // public function kelas_peserta_list()
-    // {
-    //     if ($this->request->isAJAX()) {
-
-    //         $kelas_id        = $this->request->getVar('kelas_id');
-    //         $peserta_onkelas = $this->peserta_kelas->peserta_onkelas($kelas_id);
-
-    //         $data = [
-    //             'title'             => 'List Peserta Dalam Kelas',
-    //             'peserta_onkelas'   => $peserta_onkelas,
-    //         ];
-    //         //var_dump($data);
-    //         $msg = [
-    //             'sukses' => view('auth/program_kelas/kelas_peserta_list', $data)
-    //         ];
-    //         echo json_encode($msg);
-    //     }
-    // }
 
 }

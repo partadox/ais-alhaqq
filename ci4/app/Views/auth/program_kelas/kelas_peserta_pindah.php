@@ -17,19 +17,25 @@
                 readonly>
                 <h6 style="text-align:center;">Nama: <?= $nama_peserta ?></h6>
                 <h6 style="text-align:center;">NIS: <?= $nis ?></h6>
-                <h6 style="text-align:center;">Domisili: </h6>
+                <h6 style="text-align:center;">Domisili: <?= $domisili ?></h6>
                 <div class="form-group row">
-                    <label for="" class="col-sm-3 col-form-label">Pindah ke Kelas <code>*</code></label>
-                    <div class="col-sm-8">
+                    <label for="" class="col-sm-2 col-form-label">Pindah ke<code>*</code></label>
+                    <div class="col-sm-10">
                         <select name="data_kelas_id" id="data_kelas_id" class="js-example-basic-single-pindah">
                                 <option Disabled=true Selected=true> </option>
                             <?php foreach ($kelas as $key => $data) { ?>
-                                <option value="<?= $data['kelas_id'] ?>"  <?php if ($data['kelas_id'] == $data_kelas_id) echo "selected"; ?>><?= $data['nama_kelas'] ?> | <?= $data['nama_pengajar'] ?></option>
+                                <option value="<?= $data['kelas_id'] ?>"  <?php if ($data['kelas_id'] == $data_kelas_id) echo "selected"; ?>  <?php if ($data['sisa_kouta'] == '0') echo "disabled"; ?>><?= $data['nama_kelas'] ?> | <?= $data['metode_kelas'] ?> | <?= $data['nama_pengajar'] ?> | SK/JK: <?= $data['sisa_kouta'] ?>/<?= $data['kouta'] ?> | PST: <?= $data['jumlah_peserta'] ?></option>
                             <?php } ?>
                         </select>
                         <div class="invalid-feedback errorData_kelas_id"></div>
                     </div>
                 </div>
+                <p class="mt-1">Note :<br> 
+                    <i class="mdi mdi-information"></i> SK/JK = Sisa Kuota/Jumlah Kuota.<br>
+                    <i class="mdi mdi-information"></i> PST = Jumlah Peserta.<br>
+                    <i class="mdi mdi-information"></i> Hanya bisa memindahkan peserta ke kelas yang masih memiliki kuota.<br>
+                    <i class="mdi mdi-information"></i> Jika kuota kelas telah penuh maka anda dapat mengedit jumlah kuota kelas dan sisa kuota pada Menu Kelas.<br>
+                </p>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary btnsimpan"><i class="fa fa-share-square"></i> Pindah</button>

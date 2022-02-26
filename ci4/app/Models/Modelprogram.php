@@ -8,7 +8,7 @@ class Modelprogram extends Model
 {
     protected $table      = 'program_kelas ';
     protected $primaryKey = 'kelas_id';
-    protected $allowedFields = ['program_id', 'peserta_level','pengajar_id', 'nama_kelas', 'angkatan_kelas', 'hari_kelas', 'waktu_kelas', 'zona_waktu_kelas', 'jenkel', 'status_kerja', 'kouta', 'sisa_kouta', 'metode_kelas','status_kelas'];
+    protected $allowedFields = ['program_id', 'peserta_level','pengajar_id', 'nama_kelas', 'angkatan_kelas', 'hari_kelas', 'waktu_kelas', 'zona_waktu_kelas', 'jenkel', 'status_kerja', 'kouta', 'sisa_kouta', 'jumlah_peserta', 'metode_kelas','status_kelas'];
 
     //Daftar kelas untuk peserta -> TIDAK Bekerja -> Domisili Luar
     public function aktif($peserta_level, $peserta_jenkel, $peserta_status_kerja)
@@ -70,6 +70,56 @@ class Modelprogram extends Model
         return $this->table('program_kelas')
             ->select('sisa_kouta')
             ->where('kelas_id', $kelas_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
+    // Get Jumlah Peserta
+    public function get_jumlah_peserta($kelas_id)
+    {
+        return $this->table('program_kelas')
+            ->select('jumlah_peserta')
+            ->where('kelas_id', $kelas_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
+    // Get Sisa Kouta Kelas Asal - Fitur Pindah Kelas
+    public function get_sisa_kouta_asal($asal_kelas_id)
+    {
+        return $this->table('program_kelas')
+            ->select('sisa_kouta')
+            ->where('kelas_id', $asal_kelas_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
+    // Get Sisa Kouta Kelas Tujuan - Fitur Pindah Kelas
+    public function get_sisa_kouta_tujuan($tujuan_kelas_id)
+    {
+        return $this->table('program_kelas')
+            ->select('sisa_kouta')
+            ->where('kelas_id', $tujuan_kelas_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
+    // Get Jumlah Peserta Kelas Asal - Fitur Pindah Kelas
+    public function get_jumlah_peserta_asal($asal_kelas_id)
+    {
+        return $this->table('program_kelas')
+            ->select('jumlah_peserta')
+            ->where('kelas_id', $asal_kelas_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
+    // Get Jumlah Peserta Kelas Tujuan - Fitur Pindah Kelas
+    public function get_jumlah_peserta_tujuan($tujuan_kelas_id)
+    {
+        return $this->table('program_kelas')
+            ->select('jumlah_peserta')
+            ->where('kelas_id', $tujuan_kelas_id)
             ->get()
             ->getUnbufferedRow();
     }

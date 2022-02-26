@@ -164,6 +164,14 @@ class Pembayaran extends BaseController
             $minus1 = 1;
             $kouta_kurang = $sisa_kouta - $minus1;
 
+            //Get data sisa kouta dari tabel program_kelas
+            $get_jml_peserta = $this->program->get_jumlah_peserta($kelas_id);
+            $jumlah_peserta = $get_jml_peserta ->jumlah_peserta;
+
+            //Pengurangan Kouta
+            $plus1 = 1;
+            $tambah_peserta = $jumlah_peserta + $plus1;
+
             $validation = \Config\Services::validation();
             $valid = $this->validate([
                 'nominal_bayar' => [
@@ -301,6 +309,7 @@ class Pembayaran extends BaseController
 
                     $datakelas = [
                         'sisa_kouta'      => $kouta_kurang,
+                        'jumlah_peserta'  => $tambah_peserta,
                     ];
         
                     $datapesertakelas = [

@@ -1158,12 +1158,21 @@ class Akun extends BaseController
             $username    = $this->user->cek_duplikat_import_akun_peserta($excel['2']);
             if ($username != 0 ) {
                 $jumlaherror++;
+                //Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'aktivitas_log'=> 'GAGAL - Buat Data Akun via Import Excel, Nama : ' .  $excel["1"] .  ' ' .  $pst_or_pgj,
+                ];
+                $this->log->insert($log);
+                //Data Log END
             } elseif($username == 0) {
 
                 $jumlahsukses++;
 
                 $data   = [
-                    'nama'                  => $excel['1'],
+                    'nama'                  => strtoupper( $excel['1']),
                     'username'              => $excel['2'],
                     'password'              => (password_hash($excel['3'], PASSWORD_BCRYPT)),
                     'foto'                  => 'default.png',
@@ -1178,7 +1187,7 @@ class Akun extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'Buat Data Akun via Import Excel, Nama Peserta : ' .  $excel['1'] . $pst_or_pgj,
+                    'aktivitas_log'=> 'BERHASIL - Buat Data Akun via Import Excel, Nama : ' .  $excel["1"] . ' ' . $pst_or_pgj,
                 ];
                 $this->log->insert($log);
                 //Data Log END
