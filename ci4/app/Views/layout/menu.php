@@ -184,9 +184,6 @@
             <i class="mdi mdi-school"></i> <span> Kelas & Absensi </span>
         </a>
     </li>
-<?php } ?>
-
-<?php if (session()->get('level') == 5) { ?>
     <li class="menu-title">Akun</li>
     <li>
         <a href="<?= base_url('auth/akun/biodata_pengajar') ?>" class="waves-effect">
@@ -200,8 +197,17 @@
 <?php if (session()->get('level') == 6) { ?>
     <li class="menu-title">Akademik</li>
     <li>
+        <a href="<?= base_url('auth/absen/index_pengajar') ?>" class="waves-effect">
+            <i class="mdi mdi-school"></i> <span> Kelas & Absensi </span>
+        </a>
         <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-school"></i> <span> Nilai Ujian </span>
+        </a>
+    </li>
+    <li class="menu-title">Akun</li>
+    <li>
+        <a href="<?= base_url('auth/akun/biodata_pengajar') ?>" class="waves-effect">
+            <i class="mdi mdi-account-badge"></i> <span> Biodata dan Akun </span>
         </a>
     </li>
 <?php } ?>
