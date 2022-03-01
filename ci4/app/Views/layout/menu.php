@@ -65,9 +65,24 @@
         <a href="<?= base_url('auth/akademik') ?>" class="waves-effect">
             <i class="mdi mdi-application"></i> <span> Program yang Diikuti </span>
         </a>
-        <!-- <a href="<?= base_url('auth/akademik/spp') ?>" class="waves-effect">
+        <a href="<?= base_url('#') ?>" class="waves-effect">
+            <i class="mdi mdi-check-circle"></i> <span> Absensi Peserta </span>
+        </a>
+        <a href="<?= base_url('#') ?>" class="waves-effect">
+            <i class="mdi mdi-certificate"></i> <span> Sertifikat</span>
+        </a>
+    </li>
+<?php } ?>
+
+<?php if (session()->get('level') == 4) { ?>
+    <li class="menu-title">Pembayaran</li>
+    <li>
+        <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-cash"></i> <span> Pembayaran SPP </span>
-        </a> -->
+        </a>
+        <a href="<?= base_url('#') ?>" class="waves-effect">
+            <i class="mdi mdi-cash-multiple"></i> <span> Riwayat Pembayaran </span>
+        </a>
     </li>
 <?php } ?>
 
@@ -91,9 +106,9 @@
         <a href="<?= base_url('auth/pembayaran/') ?>" class="waves-effect">
             <i class="mdi mdi-cash-register"></i> <span> Semua Pembayaran</span>
         </a>
-        <!-- <a href="<?= base_url('') ?>" class="waves-effect">
-            <i class="mdi mdi-cash-multiple"></i> <span> Riwayat SPP</span>
-        </a> -->
+        <a href="<?= base_url('#') ?>" class="waves-effect">
+            <i class="mdi mdi-cash-multiple"></i> <span> Rekap Pembayaran SPP</span>
+        </a>
         <!-- <a href="<?= base_url('auth/pembayaran') ?>" class="waves-effect">
             <i class="mdi mdi-cash-register"></i> <span>  Download & Hapus Bukti TF </span>
         </a> -->
@@ -111,6 +126,21 @@
         </a> -->
         <a href="<?= base_url('auth/program/level') ?>" class="waves-effect">
             <i class="mdi mdi-account-badge-horizontal-outline"></i> <span>  Level</span>
+        </a>
+    </li>
+    <li class="menu-title">Akademik</li>
+    <li>
+        <a href="<?= base_url('#') ?>" class="waves-effect">
+            <i class="mdi mdi-timeline"></i> <span> Riwayat Kelas Peserta </span>
+        </a>
+        <a href="<?= base_url('#') ?>" class="waves-effect">
+            <i class="mdi mdi-check-bold"></i> <span> Rekap Absensi Kelas </span>
+        </a>
+        <a href="<?= base_url('#') ?>" class="waves-effect">
+            <i class="mdi mdi-book"></i> <span> Hasil Ujian </span>
+        </a>
+        <a href="<?= base_url('#') ?>" class="waves-effect">
+            <i class="mdi mdi-certificate"></i> <span> Sertifikat </span>
         </a>
     </li>
     <li class="menu-title">Peserta & Pengajar</li>
@@ -146,68 +176,38 @@
 <?php } ?>
 <!--  Admin Menu End-->
 
-
-<!--  BEKAS -->
-<!-- <?php if (session()->get('level') == 2) { ?>
-    <li class="menu-title">Tenaga Kependidik & Pendidik</li>
+<!--  Pengajar Menu Start -->
+<?php if (session()->get('level') == 5) { ?>
+    <li class="menu-title">Akademik</li>
     <li>
-        <a href="<?= base_url('auth/staf') ?>" class="waves-effect">
-            <i class="mdi mdi-account-star-outline"></i> <span> Staf </span>
+        <a href="<?= base_url('auth/absen/index_pengajar') ?>" class="waves-effect">
+            <i class="mdi mdi-school"></i> <span> Kelas & Absensi </span>
         </a>
-    </li>
-    <li>
-        <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-group"></i> <span> Guru <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span> </a>
-        <ul class="submenu">
-            <li><a href="<?= base_url('auth/guru') ?>">List Guru</a></li>
-            <li><a href="<?= base_url('auth/guru/mapel') ?>">Mapel</a></li>
-        </ul>
-    </li>
-    <li>
-        <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-account-badge-horizontal"></i><span> Siswa <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-        <ul class="submenu">
-            <li><a href="<?= base_url('auth/kelas') ?>">List Kelas</a></li>
-            <li><a href="<?= base_url('auth/siswa') ?>">List Siswa</a></li>
-            <li><a href="<?= base_url('auth/spp') ?>">SPP</a></li>
-        </ul>
     </li>
 <?php } ?>
 
-<li class="menu-title">Posting</li>
-<li>
-    <a href="<?= base_url('auth/gallery') ?>" class="waves-effect">
-        <i class="mdi mdi-folder-image"></i> <span> Gallery </span>
-    </a>
-</li>
-<li>
-    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-newspaper"></i> <span> Berita <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span> </a>
-    <ul class="submenu">
-        <li><a href="<?= base_url('auth/berita/kategori') ?>">Kategori</a></li>
-        <li><a href="<?= base_url('auth/berita') ?>">List Berita</a></li>
-    </ul>
-</li>
-<li>
-    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-bullhorn-outline"></i><span> Pengumuman <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span></a>
-    <ul class="submenu">
-        <li><a href="<?= base_url('auth/pengumuman') ?>">Pengumuman Umum</a></li>
-        <?php if (session()->get('level') == 2) { ?>
-            <li><a href="<?= base_url('auth/pengumuman/kelulusan') ?>">Pengumuman Kelulusan</a></li>
-        <?php } ?>
-    </ul>
-</li>
+<?php if (session()->get('level') == 5) { ?>
+    <li class="menu-title">Akun</li>
+    <li>
+        <a href="<?= base_url('auth/akun/biodata_pengajar') ?>" class="waves-effect">
+            <i class="mdi mdi-account-badge"></i> <span> Biodata dan Akun </span>
+        </a>
+    </li>
+<?php } ?>
+<!--  Pengajar Menu End -->
 
-<?php if (session()->get('level') == 2) { ?>
-    <li class="menu-title">Etc</li>
+<!--  Penguji Menu Start -->
+<?php if (session()->get('level') == 6) { ?>
+    <li class="menu-title">Akademik</li>
     <li>
-        <a href="<?= base_url('auth/konfigurasi/user') ?>" class="waves-effect">
-            <i class="mdi mdi-account-switch"></i> <span> Konfigurasi User </span>
+        <a href="<?= base_url('#') ?>" class="waves-effect">
+            <i class="mdi mdi-school"></i> <span> Nilai Ujian </span>
         </a>
     </li>
-    <li>
-        <a href="<?= base_url('auth/konfigurasi/web') ?>" class="waves-effect">
-            <i class="mdi mdi-settings-outline"></i> <span> Konfigurasi Web </span>
-        </a>
-    </li>
-<?php } ?> -->
+<?php } ?>
+<!--  Pengajar Menu End -->
+
+
 
 <li class="menu-title">Logout Akun</li>
     <li>

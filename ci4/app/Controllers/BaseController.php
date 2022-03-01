@@ -49,6 +49,8 @@ use App\Models\Modellevel;
 use App\Models\Modelkantor_cabang;
 use App\Models\Modelbank;
 use App\Models\Modellog;
+use App\Models\Modelabsenpeserta;
+use App\Models\Modelabsenpengajar;
 
 class BaseController extends Controller
 {
@@ -106,5 +108,7 @@ class BaseController extends Controller
 		$this->kantor_cabang = new Modelkantor_cabang;
 		$this->bank = new Modelbank;
 		$this->log = new Modellog;
+		$this->absen_peserta = new Modelabsenpeserta;
+		$this->absen_pengajar = new Modelabsenpengajar;
 	}
 }

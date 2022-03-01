@@ -448,22 +448,48 @@ class Program extends BaseController
                     $status_kerja   = '0';
                 }
 
+                //Create data absen pengajar
+                $dataabsen = [
+                    'tgl_tm1'                     => '1000-01-01', 
+                    'tgl_tm2'                     => '1000-01-01',
+                    'tgl_tm3'                     => '1000-01-01',
+                    'tgl_tm4'                     => '1000-01-01',
+                    'tgl_tm5'                     => '1000-01-01',
+                    'tgl_tm6'                     => '1000-01-01',
+                    'tgl_tm7'                     => '1000-01-01',
+                    'tgl_tm8'                     => '1000-01-01',
+                    'tgl_tm9'                     => '1000-01-01',
+                    'tgl_tm10'                    => '1000-01-01',
+                    'tgl_tm11'                    => '1000-01-01',
+                    'tgl_tm12'                    => '1000-01-01',
+                    'tgl_tm13'                    => '1000-01-01',
+                    'tgl_tm14'                    => '1000-01-01',
+                    'tgl_tm15'                    => '1000-01-01',
+                    'tgl_tm16'                    => '1000-01-01',
+                ];
+
+                $this->absen_pengajar->insert($dataabsen);
+
+                //Create data absen pengajar
+                $last_id = $this->absen_pengajar->insertID();
+
                 $simpandata = [
-                    'program_id'        => $this->request->getVar('program_id'),
-                    'nama_kelas'        => strtoupper($this->request->getVar('nama_kelas')),
-                    'angkatan_kelas'    => $this->request->getVar('angkatan_kelas'),
-                    'pengajar_id'       => $this->request->getVar('pengajar_id'),
-                    'hari_kelas'        => $this->request->getVar('hari_kelas'),
-                    'waktu_kelas'       => $this->request->getVar('waktu_kelas'),
-                    'zona_waktu_kelas'  => $this->request->getVar('zona_waktu_kelas'),
-                    'peserta_level'     => $this->request->getVar('peserta_level'),
-                    'jenkel'            => $this->request->getVar('jenkel'),
-                    'status_kerja'      => $status_kerja,
-                    'kouta'             => $this->request->getVar('kouta'),
-                    'sisa_kouta'        => $this->request->getVar('kouta'),
-                    'jumlah_peserta'    => '0',
-                    'metode_kelas'      => $this->request->getVar('metode_kelas'),
-                    'status_kelas'      => $this->request->getVar('status_kelas'),
+                    'program_id'            => $this->request->getVar('program_id'),
+                    'nama_kelas'            => strtoupper($this->request->getVar('nama_kelas')),
+                    'angkatan_kelas'        => $this->request->getVar('angkatan_kelas'),
+                    'pengajar_id'           => $this->request->getVar('pengajar_id'),
+                    'data_absen_pengajar'   => $last_id,
+                    'hari_kelas'            => $this->request->getVar('hari_kelas'),
+                    'waktu_kelas'           => $this->request->getVar('waktu_kelas'),
+                    'zona_waktu_kelas'      => $this->request->getVar('zona_waktu_kelas'),
+                    'peserta_level'         => $this->request->getVar('peserta_level'),
+                    'jenkel'                => $this->request->getVar('jenkel'),
+                    'status_kerja'          => $status_kerja,
+                    'kouta'                 => $this->request->getVar('kouta'),
+                    'sisa_kouta'            => $this->request->getVar('kouta'),
+                    'jumlah_peserta'        => '0',
+                    'metode_kelas'          => $this->request->getVar('metode_kelas'),
+                    'status_kelas'          => $this->request->getVar('status_kelas'),
                 ];
 
                 $this->program->insert($simpandata);
@@ -473,7 +499,7 @@ class Program extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'Buat Data Kelas Nama : ' .  $this->request->getVar('nama_kelas'),
+                    'aktivitas_log'=> 'BERHASIL - Buat Data Kelas Nama : ' .  $this->request->getVar('nama_kelas'),
                 ];
                 $this->log->insert($log);
                 // Data Log END

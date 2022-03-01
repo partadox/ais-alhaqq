@@ -32,12 +32,15 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 // $routes->setDefaultNamespace('');
+$routes->get('/auth', 'Login::index');
 $routes->get('/auth/login', 'Login::index');
 $routes->get('/auth/pembayaran/login', 'Login::index');
 $routes->get('/auth/program/login', 'Login::index');
 $routes->get('/auth/akun/login', 'Login::index');
 $routes->get('/auth/daftar/login', 'Login::index');
 $routes->get('/auth/program/kelas_peserta/login', 'Login::index');
+$routes->get('/auth/absen/login', 'Login::index');
+$routes->get('/auth/absen/list_absen/login', 'Login::index');
 
 $routes->get('/auth/register', 'Register::index');
 $routes->get('/auth/daftar', 'Daftar::index', ['filter' => 'Validasilogin']);
@@ -51,6 +54,8 @@ $routes->get('/auth/program/dashboard', 'Dashboard::index', ['filter' => 'Valida
 $routes->get('/auth/akun/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/daftar/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/program/kelas_peserta/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/absen/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/absen/list_absen/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 
 $routes->get('/auth/pembayaran/konfirmasi', 'Pembayaran::konfirmasi', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran', 'Pembayaran::Index', ['filter' => 'Validasilogin']);
@@ -71,6 +76,10 @@ $routes->get('/auth/program/kelas_peserta/(:num)', 'Program::kelas_peserta/$1', 
 
 $routes->get('/auth/akademik', 'Akademik::Index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akun/biodata_peserta', 'Akun::biodata_peserta', ['filter' => 'Validasilogin']);
+
+$routes->get('/auth/absen/index_pengajar', 'Absen::index_pengajar', ['filter' => 'Validasilogin']);
+$routes->get('/auth/absen/list_absen/(:num)', 'Absen::list_absen/$1', ['filter' => 'Validasilogin']);
+
 
 //Strange Bug
 $routes->get('/auth/peserta/peserta', 'Peserta::Index', ['filter' => 'Validasilogin']);

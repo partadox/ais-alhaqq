@@ -44,4 +44,23 @@ class Modelpengajar extends Model
             ->where('nik', $nik)
             ->countAllResults();
     }
+
+    //Panel Pengajar Query 
+    //Get data pengajar - list kelas yg diajar
+    public function get_pengajar($user_id)
+    {
+        return $this->table('pengajar')
+            ->where('user_id', $user_id)
+            ->get()
+            ->getRowArray();
+    }
+
+    public function get_pengajar_id($user_id)
+    {
+        return $this->table('pengajar')
+            ->select('pengajar_id')
+            ->where('user_id', $user_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
 }

@@ -8,7 +8,7 @@ class Modelpesertakelas extends Model
 {
     protected $table      = 'peserta_kelas';
     protected $primaryKey = 'peserta_kelas_id';
-    protected $allowedFields = ['peserta_kelas_id', 'data_peserta_id','data_kelas_id', 'status_peserta_kelas'];
+    protected $allowedFields = ['peserta_kelas_id', 'data_peserta_id','data_kelas_id', 'data_absen', 'data_ujian', 'status_peserta_kelas'];
 
     //Cek jumlah kelas yang diikuti peserta
     public function cek_peserta_kelas($peserta_id)
@@ -68,6 +68,34 @@ class Modelpesertakelas extends Model
         ->where('status_peserta_kelas', 'Belum Lulus')
         ->where('data_peserta_id', $peserta_id)
         ->countAllResults();
+    }
+
+    //Pengajar Panel - Absensi Peserta
+    public function peserta_onkelas_absen($kelas_id)
+    {
+        return $this->table('peserta_kelas')
+            ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
+            ->join('absen_peserta', 'absen_peserta.absen_peserta_id = peserta_kelas.data_absen')
+            ->where('data_kelas_id', $kelas_id)
+            ->where('status_peserta_kelas', 'Belum Lulus')
+            ->orderBy('nama_peserta', 'ASC')
+            ->get()->getResultArray();
+    }
+
+    public function peserta_onkelas_absen_tm($tm, $kelas_id)
+    {
+        return $this->table('peserta_kelas')
+            ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
+            ->join('absen_peserta', 'absen_peserta.absen_peserta_id = peserta_kelas.data_absen')
+            ->select('peserta_kelas_id')
+            ->select('nis')
+            ->select('nama_peserta')
+            ->select('data_absen')
+            ->select($tm)
+            ->where('data_kelas_id', $kelas_id)
+            ->where('status_peserta_kelas', 'Belum Lulus')
+            ->orderBy('nama_peserta', 'ASC')
+            ->get()->getResultArray();
     }
 
 

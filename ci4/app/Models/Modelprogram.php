@@ -8,7 +8,7 @@ class Modelprogram extends Model
 {
     protected $table      = 'program_kelas ';
     protected $primaryKey = 'kelas_id';
-    protected $allowedFields = ['program_id', 'peserta_level','pengajar_id', 'nama_kelas', 'angkatan_kelas', 'hari_kelas', 'waktu_kelas', 'zona_waktu_kelas', 'jenkel', 'status_kerja', 'kouta', 'sisa_kouta', 'jumlah_peserta', 'metode_kelas','status_kelas'];
+    protected $allowedFields = ['program_id', 'peserta_level','pengajar_id', 'data_absen_pengajar', 'nama_kelas', 'angkatan_kelas', 'hari_kelas', 'waktu_kelas', 'zona_waktu_kelas', 'jenkel', 'status_kerja', 'kouta', 'sisa_kouta', 'jumlah_peserta', 'metode_kelas','status_kelas'];
 
     //Daftar kelas untuk peserta -> TIDAK Bekerja -> Domisili Luar
     public function aktif($peserta_level, $peserta_jenkel, $peserta_status_kerja)
@@ -173,5 +173,33 @@ class Modelprogram extends Model
     {
         return $this->table('program_kelas')
         ->countAllResults();
+    }
+
+    //Panel Pengajar - Menu Kelas & Absen
+    public function kelas_pengajar($pengajar_id)
+    {
+        return $this->table('program_kelas')
+            ->join('program', 'program.program_id = program_kelas.program_id')
+            ->join('peserta_level', 'peserta_level.peserta_level_id = program_kelas.peserta_level')
+            ->where('pengajar_id', $pengajar_id)
+            ->get()->getResultArray();
+    }
+
+    //Pengajar Panel - Absensi Peserta
+    // public function pengajar_onkelas_absen($kelas_id)
+    // {
+    //     return $this->table('program_kelas')
+    //         ->join('absen_pengajar', 'absen_pengajar.absen_pengajar_id = program_kelas.data_absen_pengajar')
+    //         ->where('kelas_id', $kelas_id)
+    //         ->get()->getResultArray();
+    // }
+
+    public function get_data_absen_pengajar_id($kelas_id)
+    {
+        return $this->table('program_kelas')
+            ->select('data_absen_pengajar')
+            ->where('kelas_id', $kelas_id)
+            ->get()
+            ->getUnbufferedRow();
     }
 }

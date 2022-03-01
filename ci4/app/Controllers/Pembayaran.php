@@ -311,15 +311,27 @@ class Pembayaran extends BaseController
                         'sisa_kouta'      => $kouta_kurang,
                         'jumlah_peserta'  => $tambah_peserta,
                     ];
+
+                    //Create Absen Peserta di Kelas
+                    $dataabsen = [
+                        'tm1'   => NULL,
+                    ];
+                    $this->absen_peserta->insert($dataabsen);
+
+                    // Get last id insert from absen peserta
+                    $last_id = $this->absen_peserta->insertID();
         
                     $datapesertakelas = [
                         'data_peserta_id'       => $peserta_id,
                         'data_kelas_id'         => $kelas_id,
+                        'data_absen'            => $last_id,
                         'status_peserta_kelas'  => 'Belum Lulus'
                     ];
+
                     $this->spp1->insert($data_spp1);
                     $this->program->update($kelas_id, $datakelas);
                     $this->peserta_kelas->insert($datapesertakelas);
+
                 }
 
                 //Cek isian form untuk infaq
