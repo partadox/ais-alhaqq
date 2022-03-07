@@ -256,6 +256,7 @@ class Peserta extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Buat Data Peserta ' . $this->request->getVar('nama'),
                 ];
                 $this->log->insert($log);
@@ -481,14 +482,23 @@ class Peserta extends BaseController
                     'user_id'               => $this->request->getVar('user_id'),
                 ];
 
+                // Update Data Peserta
                 $peserta_id = $this->request->getVar('peserta_id');
                 $this->peserta->update($peserta_id, $updatedata);
+
+                //Aktivasi ID User
+                $iduser     = $this->request->getVar('user_id');
+                $aktif_user = ['active' => 1, ];
+
+                // Update Akun User
+                $this->user->update($iduser, $aktif_user);
 
                 // Data Log START
                 $log = [
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Edit Data Peserta ' . $this->request->getVar('nama'),
                 ];
                 $this->log->insert($log);
@@ -517,6 +527,12 @@ class Peserta extends BaseController
 
             // Update Akun User
             $this->user->update($user_id, $updatedata);
+
+            //Get Nama dan NIS
+            $data_psrt  = $this->peserta->find($peserta_id);
+            $psrt_nis   = $data_psrt['nis'];
+            $psrt_nama  = $data_psrt['nama_peserta'];
+
             // Hapus Data Peserta
             $this->peserta->delete($peserta_id);
 
@@ -525,10 +541,54 @@ class Peserta extends BaseController
                 'username_log' => session()->get('username'),
                 'tgl_log'      => date("Y-m-d"),
                 'waktu_log'    => date("H:i:s"),
-                'aktivitas_log'=> 'Hapus Data Peserta ID : ' .  $this->request->getVar('peserta_id'),
+                'status_log'   => 'BERHASIL',
+                'aktivitas_log'=> 'Hapus Data Peserta : ' .  $psrt_nis . ' ' . $psrt_nama,
             ];
             $this->log->insert($log);
             // Data Log END
+
+            $msg = [
+                'sukses' => [
+                    'link' => 'peserta'
+                ]
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function hapusall()
+    {
+        if ($this->request->isAJAX()) {
+            $peserta_id = $this->request->getVar('peserta_id');
+            $jmldata = count($peserta_id);
+            for ($i = 0; $i < $jmldata; $i++) {
+                //Get data user id
+                $get_user_id = $this->peserta->get_user_id($peserta_id[$i]);
+                $user_id = $get_user_id->user_id;
+                $updatedata = ['active' => 0, ];
+
+                // Update Akun User
+                $this->user->update($user_id, $updatedata);
+
+                 //Get Nama dan NIS
+                 $data_psrt  = $this->peserta->find($peserta_id[$i]);
+                 $psrt_nis   = $data_psrt['nis'];
+                 $psrt_nama  = $data_psrt['nama_peserta'];
+
+                // Hapus Data Peserta
+                $this->peserta->delete($peserta_id[$i]);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Hapus Data Peserta  : ' .  $psrt_nis . ' ' . $psrt_nama ,
+                ];
+                $this->log->insert($log);
+                // Data Log END
+            }
 
             $msg = [
                 'sukses' => [
@@ -581,7 +641,8 @@ class Peserta extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'GAGAL - Buat Data Peserta via Import Excel, Nama Peserta : ' .  $excel['4'],
+                    'status_log'   => 'GAGAL',
+                    'aktivitas_log'=> 'Buat Data Peserta via Import Excel, Nama Peserta : ' .  $excel['4'],
                 ];
                 $this->log->insert($log);
                 //Data Log END
@@ -619,7 +680,8 @@ class Peserta extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'BERHASIL - Buat Data Peserta via Import Excel, Nama Peserta : ' .  $excel['4'],
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Buat Data Peserta via Import Excel, Nama Peserta : ' .  $excel['4'],
                 ];
                 $this->log->insert($log);
                 //Data Log END
@@ -814,6 +876,7 @@ class Peserta extends BaseController
             'username_log' => session()->get('username'),
             'tgl_log'      => date("Y-m-d"),
             'waktu_log'    => date("H:i:s"),
+            'status_log'   => 'BERHASIL',
             'aktivitas_log'=> 'Download Data Peserta via Export Excel, Waktu : ' .  date('Y-m-d-H:i:s'),
         ];
         $this->log->insert($log);

@@ -97,7 +97,7 @@ class Akun extends BaseController
                 ];
             } else {
                 $simpandata = [
-                    'username'     => strtolower($this->request->getVar('username')),
+                    'username'     => $this->request->getVar('username'),
                     'nama'         => strtoupper($this->request->getVar('nama')),
                     'password'     => (password_hash($this->request->getVar('password'), PASSWORD_BCRYPT)),
                     'level'        => '4',
@@ -108,11 +108,15 @@ class Akun extends BaseController
                 $this->user->insert($simpandata);
 
                 // Data Log START
+                $usr_username   = $this->request->getVar('username');
+                $usr_nama       = $this->request->getVar('nama');
+
                 $log = [
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'Buat Data Akun User Username : ' . $this->request->getVar('username'),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Buat Data Akun Peserta : ' . $usr_username . ' | ' . $usr_nama ,
                 ];
                 $this->log->insert($log);
                 // Data Log END
@@ -173,7 +177,7 @@ class Akun extends BaseController
                 ];
             } else {
                 $simpandata = [
-                    'username'     => strtolower($this->request->getVar('username')),
+                    'username'     => $this->request->getVar('username'),
                     'nama'         => strtoupper($this->request->getVar('nama')),
                     'password'     => (password_hash($this->request->getVar('password'), PASSWORD_BCRYPT)),
                     'level'        => $this->request->getVar('level'),
@@ -184,11 +188,15 @@ class Akun extends BaseController
                 $this->user->insert($simpandata);
 
                 // Data Log START
+                $usr_username   = $this->request->getVar('username');
+                $usr_nama       = $this->request->getVar('nama');
+
                 $log = [
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'Buat Data Akun User Username : ' . $this->request->getVar('username'),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Buat Data Akun Pengajar : ' . $usr_username . ' | ' . $usr_nama ,
                 ];
                 $this->log->insert($log);
                 // Data Log END
@@ -283,7 +291,8 @@ class Akun extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'Edit Data Akun User Nama : ' . $this->request->getVar('nama'),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Edit Data Akun Peserta : ' . $this->request->getVar('nama'),
                 ];
                 $this->log->insert($log);
                 // Data Log END
@@ -425,7 +434,7 @@ class Akun extends BaseController
             } else {
 
                 $update_data = [
-                    'username'  => strtolower($this->request->getVar('username')),
+                    'username'  => $this->request->getVar('username'),
                 ];
 
                 $user_id = $this->request->getVar('user_id');
@@ -436,7 +445,8 @@ class Akun extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'Edit Data Akun User Username : ' . $this->request->getVar('username'),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Edit Data Akun Peserta : ' . $this->request->getVar('username'),
                 ];
                 $this->log->insert($log);
                 // Data Log END
@@ -475,7 +485,7 @@ class Akun extends BaseController
             } else {
 
                 $update_data = [
-                    'username'  => strtolower($this->request->getVar('username')),
+                    'username'  => $this->request->getVar('username'),
                 ];
 
                 $user_id = $this->request->getVar('user_id');
@@ -486,7 +496,8 @@ class Akun extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'Edit Data Akun User Username : ' . $this->request->getVar('username'),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Edit Data Akun Pengajar : ' . $this->request->getVar('username'),
                 ];
                 $this->log->insert($log);
                 // Data Log END
@@ -506,7 +517,10 @@ class Akun extends BaseController
     {
         if ($this->request->isAJAX()) {
 
-            $user_id = $this->request->getVar('user_id');
+            $user_id        = $this->request->getVar('user_id');
+            $data_user      = $this->user->find($user_id);
+            $usr_username   = $data_user['username'];
+            $usr_nama       = $data_user['nama'];
 
             // Hapus Akun User Juga
             $this->user->delete($user_id);
@@ -516,10 +530,47 @@ class Akun extends BaseController
                 'username_log' => session()->get('username'),
                 'tgl_log'      => date("Y-m-d"),
                 'waktu_log'    => date("H:i:s"),
-                'aktivitas_log'=> 'Hapus Data Akun User ID : ' .  $this->request->getVar('user_id'),
+                'status_log'   => 'BERHASIL',
+                'aktivitas_log'=> 'Hapus Data Akun Peserta : ' .  $usr_username . ' | ' . $usr_nama,
             ];
             $this->log->insert($log);
             // Data Log END
+
+            $msg = [
+                'sukses' => [
+                    'link' => 'user_peserta'
+                ]
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function hapusall_peserta()
+    {
+        if ($this->request->isAJAX()) {
+            $user_id = $this->request->getVar('user_id');
+            $jmldata = count($user_id);
+            for ($i = 0; $i < $jmldata; $i++) {
+
+                 //Get Username dan Nama Akun
+                 $data_user     = $this->user->find($user_id[$i]);
+                 $usr_nama      = $data_user['nama'];
+                 $usr_username  = $data_user['username'];
+
+                // Hapus Data Akun
+                $this->user->delete($user_id[$i]);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Hapus Data Akun Peserta  : ' .  $usr_username . ' | ' . $usr_nama ,
+                ];
+                $this->log->insert($log);
+                // Data Log END
+            }
 
             $msg = [
                 'sukses' => [
@@ -535,6 +586,9 @@ class Akun extends BaseController
         if ($this->request->isAJAX()) {
 
             $user_id = $this->request->getVar('user_id');
+            $data_user      = $this->user->find($user_id);
+            $usr_username   = $data_user['username'];
+            $usr_nama       = $data_user['nama'];
 
             // Hapus Akun User Juga
             $this->user->delete($user_id);
@@ -544,10 +598,47 @@ class Akun extends BaseController
                 'username_log' => session()->get('username'),
                 'tgl_log'      => date("Y-m-d"),
                 'waktu_log'    => date("H:i:s"),
-                'aktivitas_log'=> 'Hapus Data Akun User ID : ' .  $this->request->getVar('user_id'),
+                'status_log'   => 'BERHASIL',
+                'aktivitas_log'=> 'Hapus Data Akun Pengajar : ' .  $usr_username . ' | ' . $usr_nama,
             ];
             $this->log->insert($log);
             // Data Log END
+
+            $msg = [
+                'sukses' => [
+                    'link' => 'user_pengajar'
+                ]
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function hapusall_pengajar()
+    {
+        if ($this->request->isAJAX()) {
+            $user_id = $this->request->getVar('user_id');
+            $jmldata = count($user_id);
+            for ($i = 0; $i < $jmldata; $i++) {
+
+                 //Get Username dan Nama Akun
+                 $data_user     = $this->user->find($user_id[$i]);
+                 $usr_nama      = $data_user['nama'];
+                 $usr_username  = $data_user['username'];
+
+                // Hapus Data Akun
+                $this->user->delete($user_id[$i]);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Hapus Data Akun Pengajar  : ' .  $usr_username . ' | ' . $usr_nama ,
+                ];
+                $this->log->insert($log);
+                // Data Log END
+            }
 
             $msg = [
                 'sukses' => [

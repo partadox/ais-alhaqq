@@ -129,6 +129,7 @@
                         <option value="PELAJAR/MAHASISWA">PELAJAR/MAHASISWA</option>
                         <option value="KELUARGA/RUMAH TANGGA">KELUARGA/RUMAH TANGGA</option>
                         <option value="FREELANCE">FREELANCE</option>
+                        <option value="PENSIUNAN">PENSIUNAN</option>
                         <option value="LAINNYA">LAINNYA</option>>
                       </select>
                       <div class="invalid-feedback errorPekerjaan">

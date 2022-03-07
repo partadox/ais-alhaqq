@@ -778,4 +778,34 @@ class Pembayaran extends BaseController
             echo json_encode($msg);
         }
     }
+
+    // public function bayar_spp()
+    // {
+    //     if (!session()->get('user_id')) {
+    //         return redirect()->to('login');
+    //     }
+
+    //     //Get data peserta
+    //     $user_id = session()->get('user_id');
+    //     $get_peserta = $this->peserta->get_peserta_id($user_id);
+    //     $peserta_id = $get_peserta->peserta_id;
+
+    //     // Get Data peserta, program, kelas, bayar
+    //     $program_bayar = $this->program_bayar->belum_lunas($peserta_id);
+    //     //$bayar_awal = $program_bayar[0]['bayar_id'];
+        
+    //     // Cek ada data yang belum dibayar
+    //     $cek1 = $this->program_bayar->cek_belum_lunas($peserta_id);
+
+    //     $data = [
+    //         'title'         => 'Al-Haqq - Bayar SPP',
+    //         'peserta'       => $get_peserta,
+    //         'program_bayar' => $program_bayar,
+    //         //'bayar_lunas'   => $bayar_lunas,
+    //         'cek1'           => $cek1,
+    //         'bank'           => $this->bank->list(),
+    //     ];
+    //     //var_dump($cek);
+    //     return view('auth/daftar/bayar', $data);
+    // }
 }

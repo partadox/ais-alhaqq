@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="modaltambah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel"><?= $title ?></h5>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="" class="col-sm-4 col-form-label">Angkatan</label>
+                    <label for="" class="col-sm-4 col-form-label">Angkatan <br> Bergabung</label>
                     <div class="col-sm-8">
                         <input type="number" class="form-control" id="angkatan" name="angkatan">
                         <div class="invalid-feedback errorAngkatan"></div>
@@ -100,6 +100,7 @@
                             <option value="SARJANA">SARJANA (S1)</option>
                             <option value="MAGISTER">MAGISTER (S2)</option>
                             <option value="DOKTOR">DOKTOR (S3)</option>
+                            <option value="TIDAK DIKETAHUI">TIDAK DIKETAHUI</option>
                         </select>
                         <div class="invalid-feedback errorPendidikan"></div>
                     </div>
@@ -142,7 +143,9 @@
                             <option value="PELAJAR/MAHASISWA">PELAJAR/MAHASISWA</option>
                             <option value="KELUARGA/RUMAH TANGGA">KELUARGA/RUMAH TANGGA</option>
                             <option value="FREELANCE">FREELANCE</option>
+                            <option value="PENSIUNAN">PENSIUNAN</option>
                             <option value="LAINNYA">LAINNYA</option>
+                            <option value="TIDAK DIKETAHUI">TIDAK DIKETAHUI</option>
                         </select>
                         <div class="invalid-feedback errorPekerjaan"></div>
                     </div>
@@ -197,7 +200,7 @@
                         <select name="user_id" id="user_id" class="js-example-basic-single">
                                 <option Disabled=true Selected=true> </option>
                             <?php foreach ($user as $key => $data) { ?>
-                                <option value="<?= $data['user_id'] ?>"><?= $data['nama'] ?></option>
+                                <option value="<?= $data['user_id'] ?>"><?= $data['username'] ?> | <?= $data['nama'] ?></option>
                             <?php } ?>
                         </select>
                         <div class="invalid-feedback errorUser_id"></div>

@@ -214,6 +214,7 @@ class Pengajar extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Buat Data Pengajar Nama : ' .  $this->request->getVar('nama_pengajar'),
                 ];
                 $this->log->insert($log);
@@ -460,14 +461,23 @@ class Pengajar extends BaseController
                     'tgl_gabung_pengajar'     => $this->request->getVar('tgl_gabung_pengajar'),
                 ];
 
+                //Update Data Pengajar
                 $pengajar_id = $this->request->getVar('pengajar_id');
                 $this->pengajar->update($pengajar_id, $update_data);
+
+                //Aktivasi ID User
+                $iduser     = $this->request->getVar('user_id');
+                $aktif_user = ['active' => 1, ];
+
+                // Update Akun User
+                $this->user->update($iduser, $aktif_user);
 
                 // Data Log START
                 $log = [
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Edit Data Pengajar Nama : ' .  $this->request->getVar('nama_pengajar'),
                 ];
                 $this->log->insert($log);
@@ -494,6 +504,10 @@ class Pengajar extends BaseController
             $user_id = $get_user_id->user_id;
             $updatedata = ['active' => 0, ];
 
+            //Get Nama dan NIS
+            $data_pgj   = $this->pengajar->find($pengajar_id[$i]);
+            $pgj_nama   = $data_pgj['nama_pengajar'];
+
             // Update Akun User
             $this->user->update($user_id, $updatedata);
             // Hapus Data Pengajar
@@ -504,10 +518,53 @@ class Pengajar extends BaseController
                 'username_log' => session()->get('username'),
                 'tgl_log'      => date("Y-m-d"),
                 'waktu_log'    => date("H:i:s"),
-                'aktivitas_log'=> 'Hapus Data Pengajar/Penguji ID : ' .  $this->request->getVar('pengajar_id'),
+                'status_log'   => 'BERHASIL',
+                'aktivitas_log'=> 'Hapus Data Pengajar/Penguji : ' .  $pgj_nama,
             ];
             $this->log->insert($log);
             // Data Log END
+
+            $msg = [
+                'sukses' => [
+                    'link' => 'pengajar'
+                ]
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function hapusall_pengajar()
+    {
+        if ($this->request->isAJAX()) {
+            $pengajar_id = $this->request->getVar('pengajar_id');
+            $jmldata = count($pengajar_id);
+            for ($i = 0; $i < $jmldata; $i++) {
+                //Get data user id
+                $get_user_id = $this->pengajar->get_user_id($pengajar_id[$i]);
+                $user_id = $get_user_id->user_id;
+                $updatedata = ['active' => 0, ];
+
+                // Update Akun User
+                $this->user->update($user_id, $updatedata);
+
+                 //Get Nama dan NIS
+                 $data_pgj   = $this->pengajar->find($pengajar_id[$i]);
+                 $pgj_nama   = $data_pgj['nama_pengajar'];
+
+                // Hapus Data Peserta
+                $this->pengajar->delete($pengajar_id[$i]);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Hapus Data Pengajar/Penguji  : ' . $pgj_nama,
+                ];
+                $this->log->insert($log);
+                // Data Log END
+            }
 
             $msg = [
                 'sukses' => [
@@ -587,6 +644,7 @@ class Pengajar extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Buat Data Pengajar via Import Excel, Nama Pengajar : ' .  $excel['4'],
                 ];
                 $this->log->insert($log);
@@ -764,6 +822,7 @@ class Pengajar extends BaseController
             'username_log' => session()->get('username'),
             'tgl_log'      => date("Y-m-d"),
             'waktu_log'    => date("H:i:s"),
+            'status_log'   => 'BERHASIL',
             'aktivitas_log'=> 'Download Data Pengajar / Penguji via Export Excel, Waktu : ' .  date('Y-m-d-H:i:s'),
         ];
         $this->log->insert($log);

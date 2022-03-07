@@ -17,6 +17,7 @@
                 <th>Tanggal</th>
                 <th>Jam</th> 
                 <th>Admin</th>
+                <th>Status</th>
                 <th>Aktivitas</th>
             </tr>
         </thead>
@@ -29,7 +30,18 @@
                     <td width="2%"><?= $nomor ?></td>
                     <td width="5%"><?= shortdate_indo($data['tgl_log']) ?></td>
                     <td width="5%"><?= $data['waktu_log'] ?></td>
-                    <td width="10%"><?= $data['username_log'] ?></td>
+                    <td width="8%"><?= $data['username_log'] ?></td>
+                    <td width="4%">
+                        <?php if($data['status_log'] == NULL) { ?>
+                           <p></p> 
+                        <?php } ?>
+                        <?php if($data['status_log'] == 'BERHASIL') { ?>
+                            <button class="btn btn-success btn-sm" disabled>BERHASIL</button> 
+                        <?php } ?>
+                        <?php if($data['status_log'] == 'GAGAL') { ?>
+                            <button class="btn btn-danger btn-sm" disabled>GAGAL</button> 
+                        <?php } ?>
+                    </td>
                     <td width="25%"><?= $data['aktivitas_log'] ?></td>
                 </tr>
 

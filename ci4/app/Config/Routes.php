@@ -83,6 +83,7 @@ $routes->get('/auth/absen/list_absen/(:num)', 'Absen::list_absen/$1', ['filter' 
 
 //Strange Bug
 $routes->get('/auth/peserta/peserta', 'Peserta::Index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/pengajar/pengajar', 'Pengajar::Index', ['filter' => 'Validasilogin']);
 
 // $routes->get('/auth/staf', 'Staf::index', ['filter' => 'Validasilogin']);
 // $routes->get('/auth/guru', 'Guru::index', ['filter' => 'Validasilogin']);

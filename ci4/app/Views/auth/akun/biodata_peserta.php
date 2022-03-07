@@ -113,6 +113,7 @@
                             <option value="SARJANA" <?php if ($pendidikan == 'SARJANA') echo "selected"; ?>>SARJANA (S1)</option>
                             <option value="MAGISTER" <?php if ($pendidikan == 'MAGISTER') echo "selected"; ?>>MAGISTER (S2)</option>
                             <option value="DOKTOR" <?php if ($pendidikan == 'DOKTOR') echo "selected"; ?>>DOKTOR (S3)</option>
+                            <option value="TIDAK DIKETAHUI"  <?php if ($pendidikan == 'TIDAK DIKETAHUI') echo "selected"; ?>>TIDAK DIKETAHUI</option>
                         </select>
                         <div class="invalid-feedback errorPendidikan">
                       </div>
@@ -153,7 +154,9 @@
                             <option value="PELAJAR/MAHASISWA" <?php if ($pekerjaan == 'PELAJAR/MAHASISWA') echo "selected"; ?>>PELAJAR/MAHASISWA</option>
                             <option value="KELUARGA/RUMAH TANGGA" <?php if ($pekerjaan == 'KELUARGA/RUMAH TANGGA') echo "selected"; ?>>KELUARGA/RUMAH TANGGA</option>
                             <option value="FREELANCE" <?php if ($pekerjaan == 'FREELANCE') echo "selected"; ?>>FREELANCE</option>
+                            <option value="PENSIUNAN"  <?php if ($pekerjaan == 'PENSIUNAN') echo "selected"; ?>>PENSIUNAN</option>
                             <option value="LAINNYA" <?php if ($pekerjaan == 'LAINNYA') echo "selected"; ?>>LAINNYA</option>
+                            <option value="TIDAK DIKETAHUI" <?php if ($pekerjaan == 'TIDAK DIKETAHUI') echo "selected"; ?>>TIDAK DIKETAHUI</option>
                         </select>
                       <div class="invalid-feedback errorPekerjaan">
                     </div>

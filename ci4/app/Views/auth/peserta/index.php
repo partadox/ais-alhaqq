@@ -38,9 +38,19 @@ if (session()->getFlashdata('pesan_sukses')) {
 ?>
 
 <div class="table-responsive">
+    <?= form_open('peserta/hapusall', ['class' => 'formhapus']) ?>
+
+    <button type="submit" class="btn btn-danger btn">
+    <i class="fa fa-trash"></i> Hapus yang Diceklist
+    </button>
+
+    <hr>
     <table id="datatable" class="table table-striped table-bordered nowrap mt-5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
         <thead>
             <tr>
+                <th>
+                    <input type="checkbox" id="centangSemua">
+                </th>
                 <th>No.</th>
                 <th>NIS</th>
                 <th>Nama</th>
@@ -49,7 +59,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                 <th>Jenis Kelamin</th>
                 <th>No. HP</th>
                 <th>Level</th> 
-                <th>Angkatan</th>
+                <th>Angkatan <br> Bergabung</th>
                 <th>Usia</th>
                 <th>Status</th>
                 <th>Akun</th>
@@ -62,6 +72,9 @@ if (session()->getFlashdata('pesan_sukses')) {
             foreach ($list as $data) :
                 $nomor++; ?>
                 <tr>
+                    <td  width="1%">
+                        <input type="checkbox" name="peserta_id[]" class="centangPesertaid" value="<?= $data['peserta_id'] ?>">
+                    </td>
                     <td width="2%"><?= $nomor ?></td>
                     <td width="5%"><?= $data['nis'] ?></td>
                     <td width="10%"><?= $data['nama_peserta'] ?></td>
@@ -97,6 +110,7 @@ if (session()->getFlashdata('pesan_sukses')) {
             <?php endforeach; ?>
         </tbody>
     </table>
+    <?= form_close() ?>
 </div>
 
 <div class="viewmodaltambah">
@@ -139,6 +153,64 @@ if (session()->getFlashdata('pesan_sukses')) {
 <!-- End Modal Import File Excel -->
 
 <script>
+    $(document).ready(function() {
+
+        $('#datatable').DataTable({
+
+        });
+        
+        $('#centangSemua').click(function(e) {
+            if ($(this).is(':checked')) {
+                $('.centangPesertaid').prop('checked', true);
+            } else {
+                $('.centangPesertaid').prop('checked', false);
+            }
+        });
+
+        $('.formhapus').submit(function(e) {
+            e.preventDefault();
+            let jmldata = $('.centangPesertaid:checked');
+            if (jmldata.length === 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Ooops!',
+                    text: 'Silahkan pilih data!',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+            } else {
+                Swal.fire({
+                    title: 'Hapus data',
+                    text: `Apakah anda yakin ingin menghapus sebanyak ${jmldata.length} data?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "post",
+                            url: $(this).attr('action'),
+                            data: $(this).serialize(),
+                            dataType: "json",
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: 'Data berhasil dihapus!',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(function() {
+                                window.location = response.sukses.link;
+                        });
+                            }
+                        });
+                    }
+                })
+            }
+        });
+    });
 
     function tambah() {
         $.ajax({
