@@ -104,4 +104,12 @@ class Modelpeserta extends Model
             ->where('nis', $nis)
             ->countAllResults();
     }
+
+    //Cek data peserta ada atau tidak berdasarkan peserta_id
+    public function cek_multiple_edit($peserta_id)
+    {
+        return $this->table('peserta')
+            ->where('peserta_id', $peserta_id)
+            ->countAllResults();
+    }
 }

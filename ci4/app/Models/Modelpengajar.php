@@ -45,6 +45,14 @@ class Modelpengajar extends Model
             ->countAllResults();
     }
 
+    //Cek data pengajar ada atau tidak berdasarkan pengajar_id
+    public function cek_multiple_edit($pengajar_id)
+    {
+        return $this->table('pengajar')
+            ->where('pengajar_id', $pengajar_id)
+            ->countAllResults();
+    }
+
     //Panel Pengajar Query 
     //Get data pengajar - list kelas yg diajar
     public function get_pengajar($user_id)

@@ -128,7 +128,7 @@
             <i class="mdi mdi-account-badge-horizontal-outline"></i> <span>  Level</span>
         </a>
     </li>
-    <li class="menu-title">Akademik</li>
+    <!-- <li class="menu-title">Akademik</li>
     <li>
         <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-timeline"></i> <span> Riwayat Kelas Peserta </span>
@@ -142,7 +142,7 @@
         <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-certificate"></i> <span> Sertifikat </span>
         </a>
-    </li>
+    </li> -->
     <li class="menu-title">Peserta & Pengajar</li>
     <li>
         <a href="<?= base_url('auth/peserta') ?>" class="waves-effect">

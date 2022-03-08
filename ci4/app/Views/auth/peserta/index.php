@@ -18,12 +18,23 @@
 </a>
 
 <a href="<?= base_url('peserta/export') ?>"> 
-    <button type="button" class="btn btn-secondary mb-3"><i class=" fa fa-file-download"></i> Download Data</button>
+    <button type="button" class="btn btn-secondary mb-3"><i class=" fa fa-file-download"></i> Export Excel (Download)</button>
 </a>
 
-<a href="<?= base_url('/template/Template_Peserta_v3.xlsx') ?>"> 
-    <button type="button" class="btn btn-info mb-3"><i class=" fa fa-file-excel"></i> Template Import File Excel</button>
+<a> 
+    <button type="button" class="btn btn-warning mb-3" data-toggle="modal" data-target="#editbatch" ><i class=" fa fa-edit"></i> Multiple Edit</button>
 </a>
+
+<div class="dropdown d-inline float-right">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class=" fa fa-file-alt mr-1"></i>
+    Template
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="<?= base_url('/template/Template_Peserta_v3.xlsx') ?>"> <i class=" fa fa-file-excel"></i> Import File Excel</a>
+    <a class="dropdown-item" href="<?= base_url('/template/Template_Multiple_Edit_Peserta.xlsx') ?>"> <i class=" fa fa-edit"></i> Multiple Edit</a>
+  </div>
+</div>
+
 
 
 <?php
@@ -52,11 +63,12 @@ if (session()->getFlashdata('pesan_sukses')) {
                     <input type="checkbox" id="centangSemua">
                 </th>
                 <th>No.</th>
+                <th>Peserta ID</th>
                 <th>NIS</th>
                 <th>Nama</th>
                 <th>NIK</th>
                 <th>Asal Cabang</th>
-                <th>Jenis Kelamin</th>
+                <th>Jenis <br> Kelamin</th>
                 <th>No. HP</th>
                 <th>Level</th> 
                 <th>Angkatan <br> Bergabung</th>
@@ -76,6 +88,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                         <input type="checkbox" name="peserta_id[]" class="centangPesertaid" value="<?= $data['peserta_id'] ?>">
                     </td>
                     <td width="2%"><?= $nomor ?></td>
+                    <td width="1%"><?= $data['peserta_id'] ?></td>
                     <td width="5%"><?= $data['nis'] ?></td>
                     <td width="10%"><?= $data['nama_peserta'] ?></td>
                     <td width="10%"><?= $data['nik'] ?></td>
@@ -96,7 +109,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <button class="btn btn-secondary btn-sm" disabled>CUTI</button> 
                         <?php } ?>
                     </td>
-                    <td width="5%"> <button class="btn btn-primary btn-sm" disabled> <?= $data['username'] ?></button></td>
+                    <td width="5%"> ID:<?= $data['user_id'] ?> - <b><?= $data['username'] ?></b></td>
                     <td width="5%">
                         <button type="button" class="btn btn-secondary" onclick="datadiri('<?= $data['peserta_id'] ?>')" >
                         <i class=" fa fa-info"></i></button>
@@ -136,6 +149,10 @@ if (session()->getFlashdata('pesan_sukses')) {
             ?>
             <?= csrf_field() ?>
             <div class="modal-body">
+                <p class="mt-1">Catatan :<br> 
+                    <i class="mdi mdi-information"></i> Download file template yang disediakan untuk import file dari file excel.<br>
+                    <i class="mdi mdi-information"></i> Data import Excel maximal berisi 300 Data/Baris. Jika lebih maka data selebihnya akan gagal ter-import ke dalam sistem.<br>
+                </p>
                     <div class="form-group">
                         <label>Pilih File Excel</label>
                         <input type="file" class="form-control" name="file_excel" accept=".xls, .xlsx">
@@ -151,6 +168,41 @@ if (session()->getFlashdata('pesan_sukses')) {
     </div>
 </div>
 <!-- End Modal Import File Excel -->
+
+<!-- Start Modal Multiple Edit -->
+<div class="modal fade" id="editbatch" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Multiple Edit Data Peserta via File Excel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php echo form_open_multipart('/peserta/edit_multiple');
+            ?>
+            <?= csrf_field() ?>
+            <div class="modal-body">
+                <p class="mt-1">Catatan :<br> 
+                    <i class="mdi mdi-information"></i> Download file template yang disediakan untuk multiple edit data peserta dari file excel.<br>
+                    <i class="mdi mdi-information"></i> Download / Export Excel terlebih dahulu untuk mendapatkan <b>PESERTA ID</b>.<br>
+                    <i class="mdi mdi-information"></i> Data multiple edit via Excel maximal berisi 300 Data/Baris. Jika lebih maka data selebihnya akan gagal ter-import ke dalam sistem.<br>
+                </p>
+                    <div class="form-group">
+                        <label>Pilih File Excel</label>
+                        <input type="file" class="form-control" name="file_excel" accept=".xls, .xlsx">
+                    </div>
+            </div>    
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-warning btnsimpan"><i class="fa fa-edit"></i> Edit</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+            <?php echo form_close() ?>
+        </div>
+    </div>
+</div>
+<!-- End Modal Multiple Edit -->
 
 <script>
     $(document).ready(function() {

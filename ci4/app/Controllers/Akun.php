@@ -1254,7 +1254,8 @@ class Akun extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'GAGAL - Buat Data Akun via Import Excel, Nama : ' .  $excel["1"] .  ' ' .  $pst_or_pgj,
+                    'status_log'   => 'GAGAL',
+                    'aktivitas_log'=> 'Buat Data Akun via Import Excel, ' .   $pst_or_pgj .  ' Nama : ' . $excel["1"],
                 ];
                 $this->log->insert($log);
                 //Data Log END
@@ -1268,7 +1269,7 @@ class Akun extends BaseController
                     'password'              => (password_hash($excel['3'], PASSWORD_BCRYPT)),
                     'foto'                  => 'default.png',
                     'level'                 => $excel['4'],
-                    'active'                => '1',
+                    'active'                => '0',
                 ];
 
                 $this->user->insert($data);
@@ -1278,7 +1279,8 @@ class Akun extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'BERHASIL - Buat Data Akun via Import Excel, Nama : ' .  $excel["1"] . ' ' . $pst_or_pgj,
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Buat Data Akun via Import Excel, Nama : ' .   $pst_or_pgj .  ' Nama : '. $excel["1"],
                 ];
                 $this->log->insert($log);
                 //Data Log END
@@ -1323,11 +1325,11 @@ class Akun extends BaseController
         ];
 
         $sheet->setCellValue('A1', "DATA AKUN PESERTA ALHAQQ - ACADEMIC ALHAQQ INFORMATION SYSTEM");
-        $sheet->mergeCells('A1:E1');
+        $sheet->mergeCells('A1:F1');
         $sheet->getStyle('A1')->applyFromArray($styleColumn);
 
         $sheet->setCellValue('A2', date("Y-m-d"));
-        $sheet->mergeCells('A2:E2');
+        $sheet->mergeCells('A2:F2');
         $sheet->getStyle('A2')->applyFromArray($styleColumn);
 
         $spreadsheet->setActiveSheetIndex(0)
@@ -1335,7 +1337,8 @@ class Akun extends BaseController
             ->setCellValue('B4', 'NAMA')
             ->setCellValue('C4', 'USERNAME')
             ->setCellValue('D4', 'PASSWORD')
-            ->setCellValue('E4', 'LEVEL');
+            ->setCellValue('E4', 'ROLES (PESERTA=4)')
+            ->setCellValue('F4', 'STATUS AKTIF AKUN (AKTIF=1, NONAKTIF=0)');
         
         $sheet->getStyle('A4')->applyFromArray($styleColumn);
         $sheet->getStyle('A4')->applyFromArray($border);
@@ -1347,12 +1350,15 @@ class Akun extends BaseController
         $sheet->getStyle('D4')->applyFromArray($border);
         $sheet->getStyle('E4')->applyFromArray($styleColumn);
         $sheet->getStyle('E4')->applyFromArray($border);
+        $sheet->getStyle('F4')->applyFromArray($styleColumn);
+        $sheet->getStyle('F4')->applyFromArray($border);
 
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
 
         $row = 5;
 
@@ -1362,13 +1368,15 @@ class Akun extends BaseController
                 ->setCellValue('B' . $row, $userdata['nama'])
                 ->setCellValue('C' . $row, $userdata['username'])
                 ->setCellValue('D' . $row, $userdata['password'])
-                ->setCellValue('E' . $row, $userdata['level']);
+                ->setCellValue('E' . $row, $userdata['level'])
+                ->setCellValue('F' . $row, $userdata['active']);
 
             $sheet->getStyle('A' . $row)->applyFromArray($border);
             $sheet->getStyle('B' . $row)->applyFromArray($border);
             $sheet->getStyle('C' . $row)->applyFromArray($border);
             $sheet->getStyle('D' . $row)->applyFromArray($border);
             $sheet->getStyle('E' . $row)->applyFromArray($border);
+            $sheet->getStyle('F' . $row)->applyFromArray($border);
 
             $row++;
         }
@@ -1382,6 +1390,7 @@ class Akun extends BaseController
             'username_log' => session()->get('username'),
             'tgl_log'      => date("Y-m-d"),
             'waktu_log'    => date("H:i:s"),
+            'status_log'   => 'BERHASIL',
             'aktivitas_log'=> 'Download Data via Export Excel' .  $filename,
         ];
         $this->log->insert($log);
@@ -1423,11 +1432,11 @@ class Akun extends BaseController
         ];
 
         $sheet->setCellValue('A1', "DATA AKUN PENGAJAR & PENGUJI ALHAQQ - ACADEMIC ALHAQQ INFORMATION SYSTEM");
-        $sheet->mergeCells('A1:E1');
+        $sheet->mergeCells('A1:F1');
         $sheet->getStyle('A1')->applyFromArray($styleColumn);
 
         $sheet->setCellValue('A2', date("Y-m-d"));
-        $sheet->mergeCells('A2:E2');
+        $sheet->mergeCells('A2:F2');
         $sheet->getStyle('A2')->applyFromArray($styleColumn);
 
         $spreadsheet->setActiveSheetIndex(0)
@@ -1435,7 +1444,8 @@ class Akun extends BaseController
             ->setCellValue('B4', 'NAMA')
             ->setCellValue('C4', 'USERNAME')
             ->setCellValue('D4', 'PASSWORD')
-            ->setCellValue('E4', 'LEVEL');
+            ->setCellValue('E4', 'ROLES (PENGAJAR=5, PENGUJI=6)')
+            ->setCellValue('F4', 'STATUS AKTIF AKUN (AKTIF=1, NONAKTIF=0)');
         
         $sheet->getStyle('A4')->applyFromArray($styleColumn);
         $sheet->getStyle('A4')->applyFromArray($border);
@@ -1447,12 +1457,15 @@ class Akun extends BaseController
         $sheet->getStyle('D4')->applyFromArray($border);
         $sheet->getStyle('E4')->applyFromArray($styleColumn);
         $sheet->getStyle('E4')->applyFromArray($border);
+        $sheet->getStyle('F4')->applyFromArray($styleColumn);
+        $sheet->getStyle('F4')->applyFromArray($border);
 
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
 
         $row = 5;
 
@@ -1462,13 +1475,15 @@ class Akun extends BaseController
                 ->setCellValue('B' . $row, $userdata['nama'])
                 ->setCellValue('C' . $row, $userdata['username'])
                 ->setCellValue('D' . $row, $userdata['password'])
-                ->setCellValue('E' . $row, $userdata['level']);
+                ->setCellValue('E' . $row, $userdata['level'])
+                ->setCellValue('F' . $row, $userdata['active']);
 
             $sheet->getStyle('A' . $row)->applyFromArray($border);
             $sheet->getStyle('B' . $row)->applyFromArray($border);
             $sheet->getStyle('C' . $row)->applyFromArray($border);
             $sheet->getStyle('D' . $row)->applyFromArray($border);
             $sheet->getStyle('E' . $row)->applyFromArray($border);
+            $sheet->getStyle('F' . $row)->applyFromArray($border);
 
             $row++;
         }
@@ -1482,6 +1497,7 @@ class Akun extends BaseController
             'username_log' => session()->get('username'),
             'tgl_log'      => date("Y-m-d"),
             'waktu_log'    => date("H:i:s"),
+            'status_log'   => 'BERHASIL',
             'aktivitas_log'=> 'Download Data via Export Excel' .  $filename,
         ];
         $this->log->insert($log);
@@ -1492,6 +1508,93 @@ class Akun extends BaseController
         header('Cache-Control: max-age=0');
 
         $writer->save('php://output');
+    }
+
+    public function edit_multiple()
+    {
+        $pst_or_pgj = $this->request->getVar('pst_or_pgj');
+        $file   = $this->request->getFile('file_excel');
+        $ext    = $file->getClientExtension();
+
+        if ($ext == 'xls') {
+            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else{
+            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+
+        $spreadsheet = $render->load($file);
+        $sheet       = $spreadsheet->getActiveSheet()->toArray();
+
+        $jumlaherror   = 0;
+        $jumlahsukses  = 0;
+
+        foreach ($sheet as $x => $excel) {
+
+            //Skip row pertama - keempat (judul tabel)
+            if ($x == 0) {
+                continue;
+            }
+            if ($x == 1) {
+                continue;
+            }
+            if ($x == 2) {
+                continue;
+            }
+            if ($x == 3) {
+                continue;
+            }
+
+            //Skip data akun username duplikat
+            $user_id    = $this->user->cek_multiple_edit($excel['0']);
+            if ($user_id == 0 ) {
+                $jumlaherror++;
+                //Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'GAGAL',
+                    'aktivitas_log'=> 'Edit Data Akun via Multiple Edit Excel,' .   $pst_or_pgj .  ' Nama : ' . $excel["1"] ,
+                ];
+                $this->log->insert($log);
+                //Data Log END
+            } elseif($user_id == 1) {
+
+                $jumlahsukses++;
+
+                $updatedata   = [
+                    'nama'                  => strtoupper( $excel['1']),
+                    'username'              => $excel['2'],
+                    'password'              => (password_hash($excel['3'], PASSWORD_BCRYPT)),
+                    'foto'                  => 'default.png',
+                    'level'                 => $excel['4'],
+                    'active'                => $excel['5'],
+                ];
+
+                // Update Data Akun Peserta
+                $usrid = $excel['0'];
+                $this->user->update($usrid, $updatedata);
+
+                //Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Edit Data Akun via Multiple Edit Excel,' .   $pst_or_pgj .  ' Nama : ' . $excel["1"] ,
+                ];
+                $this->log->insert($log);
+                //Data Log END
+            }
+        }
+
+        $this->session->setFlashdata('pesan_sukses', "Data Berhasil Diedit = $jumlahsukses <br> Data Gagal Diedit = $jumlaherror");
+        if($pst_or_pgj == 'peserta'){
+            return redirect()->to('user_peserta');
+        } elseif($pst_or_pgj == 'pengajar') {
+            return redirect()->to('user_pengajar');
+        }
+        
     }
 
 }

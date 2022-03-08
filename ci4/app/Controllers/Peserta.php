@@ -675,6 +675,11 @@ class Peserta extends BaseController
 
                 $this->peserta->insert($data);
 
+                //Update Status User Aktif
+                $updateusr = ['active' => '1'];
+                $usrid = $excel['1'];
+                $this->user->update($usrid, $updateusr);
+
                 //Data Log START
                 $log = [
                     'username_log' => session()->get('username'),
@@ -728,7 +733,7 @@ class Peserta extends BaseController
         $sheet->getStyle('A2')->applyFromArray($styleColumn);
 
         $spreadsheet->setActiveSheetIndex(0)
-            ->setCellValue('A4', 'ID')
+            ->setCellValue('A4', 'PESERTA ID')
             ->setCellValue('B4', 'USER ID')
             ->setCellValue('C4', 'ANGKATAN')
             ->setCellValue('D4', 'NIS')
@@ -887,6 +892,101 @@ class Peserta extends BaseController
         header('Cache-Control: max-age=0');
 
         $writer->save('php://output');
+    }
+
+    public function edit_multiple()
+    {
+        $file   = $this->request->getFile('file_excel');
+        $ext    = $file->getClientExtension();
+
+        if ($ext == 'xls') {
+            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else{
+            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+
+        $spreadsheet = $render->load($file);
+        $sheet       = $spreadsheet->getActiveSheet()->toArray();
+
+        $jumlaherror   = 0;
+        $jumlahsukses  = 0;
+
+        foreach ($sheet as $x => $excel) {
+
+            //Skip row pertama - keempat (judul tabel)
+            if ($x == 0) {
+                continue;
+            }
+            if ($x == 1) {
+                continue;
+            }
+            if ($x == 2) {
+                continue;
+            }
+            if ($x == 3) {
+                continue;
+            }
+
+            //Skip data duplikat
+            $peserta_id    = $this->peserta->cek_multiple_edit($excel['1']);
+            if ($peserta_id == 0 ) {
+                $jumlaherror++;
+                //Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'GAGAL',
+                    'aktivitas_log'=> 'Edit Data Peserta via Multiple Edit, Peserta : ' .  $excel['4'] . ' | ' .  $excel['5'],
+                ];
+                $this->log->insert($log);
+                //Data Log END
+            } elseif($peserta_id == 1) {
+
+                $jumlahsukses++;
+
+                $updatedata   = [
+                    'user_id'               => $excel['2'],
+                    'angkatan'              => $excel['3'],
+                    'nis'                   => $excel['4'],
+                    'nama_peserta'          => strtoupper($excel['5']),
+                    'nik'                   => $excel['6'],
+                    'level_peserta'         => $excel['7'],
+                    'status_peserta'        => $excel['8'],
+                    'asal_cabang_peserta'   => $excel['9'],
+                    'tmp_lahir'             => strtoupper($excel['10']),
+                    'tgl_lahir'             => $excel['11'],
+                    'jenkel'                => $excel['12'],
+                    'pendidikan'            => $excel['13'],
+                    'jurusan'               => strtoupper($excel['14']),
+                    'status_kerja'          => $excel['15'],
+                    'pekerjaan'             => $excel['16'],
+                    'domisili_peserta'      => $excel['17'],
+                    'alamat'                => strtoupper($excel['18']),
+                    'hp'                    => $excel['19'],
+                    'email'                 => strtolower($excel['20']),
+                    'tgl_gabung'            => $excel['21'],
+                ];
+
+                // Update Data Peserta
+                $psrtid = $excel['1'];
+                $this->peserta->update($psrtid, $updatedata);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Edit Data Peserta via Multiple Edit, Peserta : '  .  $excel['4'] . ' | ' .  $excel['5'],
+                ];
+                $this->log->insert($log);
+                // Data Log END
+            }
+        }
+
+        $this->session->setFlashdata('pesan_sukses', "Data Berhasil Diedit = $jumlahsukses <br> Data Gagal Diedit = $jumlaherror");
+        return redirect()->to('index');
     }
 
 
