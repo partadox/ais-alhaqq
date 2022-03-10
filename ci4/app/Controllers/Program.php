@@ -15,12 +15,89 @@ class Program extends BaseController
         return view('auth/program/index', $data);
     }
 
+    public function input_atur_pendaftaran()
+    {
+        if ($this->request->isAJAX()) {
+
+            $data = [
+                'title'   => 'Form Pengaturan Pembukaan Pendaftaran Program',
+                'konfig'  => $this->konfigurasi->list()
+            ];
+            $msg = [
+                'sukses' => view('auth/program_kelas/atur_daftar', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function simpan_atur_pendaftaran()
+    {
+        if ($this->request->isAJAX()) {
+            $validation = \Config\Services::validation();
+            $valid = $this->validate([
+                'angkatan_kuliah' => [
+                    'label' => 'angkatan_kuliah',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'status_pendaftaran' => [
+                    'label' => 'status_pendaftaran',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+            ]);
+            if (!$valid) {
+                $msg = [
+                    'error' => [
+                        'angkatan_kuliah'        => $validation->getError('angkatan_kuliah'),
+                        'status_pendaftaran'     => $validation->getError('status_pendaftaran'),
+                    ]
+                ];
+            } else {
+
+                $angkatan_kuliah = $this->request->getVar('angkatan_kuliah');
+                $status_daftar   = $this->request->getVar('status_pendaftaran');
+
+                $data = [
+                    'angkatan_kuliah'            => $angkatan_kuliah,
+                    'status_pendaftaran'         => $status_daftar,
+                ];
+
+                $konfig_id = 1;
+
+                $this->konfigurasi->update($konfig_id, $data);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Ubah Pengaturan Pendaftarn Menjadi : ' .   $status_daftar . 'Angkatan Perkuliahan : ' . $angkatan_kuliah,
+                ];
+                $this->log->insert($log);
+                // Data Log END
+
+                $msg = [
+                    'sukses' => [
+                        'link' => 'kelas'
+                    ]
+                ];
+            }
+            echo json_encode($msg);
+        }
+    }
+
     public function input_program()
     {
         if ($this->request->isAJAX()) {
 
             $data = [
-                'title'               => 'Form Input Program Baru',
+                'title'      => 'Form Input Program Baru',
             ];
             $msg = [
                 'sukses' => view('auth/program/tambah', $data)

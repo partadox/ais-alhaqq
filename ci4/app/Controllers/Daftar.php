@@ -11,6 +11,7 @@ class Daftar extends BaseController
         $data = [
             'title'           => 'Al-Haqq - Pendaftaran Peserta Baru',
             'tampil_ondaftar' => $this->level->list_tampil_ondaftar(),
+            'kantor'          => $this->kantor_cabang->list(),
         ];
         return view('auth/daftar/index', $data);
     }
@@ -23,6 +24,13 @@ class Daftar extends BaseController
             $valid = $this->validate([
                 'nama' => [
                     'label' => 'Nama',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'asal_cabang_peserta' => [
+                    'label' => 'asal_cabang_peserta',
                     'rules' => 'required',
                     'errors' => [
                         'required' => '{field} tidak boleh kosong',
@@ -118,6 +126,7 @@ class Daftar extends BaseController
                 $msg = [
                     'error' => [
                         'nama'              => $validation->getError('nama'),
+                        'asal_cabang_peserta' => $validation->getError('asal_cabang_peserta'),
                         'nik'               => $validation->getError('nik'),
                         'tmp_lahir'         => $validation->getError('tmp_lahir'),
                         'tgl_lahir'         => $validation->getError('tgl_lahir'),
@@ -135,10 +144,16 @@ class Daftar extends BaseController
                     ]
                 ];
             } else {
+                
+                $get_angkatan = $this->konfigurasi->angkatan_kuliah();
+                $angkatan     = $get_angkatan->angkatan_kuliah;
+
                 $simpandata = [
                     'user_id'               => $this->request->getVar('user_id'),
+                    'angkatan'              => $angkatan,
                     'nama_peserta'          => strtoupper($this->request->getVar('nama')),
-                    'asal_cabang_peserta'   => '1',
+                    'asal_cabang_peserta'   => $this->request->getVar('asal_cabang_peserta'),
+                    'nis'                   => $this->request->getVar('nis'),
                     'nik'                   => $this->request->getVar('nik'),
                     'tmp_lahir'             => strtoupper($this->request->getVar('tmp_lahir')),
                     'tgl_lahir'             => $this->request->getVar('tgl_lahir'),
@@ -267,18 +282,22 @@ class Daftar extends BaseController
             }
         } 
 
+        //Cek Status Pendaftarn
+        $get_status_daftar = $this->konfigurasi->status_pendaftaran();
+        $status_daftar     = $get_status_daftar->status_pendaftaran;
         // Cek ada data yang belum dibayar
         $cek1 = $this->program_bayar->cek_belum_lunas($peserta_id);
         // Cek Sudah punya kelas belum
         $cek2 = $this->peserta_kelas->cek_peserta_kelas($peserta_id);
         
         $data = [
-            'title'     => 'Al-Haqq - Daftar Program',
-            'tampil_ondaftar' => $this->level->list_tampil_ondaftar(),
-            'peserta'   => $get_peserta,
-            'program'   => $program,
-            'cek1'      => $cek1,
-            'cek2'      => $cek2,
+            'title'              => 'Al-Haqq - Daftar Program',
+            'tampil_ondaftar'    => $this->level->list_tampil_ondaftar(),
+            'peserta'            => $get_peserta,
+            'program'            => $program,
+            'status_pendaftaran' => $status_daftar,
+            'cek1'               => $cek1,
+            'cek2'               => $cek2,
         ];
         //var_dump($program);
         return view('auth/daftar/daftar', $data);

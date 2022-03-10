@@ -8,14 +8,14 @@ class Modelpesertakelas extends Model
 {
     protected $table      = 'peserta_kelas';
     protected $primaryKey = 'peserta_kelas_id';
-    protected $allowedFields = ['peserta_kelas_id', 'data_peserta_id','data_kelas_id', 'data_absen', 'data_ujian', 'status_peserta_kelas'];
+    protected $allowedFields = ['peserta_kelas_id', 'data_peserta_id','data_kelas_id', 'data_absen', 'data_ujian', 'status_peserta_kelas', 'byr_daftar', 'byr_modul','byr_spp1','byr_spp2','byr_spp3', 'byr_spp4',];
 
     //Cek jumlah kelas yang diikuti peserta
     public function cek_peserta_kelas($peserta_id)
     {
         return $this->table('peserta_kelas')
         ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
-        ->where('status_peserta_kelas', 'Belum Lulus')
+        // ->where('status_peserta_kelas', 'Belum Lulus')
         ->where('data_peserta_id', $peserta_id)
         ->countAllResults();
     }
@@ -25,7 +25,7 @@ class Modelpesertakelas extends Model
         return $this->table('peserta_kelas')
             ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
             ->where('data_kelas_id', $kelas_id)
-            ->where('status_peserta_kelas', 'Belum Lulus')
+            // ->where('status_peserta_kelas', 'Belum Lulus')
             ->orderBy('nama_peserta', 'ASC')
             ->get()->getResultArray();
     }
@@ -59,6 +59,33 @@ class Modelpesertakelas extends Model
         ->where('status_peserta_kelas', 'Belum Lulus')
         ->where('data_peserta_id', $peserta_id)
         ->get()->getResultArray();
+    }
+
+    //Rekap data pembayaran tiap peserta - Admin panel
+    public function admin_rekap_bayar()
+    {
+        return $this->table('peserta_kelas')
+            ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
+            ->join('program_kelas', 'program_kelas.kelas_id = peserta_kelas.data_kelas_id')
+            ->join('program', 'program.program_id = program_kelas.program_id')
+            ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+            // ->where('status_peserta_kelas', 'Belum Lulus')
+            ->orderBy('angkatan_kelas', 'DESC')
+            ->get()->getResultArray();
+    }
+
+    //Pembayaran SPP peserta - peserta panel
+    public function list_kelas_peserta_belum_lulus($peserta_id)
+    {
+        return $this->table('peserta_kelas')
+            ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
+            ->join('program_kelas', 'program_kelas.kelas_id = peserta_kelas.data_kelas_id')
+            ->join('program', 'program.program_id = program_kelas.program_id')
+            ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+            ->where('data_peserta_id', $peserta_id)
+            ->where('status_peserta_kelas', 'Belum Lulus')
+            // ->orderBy('angkatan_kelas', 'DESC')
+            ->get()->getResultArray();
     }
 
     //Dashboard Peserta - Hitung Jumlah Kelas Sedang Diikuti

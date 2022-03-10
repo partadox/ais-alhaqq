@@ -12,6 +12,10 @@
     <button type="button" class="btn btn-primary mb-3" onclick="tambah('')" ><i class=" fa fa-plus-circle"></i> Tambah Kelas</button>
 </a>
 
+<a class="ml-5"> 
+    <button type="button" class="btn btn-success mb-3" onclick="AturDaftar('')" ><i class="fa fa-screwdriver"></i> Pengaturan Pendaftaran</button>
+</a>
+
 <div class="table-responsive">
     <table id="datatable" class="table table-striped table-bordered nowrap mt-5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
         <thead>
@@ -97,7 +101,26 @@
 <div class="viewmodaledit">
 </div>
 
+<div class="viewmodalatur">
+</div>
+
 <script>
+    function AturDaftar() {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('program/input_atur_pendaftaran') ?>",
+            data: {
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.sukses) {
+                    $('.viewmodalatur').html(response.sukses).show();
+                    $('#modalatur').modal('show');
+                }
+            }
+        });
+    }
+    
     function tambah() {
         $.ajax({
             type: "post",

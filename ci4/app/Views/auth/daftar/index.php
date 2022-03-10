@@ -34,6 +34,24 @@
                   </div>
                   <div class="form-group">
                     <div class="mb-3">
+                      <label class="form-label">NIS</label>
+                      <input class="form-control" type="text" id="nis" name="nis" value="<?= session()->get('username') ?>" disabled>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="mb-3">
+                      <label class="form-label">Asal Cabang Peserta</label>
+                      <select name="asal_cabang_peserta" id="asal_cabang_peserta" class="form-control">
+                            <option value="" disabled selected>--PILIH--</option>
+                            <?php foreach ($kantor as $key => $data) { ?>
+                                <option value="<?= $data['kantor_id'] ?>"><?= $data['nama_kantor'] ?></option>
+                            <?php } ?>
+                        </select>
+                        <div class="invalid-feedback errorAsal_cabang_peserta"></div>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="mb-3">
                       <label class="form-label">Nama Lengkap (Sesuai KTP) <code>*</code> </label>
                       <input class="form-control text-uppercase" type="text" id="nama" name="nama" placeholder="Masukan nama lengkap anda">
                       <div class="invalid-feedback errorNama">
@@ -188,7 +206,9 @@
                 url: $(this).attr('action'),
                 data: {
                     user_id: $('input#user_id').val(),
+                    asal_cabang_peserta: $('select#asal_cabang_peserta').val(),
                     nama: $('input#nama').val(),
+                    nis: $('input#nis').val(),
                     nik: $('input#nik').val(),
                     tmp_lahir: $('input#tmp_lahir').val(),
                     tgl_lahir: $('input#tgl_lahir').val(),
@@ -220,6 +240,14 @@
                         } else {
                             $('#nama').removeClass('is-invalid');
                             $('.errorNama').html('');
+                        }
+
+                        if (response.error.asal_cabang_peserta) {
+                            $('#asal_cabang_peserta').addClass('is-invalid');
+                            $('.errorAsal_cabang_peserta').html(response.error.asal_cabang_peserta);
+                        } else {
+                            $('#asal_cabang_peserta').removeClass('is-invalid');
+                            $('.errorAsal_cabang_peserta').html('');
                         }
 
                         if (response.error.nik) {

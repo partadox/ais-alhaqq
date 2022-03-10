@@ -75,14 +75,14 @@
 <?php } ?>
 
 <?php if (session()->get('level') == 4) { ?>
-    <li class="menu-title">Pembayaran</li>
+    <li class="menu-title">Pembayaran </li>
     <li>
-        <a href="<?= base_url('#') ?>" class="waves-effect">
-            <i class="mdi mdi-cash"></i> <span> Pembayaran SPP </span>
+        <a href="<?= base_url('auth/pembayaran/peserta_bayar_spp') ?>" class="waves-effect">
+            <i class="mdi mdi-cash"></i> <span> Pembayaran SPP & Riwayat Pembayaran </span>
         </a>
-        <a href="<?= base_url('#') ?>" class="waves-effect">
+        <!-- <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-cash-multiple"></i> <span> Riwayat Pembayaran </span>
-        </a>
+        </a> -->
     </li>
 <?php } ?>
 
@@ -106,7 +106,7 @@
         <a href="<?= base_url('auth/pembayaran/') ?>" class="waves-effect">
             <i class="mdi mdi-cash-register"></i> <span> Semua Pembayaran</span>
         </a>
-        <a href="<?= base_url('#') ?>" class="waves-effect">
+        <a href="<?= base_url('auth/pembayaran/admin_rekap_bayar') ?>" class="waves-effect">
             <i class="mdi mdi-cash-multiple"></i> <span> Rekap Pembayaran SPP</span>
         </a>
         <!-- <a href="<?= base_url('auth/pembayaran') ?>" class="waves-effect">

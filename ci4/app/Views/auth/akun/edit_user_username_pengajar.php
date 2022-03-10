@@ -13,9 +13,9 @@
             <div class="modal-body">
                 <input type="hidden" class="form-control" id="user_id" value="<?= $user_id ?>" name="user_id" readonly>
                 <div class="form-group row">
-                    <label for="" class="col-sm-4 col-form-label">Username<code>*</code></label>
+                    <label class="col-sm-4 col-form-label">Username<code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" id="username" name="username" value="<?= $username ?>">
+                        <input class="form-control" type="text" id="username" name="username" value="<?= $username ?>">
                         <div class="invalid-feedback errorUsername"></div>
                     </div>
                 </div>

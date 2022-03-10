@@ -221,6 +221,7 @@ class Akun extends BaseController
                 'title'      => 'Ubah Data Akun User Peserta',
                 'user_id'    => $user['user_id'],
                 'nama'       => $user['nama'],
+                'active'     => $user['active'],
             ];
             $msg = [
                 'sukses' => view('auth/akun/edit_user_peserta', $data)
@@ -240,6 +241,7 @@ class Akun extends BaseController
                 'user_id'    => $user['user_id'],
                 'nama'       => $user['nama'],
                 'level'      => $user['level'],
+                'active'     => $user['active'],
             ];
             $msg = [
                 'sukses' => view('auth/akun/edit_user_pengajar', $data)
@@ -272,6 +274,7 @@ class Akun extends BaseController
                 if($cek_password == ''){
                     $update_data = [
                         'nama'         => strtoupper($this->request->getVar('nama')),
+                        'active'       => $this->request->getVar('active'),
                     ];
     
                     $user_id = $this->request->getVar('user_id');
@@ -279,6 +282,7 @@ class Akun extends BaseController
                 } else{
                     $update_data = [
                         'nama'         => strtoupper($this->request->getVar('nama')),
+                        'active'       => $this->request->getVar('active'),
                         'password'     => (password_hash($this->request->getVar('password'), PASSWORD_BCRYPT)),
                     ];
     
@@ -340,6 +344,7 @@ class Akun extends BaseController
                     $update_data = [
                         'nama'         => strtoupper($this->request->getVar('nama')),
                         'level'        => $this->request->getVar('level'),
+                        'active'       => $this->request->getVar('active'),
                     ];
     
                     $user_id = $this->request->getVar('user_id');
@@ -349,6 +354,7 @@ class Akun extends BaseController
                         'nama'         => strtoupper($this->request->getVar('nama')),
                         'password'     => (password_hash($this->request->getVar('password'), PASSWORD_BCRYPT)),
                         'level'        => $this->request->getVar('level'),
+                        'active'       => $this->request->getVar('active'),
                     ];
     
                     $user_id = $this->request->getVar('user_id');

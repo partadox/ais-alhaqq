@@ -23,7 +23,7 @@
                     <p class="mt-3">Catatan :<br> 
                       <i class="mdi mdi-information"></i> Anda harus mengupload bukti transfer dan klik tombol "Konfirmasi Pembayaran". <br>
                       <i class="mdi mdi-information"></i> Jika "Status Konfirmasi" bertulis "Proses" maka, bukti transfer anda berhasil dikirim dan menunggu konfirmasi admin. <br>
-                      <i class="mdi mdi-information"></i> Total harus bayar merupakan gabungan biaya pendaftaran dan biaya spp bulan pertama. Jika anda mentransfer dana lebih dari total bayar maka dana anda akan kami masukan ke Infaq. <br>
+                      <i class="mdi mdi-information"></i> Minimal nilai pembayaran yang harus anda bayarkan adalah <b>Total Pendaftaran + SPP 1 + Modul</b>. <br>
                     </p>
                     <h6> <u> Metode Pembayaran Transfer Bank Dapat Melalui Pilihan Rekening Berikut:</u> <br></h6>
                     <?php foreach ($bank as $key => $data) { ?>

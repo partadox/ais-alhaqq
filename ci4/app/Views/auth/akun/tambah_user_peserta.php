@@ -11,6 +11,14 @@
             <?= form_open('akun/simpan_user_peserta', ['class' => 'formtambah']) ?>
             <?= csrf_field(); ?>
             <div class="modal-body">
+                <p class="mt-1">Catatan :<br> 
+                    <i class="mdi mdi-information"></i> Username adalah <b>NIS Peserta</b>. <br>
+                    <i class="mdi mdi-information"></i> Format Penomoran NIS = ABCDEWXYZ. <br>
+                    <i class="mdi mdi-information"></i> A = [1 DIGIT KODE JENIS KELAMIN] <br>
+                    <i class="mdi mdi-information"></i> BC = [2 DIGIT KODE ANGKATAN] <br>
+                    <i class="mdi mdi-information"></i> DE = [2 DIGIT KODE TAHUN MASUK] <br>
+                    <i class="mdi mdi-information"></i> WXYZ = [NOMOR URUT PESERTA] <br>
+                </p>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Nama Akun <code>*</code></label>
                     <div class="col-sm-8">

@@ -15,7 +15,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Password<code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Masukan password untuk ubah password lama!">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Masukan password baru">
                         <div class="invalid-feedback errorPassword"></div>
                     </div>
                 </div>

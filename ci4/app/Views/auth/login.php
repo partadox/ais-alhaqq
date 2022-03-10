@@ -48,8 +48,8 @@ $konfigurasi = $this->konfigurasi->orderBy('konfigurasi_id')->first();
                             <div class="invalid-feedback errorPassword">
                         </div>
                         <input type="submit" value="Masuk"></input>
-                        <h6 id="formFooter"><a href="<?= base_url('auth/register') ?>">Ingin daftar di program Al-Haqq? Silahkan buat akun dahulu.</a></h6>
-                        <p id="formFooter"><a href="https://api.whatsapp.com/send/?app_absent=0&phone=6281347050573&text=Saya+lupa+akun+saya:%0A%0ANama:" target="_blank">Lupa Username atau Password? Hubungi Admin</a></p>
+                        <h6 id="formFooter"><a>Ingin daftar di program Al-Haqq? Silahkan hubungi admin untuk pembuatan akun.</a></h6>
+                        <p id="formFooter"><a target="_blank">Lupa Username atau Password? Hubungi Admin</a></p>
                         <p id="formFooter"><a href="https://alhaqq.or.id/">Kembali ke Website Depan alhaqq.or.id</a></p>
                     <?= form_close() ?>
                 </div>

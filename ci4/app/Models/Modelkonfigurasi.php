@@ -8,7 +8,7 @@ class Modelkonfigurasi extends Model
 {
     protected $table      = 'konfigurasi';
     protected $primaryKey = 'konfigurasi_id';
-    protected $allowedFields = ['nama_web', 'deskripsi', 'visi', 'misi', 'instagram', 'facebook', 'whatsapp', 'email', 'alamat', 'logo', 'icon'];
+    protected $allowedFields = ['nama_web', 'deskripsi', 'visi', 'misi', 'instagram', 'facebook', 'whatsapp', 'email', 'alamat', 'logo', 'icon', 'status_pendaftaran','angkatan_kuliah'];
 
     //backend
     public function list()
@@ -16,5 +16,23 @@ class Modelkonfigurasi extends Model
         return $this->table('konfigurasi')
             ->orderBy('konfigurasi_id', 'ASC')
             ->get()->getResultArray();
+    }
+
+    //Mendapatkan angkatan perkuliahan
+    public function angkatan_kuliah()
+    {
+        return $this->table('konfigurasi')
+            ->select('angkatan_kuliah')
+            ->get()
+            ->getUnbufferedRow();
+    }
+
+    //Mendapatkan status pendaftarn
+    public function status_pendaftaran()
+    {
+        return $this->table('konfigurasi')
+            ->select('status_pendaftaran')
+            ->get()
+            ->getUnbufferedRow();
     }
 }

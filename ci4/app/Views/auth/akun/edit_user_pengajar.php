@@ -30,6 +30,16 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label">Status Aktif Akun <code>*</code></label>
+                    <div class="col-sm-8">
+                        <select class="form-control btn-square" id="active" name="active">
+                            <option value="0" <?php if ($active == '0') echo "selected"; ?>>NONAKTIF</option>
+                            <option value="1" <?php if ($active == '1') echo "selected"; ?>>AKTIF</option>
+                        </select>
+                        <div class="invalid-feedback errorActive"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Reset Password</label>
                     <div class="col-sm-8">
                         <input type="password" class="form-control" id="password" name="password" placholder="Masukan password baru jika ingin reset password!">

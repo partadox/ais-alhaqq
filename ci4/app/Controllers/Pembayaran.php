@@ -299,7 +299,7 @@ class Pembayaran extends BaseController
                 $this->program_bayar->update($bayar_id, $databayar);
                 
                 //Cek isian form untuk daftar dan spp1
-                if($bayar_daftar != 0 || $bayar_spp1 != 0){
+                if($bayar_daftar != 0 && $bayar_spp1 != 0){
                     $data_spp1 = [
                         'spp1_bayar_id' => $bayar_id,
                         'bayar_daftar'  => $bayar_daftar,
@@ -325,73 +325,164 @@ class Pembayaran extends BaseController
                         'data_peserta_id'       => $peserta_id,
                         'data_kelas_id'         => $kelas_id,
                         'data_absen'            => $last_id,
-                        'status_peserta_kelas'  => 'Belum Lulus'
+                        'status_peserta_kelas'  => 'Belum Lulus',
+                        'byr_daftar'            => '1',
+                        'byr_spp1'              => '1',
                     ];
 
                     $this->spp1->insert($data_spp1);
                     $this->program->update($kelas_id, $datakelas);
                     $this->peserta_kelas->insert($datapesertakelas);
 
+                    // Get last id insert from peserta kelas
+                    $last_id_psrt_kls = $this->peserta_kelas->insertID();
+
+                    //Cek isian form untuk infaq
+                    if($bayar_infaq != 0){
+                        $data_infaq = [
+                            'infaq_bayar_id'=> $bayar_id,
+                            'bayar_infaq'   => $bayar_infaq,
+                        ];
+                        $this->infaq->insert($data_infaq);
+                    }
+
+                    //Cek isian form untuk spp2
+                    if($bayar_spp2 != 0){
+                        $data_spp2 = [
+                            'spp2_bayar_id' => $bayar_id,
+                            'bayar_spp2'    => $bayar_spp2,
+                            'status_spp2'   => 'Lunas',
+                        ];
+                        $this->spp2->insert($data_spp2);
+
+                        // Update status bayar pada tabel peserta kelas
+                        $data_update_spp2 = ['byr_spp2' => '1'];
+                        $this->peserta_kelas->update($last_id_psrt_kls, $data_update_spp2);
+                    }
+
+                    //Cek isian form untuk spp3
+                    if($bayar_spp3 != 0){
+                        $data_spp3 = [
+                            'spp3_bayar_id'    => $bayar_id,
+                            'bayar_spp3'       => $bayar_spp3,
+                            'status_spp3'      => 'Lunas',
+                        ];
+                        $this->spp3->insert($data_spp3);
+
+                        // Update status bayar pada tabel peserta kelas
+                        $data_update_spp3 = ['byr_spp3' => '1'];
+                        $this->peserta_kelas->update($last_id_psrt_kls, $data_update_spp3);
+                    }
+
+                    //Cek isian form untuk spp4
+                    if($bayar_spp4 != 0){
+                        $data_spp4 = [
+                            'spp4_bayar_id'    => $bayar_id,
+                            'bayar_spp4'       => $bayar_spp4,
+                            'status_spp4'      => 'Lunas',
+                        ];
+                        $this->spp4->insert($data_spp4);
+
+                        // Update status bayar pada tabel peserta kelas
+                        $data_update_spp4 = ['byr_spp4' => '1'];
+                        $this->peserta_kelas->update($last_id_psrt_kls, $data_update_spp4);
+                    }
+
+                    //Cek isian form untuk modul
+                    if($bayar_modul != 0){
+                        $data_modul = [
+                            'bayar_modul_id'        => $bayar_id,
+                            'bayar_modul'           => $bayar_modul,
+                            'status_bayar_modul'    => 'Lunas',
+                        ];
+                        $this->bayar_modul->insert($data_modul);
+
+                        // Update status bayar pada tabel peserta kelas
+                        $data_update_modul = ['byr_modul' => '1'];
+                        $this->peserta_kelas->update($last_id_psrt_kls, $data_update_modul);
+                    } elseif ($bayar_modul == 0) {
+                        // Update status bayar pada tabel peserta kelas
+                        $data_update_modul = ['byr_modul' => '0'];
+                        $this->peserta_kelas->update($last_id_psrt_kls, $data_update_modul);
+                    }
+
+                    //Cek isian form untuk lain
+                    if($bayar_lain != 0){
+                        $data_lain = [
+                            'lainnya_bayar_id'        => $bayar_id,
+                            'bayar_lainnya'           => $bayar_lain,
+                            'status_bayar_lainnya'    => 'Lunas',
+                        ];
+                        $this->bayar_lain->insert($data_lain);
+                    }
+
+                } elseif ($bayar_daftar == 0 && $bayar_spp1 == 0) {
+                    // Get id from peserta kelas
+                    $id_psrt_kls = $this->request->getVar('peserta_kelas_id');
+
+                    //Cek isian form untuk infaq
+                    if($bayar_infaq != 0){
+                        $data_infaq = [
+                            'infaq_bayar_id'=> $bayar_id,
+                            'bayar_infaq'   => $bayar_infaq,
+                        ];
+                        $this->infaq->insert($data_infaq);
+                    }
+
+                    //Cek isian form untuk spp2
+                    if($bayar_spp2 != 0){
+                        $data_spp2 = [
+                            'spp2_bayar_id' => $bayar_id,
+                            'bayar_spp2'    => $bayar_spp2,
+                            'status_spp2'   => 'Lunas',
+                        ];
+                        $this->spp2->insert($data_spp2);
+
+                        // Update status bayar pada tabel peserta kelas
+                        $data_update_spp2 = ['byr_spp2' => '1'];
+                        $this->peserta_kelas->update($id_psrt_kls, $data_update_spp2);
+                    }
+
+                    //Cek isian form untuk spp3
+                    if($bayar_spp3 != 0){
+                        $data_spp3 = [
+                            'spp3_bayar_id'    => $bayar_id,
+                            'bayar_spp3'       => $bayar_spp3,
+                            'status_spp3'      => 'Lunas',
+                        ];
+                        $this->spp3->insert($data_spp3);
+
+                        // Update status bayar pada tabel peserta kelas
+                        $data_update_spp3 = ['byr_spp3' => '1'];
+                        $this->peserta_kelas->update($id_psrt_kls, $data_update_spp3);
+                    }
+
+                    //Cek isian form untuk spp4
+                    if($bayar_spp4 != 0){
+                        $data_spp4 = [
+                            'spp4_bayar_id'    => $bayar_id,
+                            'bayar_spp4'       => $bayar_spp4,
+                            'status_spp4'      => 'Lunas',
+                        ];
+                        $this->spp4->insert($data_spp4);
+
+                        // Update status bayar pada tabel peserta kelas
+                        $data_update_spp4 = ['byr_spp4' => '1'];
+                        $this->peserta_kelas->update($id_psrt_kls, $data_update_spp4);
+                    }
+
+                    //Cek isian form untuk lain
+                    if($bayar_lain != 0){
+                        $data_lain = [
+                            'lainnya_bayar_id'        => $bayar_id,
+                            'bayar_lainnya'           => $bayar_lain,
+                            'status_bayar_lainnya'    => 'Lunas',
+                        ];
+                        $this->bayar_lain->insert($data_lain);
+                    }
                 }
 
-                //Cek isian form untuk infaq
-                if($bayar_infaq != 0){
-                    $data_infaq = [
-                        'infaq_bayar_id'=> $bayar_id,
-                        'bayar_infaq'   => $bayar_infaq,
-                    ];
-                    $this->infaq->insert($data_infaq);
-                }
-
-                //Cek isian form untuk spp2
-                if($bayar_spp2 != 0){
-                    $data_spp2 = [
-                        'spp2_bayar_id' => $bayar_id,
-                        'bayar_spp2'    => $bayar_spp2,
-                        'status_spp2'   => 'Lunas',
-                    ];
-                    $this->spp2->insert($data_spp2);
-                }
-
-                //Cek isian form untuk spp3
-                if($bayar_spp3 != 0){
-                    $data_spp3 = [
-                        'spp3_bayar_id'    => $bayar_id,
-                        'bayar_spp3'       => $bayar_spp3,
-                        'status_spp3'      => 'Lunas',
-                    ];
-                    $this->spp3->insert($data_spp3);
-                }
-
-                //Cek isian form untuk spp4
-                if($bayar_spp4 != 0){
-                    $data_spp4 = [
-                        'spp4_bayar_id'    => $bayar_id,
-                        'bayar_spp4'       => $bayar_spp4,
-                        'status_spp4'      => 'Lunas',
-                    ];
-                    $this->spp4->insert($data_spp4);
-                }
-
-                //Cek isian form untuk modul
-                if($bayar_modul != 0){
-                    $data_modul = [
-                        'bayar_modul_id'        => $bayar_id,
-                        'bayar_modul'           => $bayar_modul,
-                        'status_bayar_modul'    => 'Lunas',
-                    ];
-                    $this->bayar_modul->insert($data_modul);
-                }
-
-                //Cek isian form untuk lain
-                if($bayar_lain != 0){
-                    $data_lain = [
-                        'lainnya_bayar_id'        => $bayar_id,
-                        'bayar_lainnya'           => $bayar_lain,
-                        'status_bayar_lainnya'    => 'Lunas',
-                    ];
-                    $this->bayar_lain->insert($data_lain);
-                }
+                
 
                 // Data Log START
                 $log = [
@@ -779,33 +870,43 @@ class Pembayaran extends BaseController
         }
     }
 
-    // public function bayar_spp()
-    // {
-    //     if (!session()->get('user_id')) {
-    //         return redirect()->to('login');
-    //     }
+    public function admin_rekap_bayar()
+    {
+        if (!session()->get('user_id')) {
+            return redirect()->to('login');
+        }
 
-    //     //Get data peserta
-    //     $user_id = session()->get('user_id');
-    //     $get_peserta = $this->peserta->get_peserta_id($user_id);
-    //     $peserta_id = $get_peserta->peserta_id;
-
-    //     // Get Data peserta, program, kelas, bayar
-    //     $program_bayar = $this->program_bayar->belum_lunas($peserta_id);
-    //     //$bayar_awal = $program_bayar[0]['bayar_id'];
+        $data = [
+            'title'         => 'Al-Haqq - Rekap Data Pembayaran Peserta',
+            'list'          => $this->peserta_kelas->admin_rekap_bayar(),
+        ];
         
-    //     // Cek ada data yang belum dibayar
-    //     $cek1 = $this->program_bayar->cek_belum_lunas($peserta_id);
+        return view('auth/pembayaran/rekap_bayar_admin', $data);
+    }
 
-    //     $data = [
-    //         'title'         => 'Al-Haqq - Bayar SPP',
-    //         'peserta'       => $get_peserta,
-    //         'program_bayar' => $program_bayar,
-    //         //'bayar_lunas'   => $bayar_lunas,
-    //         'cek1'           => $cek1,
-    //         'bank'           => $this->bank->list(),
-    //     ];
-    //     //var_dump($cek);
-    //     return view('auth/daftar/bayar', $data);
-    // }
+    public function peserta_bayar_spp()
+    {
+        if (!session()->get('user_id')) {
+            return redirect()->to('login');
+        }
+
+        //Get data peserta
+        $user_id = session()->get('user_id');
+        $get_peserta = $this->peserta->get_peserta_id($user_id);
+        $peserta_id = $get_peserta->peserta_id;
+
+        // Get peserta_kelas_id yang belum lulus 
+        $psrt_kls_id = $this->peserta_kelas->list_kelas_peserta_belum_lulus($peserta_id);
+
+
+        $data = [
+            'title'         => 'Al-Haqq - Pembayaran SPP',
+            'kelas'         => $psrt_kls_id,
+        ];
+        //var_dump($cek);
+        return view('auth/pembayaran/bayar_spp_peserta', $data);
+    }
+
+
+
 }

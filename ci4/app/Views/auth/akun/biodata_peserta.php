@@ -15,9 +15,9 @@
   </div>
   <div class="card-body">
     <p class="mt-1">Catatan :<br>
-        <i class="mdi mdi-information"></i> Setelah anda merubah username atau password anda, silahkan keluar (logout) untuk melihat hasil perubahannya. <br>
+        <i class="mdi mdi-information"></i> Setelah anda merubah password anda, silahkan keluar (logout) dan login kembali menggunakan password baru anda. <br>
     </p>
-    <div class="form-group row">
+    <!-- <div class="form-group row">
         <label for="" class="col-sm-2 col-form-label">Username<code>*</code></label>
         <div class="col-sm-4">
             <input type="text" class="form-control" value="<?= session()->get('username') ?>" readonly>
@@ -25,7 +25,7 @@
         <div class="col-sm-4">
           <button type="button" class="btn btn-primary" onclick="edit_username('<?= session()->get('user_id') ?>')" ><i class=" fa fa-edit mr-1"></i>Ganti Username</button>
         </div>
-    </div>
+    </div> -->
     <div class="form-group row">
         <label for="" class="col-sm-2 col-form-label">Password<code>*</code></label>
         <div class="col-sm-4">
