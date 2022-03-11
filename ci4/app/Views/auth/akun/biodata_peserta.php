@@ -252,11 +252,12 @@
                 url: $(this).attr('action'),
                 data: {
                     user_id: $('input#user_id').val(),
+                    peserta_id: $('input#peserta_id').val(),
                     nama: $('input#nama').val(),
                     nik: $('input#nik').val(),
                     tmp_lahir: $('input#tmp_lahir').val(),
                     tgl_lahir: $('input#tgl_lahir').val(),
-                    jenkel: $('select#jenkel').val(),
+                    jenkel: $('input#jenkel').val(),
                     pendidikan: $('select#pendidikan').val(),
                     jurusan: $('input#jurusan').val(),
                     status_kerja: $('select#status_kerja').val(),

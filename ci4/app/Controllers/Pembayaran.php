@@ -895,7 +895,7 @@ class Pembayaran extends BaseController
         $get_peserta = $this->peserta->get_peserta_id($user_id);
         $peserta_id = $get_peserta->peserta_id;
 
-        // Get peserta_kelas_id yang belum lulus 
+        // Get data peserta_kelas yang belum lulus 
         $psrt_kls_id = $this->peserta_kelas->list_kelas_peserta_belum_lulus($peserta_id);
 
 
@@ -903,8 +903,174 @@ class Pembayaran extends BaseController
             'title'         => 'Al-Haqq - Pembayaran SPP',
             'kelas'         => $psrt_kls_id,
         ];
-        //var_dump($cek);
         return view('auth/pembayaran/bayar_spp_peserta', $data);
+    }
+
+    public function input_pembayaran_spp_peserta()
+    {
+        if ($this->request->isAJAX()) {
+
+            $kelas_id           = $this->request->getVar('kelas_id');
+            $peserta_id         = $this->request->getVar('peserta_id');
+            $peserta_kelas_id   = $this->request->getVar('peserta_kelas_id');
+
+            $data_psrt_kls      = $this->peserta_kelas->find($peserta_kelas_id);
+
+            $data = [
+                'title'         => 'Absensi Pengajar & Peserta',
+                'kelas_id'      => $kelas_id,
+                'peserta_id'    => $peserta_id,
+                'data_psrt_kls' => $data_psrt_kls,
+            ];
+
+            $msg = [
+                'sukses' => view('auth/pembayaran/input_bayar_spp_peserta', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function simpan_bayar_spp_peserta()
+    {
+            $validation = \Config\Services::validation();
+
+            //Get Nama User
+            $user_nama = session()->get('nama');
+            //Get Tgl Today
+            $tgl = date("Y-m-d");
+            $waktu = date("H:i:s");
+            $strwaktu = date("H-i-s");
+
+            $valid = $this->validate([
+                'awal_bayar' => [
+                    'label' => 'awal_bayar',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'awal_bayar_infaq' => [
+                    'label' => 'awal_bayar_infaq',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'awal_bayar_spp2' => [
+                    'label' => 'awal_bayar_spp2',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'awal_bayar_spp3' => [
+                    'label' => 'awal_bayar_spp3',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'awal_bayar_spp4' => [
+                    'label' => 'awal_bayar_spp4',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'foto' => [
+                    'rules' => 'uploaded[foto]|mime_in[foto,image/png,image/jpg,image/jpeg]|is_image[foto]',
+                    'errors' => [
+                        'mime_in' => 'Harus gambar!'
+                    ]
+                ]
+            ]);
+
+            if (!$valid) {
+                $this->session->setFlashdata('pesan_error', 'ERROR! Seluruh Form Input Bertanda * Wajib Diisi dan Harap Upload Bukti Bayar!');
+                return redirect()->to('peserta_bayar_spp');
+            } else {
+
+                // get file foto from input
+                $filefoto = $this->request->getFile('foto');
+                // ambil nama file
+                $namafoto = $filefoto->getName();
+                // nama foto baru
+                $namafoto_new = $user_nama . '_'. $tgl . '_' . $strwaktu .'_'. $namafoto;
+
+                //Get from form input view modal
+                $get_awal_bayar         =  $this->request->getVar('awal_bayar');
+                $get_awal_bayar_infaq   =  $this->request->getVar('awal_bayar_infaq');
+                $get_awal_bayar_spp2    =  $this->request->getVar('awal_bayar_spp2');
+                $get_awal_bayar_spp3    =  $this->request->getVar('awal_bayar_spp3');
+                $get_awal_bayar_spp4    =  $this->request->getVar('awal_bayar_spp4');
+
+                //Replace Rp. and thousand separtor from input
+                $awal_bayar_int           = str_replace(str_split('Rp. .'), '', $get_awal_bayar);
+                $awal_bayar_infaq_int     = str_replace(str_split('Rp. .'), '', $get_awal_bayar_infaq);
+                $awal_bayar_spp2_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp2);
+                $awal_bayar_spp3_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp3);
+                $awal_bayar_spp4_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp4);
+
+                //Get Data from Input view
+                $kelas_id                =  $this->request->getVar('kelas_id');
+                $peserta_id              =  $this->request->getVar('peserta_id');
+                $keterangan_bayar        =  $this->request->getVar('keterangan_bayar');
+                $awal_bayar              = $awal_bayar_int;
+                $awal_bayar_infaq        = $awal_bayar_infaq_int;
+                $awal_bayar_spp2         = $awal_bayar_spp2_int;
+                $awal_bayar_spp3         = $awal_bayar_spp3_int;
+                $awal_bayar_spp4         = $awal_bayar_spp4_int;
+
+                $data_bayar = [
+                    'bayar_peserta_id'          => $peserta_id,
+                    'kelas_id'                  => $kelas_id,
+                    'awal_bayar'                => $awal_bayar,
+                    'awal_bayar_daftar'         => $awal_bayar_daftar,
+                    'awal_bayar_infaq'          => $awal_bayar_infaq,
+                    'awal_bayar_spp1'           => $awal_bayar_spp1,
+                    'awal_bayar_spp2'           => $awal_bayar_spp2,
+                    'awal_bayar_spp3'           => $awal_bayar_spp3,
+                    'awal_bayar_spp4'           => $awal_bayar_spp4,
+                    'status_bayar'              => 'Belum Lunas',
+                    'status_konfirmasi'         => 'Proses',
+                    'bukti_bayar'               => $namafoto_new,
+                    'tgl_bayar'                 => $tgl,
+                    'waktu_bayar'               => $waktu,
+                    'keterangan_bayar'          => $keterangan_bayar ,
+                    'tgl_bayar_konfirmasi'      => '1000-01-01',
+                    'waktu_bayar_konfirmasi'    => '00:00:00',
+                ];
+                
+                // insert status konfirmasi
+                $this->program_bayar->insert($data_bayar);
+
+                $filefoto->move('img/transfer/', $namafoto_new);
+                
+                $this->session->setFlashdata('pesan_sukses', 'Data Pembayaran Baru Berhasil Ditambahkan!');
+                return redirect()->to('peserta_bayar_spp');
+            }
+    }
+
+    public function riwayat_bayar_peserta()
+    {
+        if (!session()->get('user_id')) {
+            return redirect()->to('login');
+        }
+
+        //Get data peserta
+        $user_id = session()->get('user_id');
+        $get_peserta = $this->peserta->get_peserta_id($user_id);
+        $peserta_id = $get_peserta->peserta_id;
+
+        // Get data peserta_kelas yang belum lulus 
+        $pembayaran = $this->program_bayar->list_pembayaran_peserta($peserta_id);
+
+
+        $data = [
+            'title'         => 'Al-Haqq - Riwayat Pembayaran Peserta',
+            'bayar'         => $pembayaran,
+        ];
+        return view('auth/pembayaran/riwayat_bayar_peserta', $data);
     }
 
 

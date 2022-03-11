@@ -81,7 +81,7 @@ class Modelpesertakelas extends Model
             ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
             ->join('program_kelas', 'program_kelas.kelas_id = peserta_kelas.data_kelas_id')
             ->join('program', 'program.program_id = program_kelas.program_id')
-            ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+            // ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
             ->where('data_peserta_id', $peserta_id)
             ->where('status_peserta_kelas', 'Belum Lulus')
             // ->orderBy('angkatan_kelas', 'DESC')

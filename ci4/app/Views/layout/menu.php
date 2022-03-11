@@ -78,11 +78,11 @@
     <li class="menu-title">Pembayaran </li>
     <li>
         <a href="<?= base_url('auth/pembayaran/peserta_bayar_spp') ?>" class="waves-effect">
-            <i class="mdi mdi-cash"></i> <span> Pembayaran SPP & Riwayat Pembayaran </span>
+            <i class="mdi mdi-cash"></i> <span> Pembayaran SPP</span>
         </a>
-        <!-- <a href="<?= base_url('#') ?>" class="waves-effect">
+        <a href="<?= base_url('auth/pembayaran/riwayat_bayar_peserta') ?>" class="waves-effect">
             <i class="mdi mdi-cash-multiple"></i> <span> Riwayat Pembayaran </span>
-        </a> -->
+        </a>
     </li>
 <?php } ?>
 

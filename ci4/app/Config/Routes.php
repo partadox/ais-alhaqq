@@ -60,6 +60,7 @@ $routes->get('/auth/absen/list_absen/dashboard', 'Dashboard::index', ['filter' =
 $routes->get('/auth/pembayaran/konfirmasi', 'Pembayaran::konfirmasi', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran/admin_rekap_bayar', 'Pembayaran::admin_rekap_bayar', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran/peserta_bayar_spp', 'Pembayaran::peserta_bayar_spp', ['filter' => 'Validasilogin']);
+$routes->get('/auth/pembayaran/riwayat_bayar_peserta', 'Pembayaran::riwayat_bayar_peserta', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran', 'Pembayaran::Index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/program', 'Program::Index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/program/kelas', 'Program::kelas', ['filter' => 'Validasilogin']);

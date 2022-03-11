@@ -79,7 +79,20 @@ class Modelprogrambayar extends Model
         ->getResultArray();
     }
 
-    //Dashboaed - Admin
+    //Get list pembayran peserta - Panel Peserta
+    public function list_pembayaran_peserta($peserta_id)
+    {
+        return $this->table('program_bayar')
+        ->join('program_kelas', 'program_kelas.kelas_id = program_bayar.kelas_id')
+        ->join('peserta', 'peserta.peserta_id = program_bayar.bayar_peserta_id')
+        ->join('program', 'program_kelas.program_id = program.program_id')
+        ->where('bayar_peserta_id', $peserta_id)
+        ->orderBy('bayar_id', 'DESC')
+        ->get()
+        ->getResultArray();
+    }
+
+    //Dashboard - Admin
     public function jml_bayar_proses()
     {
         return $this->table('program_bayar')
