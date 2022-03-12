@@ -34,7 +34,7 @@
     ?>
     <p class="mt-1">Catatan :<br>
         <i class="mdi mdi-information"></i> Pilih kelas anda kemudian klik tombol <b>Lakukan Pembayaran</b>. <br>
-        <i class="mdi mdi-information"></i> Masukan nominal transfer dan masukan nominal bayar pada setiap kategori. <br>
+        <i class="mdi mdi-information"></i> Masukan nominal transfer, masukan nominal bayar pada setiap kategori, upload bukti transfer. <br>
     </p>
     
     <div class="table-responsive">

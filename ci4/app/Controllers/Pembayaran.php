@@ -1003,6 +1003,7 @@ class Pembayaran extends BaseController
                 $get_awal_bayar_spp2    =  $this->request->getVar('awal_bayar_spp2');
                 $get_awal_bayar_spp3    =  $this->request->getVar('awal_bayar_spp3');
                 $get_awal_bayar_spp4    =  $this->request->getVar('awal_bayar_spp4');
+                $get_awal_bayar_lainnya =  $this->request->getVar('awal_bayar_lainnya');
 
                 //Replace Rp. and thousand separtor from input
                 $awal_bayar_int           = str_replace(str_split('Rp. .'), '', $get_awal_bayar);
@@ -1010,6 +1011,7 @@ class Pembayaran extends BaseController
                 $awal_bayar_spp2_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp2);
                 $awal_bayar_spp3_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp3);
                 $awal_bayar_spp4_int      = str_replace(str_split('Rp. .'), '', $get_awal_bayar_spp4);
+                $awal_bayar_lainnya_int   = str_replace(str_split('Rp. .'), '', $get_awal_bayar_lainnya);
 
                 //Get Data from Input view
                 $kelas_id                =  $this->request->getVar('kelas_id');
@@ -1020,17 +1022,19 @@ class Pembayaran extends BaseController
                 $awal_bayar_spp2         = $awal_bayar_spp2_int;
                 $awal_bayar_spp3         = $awal_bayar_spp3_int;
                 $awal_bayar_spp4         = $awal_bayar_spp4_int;
+                $awal_bayar_lainnya      = $awal_bayar_lainnya_int;
 
                 $data_bayar = [
                     'bayar_peserta_id'          => $peserta_id,
                     'kelas_id'                  => $kelas_id,
                     'awal_bayar'                => $awal_bayar,
-                    'awal_bayar_daftar'         => $awal_bayar_daftar,
+                    'awal_bayar_daftar'         => '0',
                     'awal_bayar_infaq'          => $awal_bayar_infaq,
-                    'awal_bayar_spp1'           => $awal_bayar_spp1,
+                    'awal_bayar_spp1'           => '0',
                     'awal_bayar_spp2'           => $awal_bayar_spp2,
                     'awal_bayar_spp3'           => $awal_bayar_spp3,
                     'awal_bayar_spp4'           => $awal_bayar_spp4,
+                    'awal_bayar_lainnya'        => $awal_bayar_lainnya, 
                     'status_bayar'              => 'Belum Lunas',
                     'status_konfirmasi'         => 'Proses',
                     'bukti_bayar'               => $namafoto_new,
