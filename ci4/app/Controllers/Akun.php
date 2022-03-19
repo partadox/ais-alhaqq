@@ -528,19 +528,32 @@ class Akun extends BaseController
             $usr_username   = $data_user['username'];
             $usr_nama       = $data_user['nama'];
 
-            // Hapus Akun User Juga
-            $this->user->delete($user_id);
+            if ($user_id  == NULL || $user_id  == 0) {
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'GAGAL',
+                    'aktivitas_log'=> 'Hapus Data Akun Peserta : ' .  $usr_username . ' | ' . $usr_nama,
+                ];
+                $this->log->insert($log);
+                // Data Log END
+            } else {
+                 // Hapus Akun User Juga
+                $this->user->delete($user_id);
 
-            // Data Log START
-            $log = [
-                'username_log' => session()->get('username'),
-                'tgl_log'      => date("Y-m-d"),
-                'waktu_log'    => date("H:i:s"),
-                'status_log'   => 'BERHASIL',
-                'aktivitas_log'=> 'Hapus Data Akun Peserta : ' .  $usr_username . ' | ' . $usr_nama,
-            ];
-            $this->log->insert($log);
-            // Data Log END
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Hapus Data Akun Peserta : ' .  $usr_username . ' | ' . $usr_nama,
+                ];
+                $this->log->insert($log);
+                // Data Log END
+            }
 
             $msg = [
                 'sukses' => [
@@ -558,24 +571,37 @@ class Akun extends BaseController
             $jmldata = count($user_id);
             for ($i = 0; $i < $jmldata; $i++) {
 
-                 //Get Username dan Nama Akun
-                 $data_user     = $this->user->find($user_id[$i]);
-                 $usr_nama      = $data_user['nama'];
-                 $usr_username  = $data_user['username'];
+                if ($user_id  == NULL || $user_id  == 0) {
+                    // Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'GAGAL',
+                        'aktivitas_log'=> 'Hapus Data Akun Peserta  : ' .  $usr_username . ' | ' . $usr_nama ,
+                    ];
+                    $this->log->insert($log);
+                    // Data Log END
+                } else {
+                    //Get Username dan Nama Akun
+                    $data_user     = $this->user->find($user_id[$i]);
+                    $usr_nama      = $data_user['nama'];
+                    $usr_username  = $data_user['username'];
 
-                // Hapus Data Akun
-                $this->user->delete($user_id[$i]);
+                    // Hapus Data Akun
+                    $this->user->delete($user_id[$i]);
 
-                // Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'BERHASIL',
-                    'aktivitas_log'=> 'Hapus Data Akun Peserta  : ' .  $usr_username . ' | ' . $usr_nama ,
-                ];
-                $this->log->insert($log);
-                // Data Log END
+                    // Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'BERHASIL',
+                        'aktivitas_log'=> 'Hapus Data Akun Peserta  : ' .  $usr_username . ' | ' . $usr_nama ,
+                    ];
+                    $this->log->insert($log);
+                    // Data Log END
+                }
             }
 
             $msg = [
@@ -596,19 +622,32 @@ class Akun extends BaseController
             $usr_username   = $data_user['username'];
             $usr_nama       = $data_user['nama'];
 
-            // Hapus Akun User Juga
-            $this->user->delete($user_id);
-
-            // Data Log START
-            $log = [
-                'username_log' => session()->get('username'),
-                'tgl_log'      => date("Y-m-d"),
-                'waktu_log'    => date("H:i:s"),
-                'status_log'   => 'BERHASIL',
-                'aktivitas_log'=> 'Hapus Data Akun Pengajar : ' .  $usr_username . ' | ' . $usr_nama,
-            ];
-            $this->log->insert($log);
+            if ($user_id  == NULL || $user_id  == 0) {
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'GAGAL',
+                    'aktivitas_log'=> 'Hapus Data Akun Pengajar : ' .  $usr_username . ' | ' . $usr_nama,
+                ];
+                $this->log->insert($log);
             // Data Log END
+            } else {
+                // Hapus Akun User Juga
+                $this->user->delete($user_id);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Hapus Data Akun Pengajar : ' .  $usr_username . ' | ' . $usr_nama,
+                ];
+                $this->log->insert($log);
+                // Data Log END
+            }
 
             $msg = [
                 'sukses' => [
@@ -626,24 +665,37 @@ class Akun extends BaseController
             $jmldata = count($user_id);
             for ($i = 0; $i < $jmldata; $i++) {
 
-                 //Get Username dan Nama Akun
-                 $data_user     = $this->user->find($user_id[$i]);
-                 $usr_nama      = $data_user['nama'];
-                 $usr_username  = $data_user['username'];
+                if ($user_id  == NULL || $user_id  == 0) {
+                    // Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'GAGAL',
+                        'aktivitas_log'=> 'Hapus Data Akun Pengajar  : ' .  $usr_username . ' | ' . $usr_nama ,
+                    ];
+                    $this->log->insert($log);
+                    // Data Log END
+                } else {
+                    //Get Username dan Nama Akun
+                    $data_user     = $this->user->find($user_id[$i]);
+                    $usr_nama      = $data_user['nama'];
+                    $usr_username  = $data_user['username'];
 
-                // Hapus Data Akun
-                $this->user->delete($user_id[$i]);
+                    // Hapus Data Akun
+                    $this->user->delete($user_id[$i]);
 
-                // Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'BERHASIL',
-                    'aktivitas_log'=> 'Hapus Data Akun Pengajar  : ' .  $usr_username . ' | ' . $usr_nama ,
-                ];
-                $this->log->insert($log);
-                // Data Log END
+                    // Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'BERHASIL',
+                        'aktivitas_log'=> 'Hapus Data Akun Pengajar  : ' .  $usr_username . ' | ' . $usr_nama ,
+                    ];
+                    $this->log->insert($log);
+                    // Data Log END
+                }
             }
 
             $msg = [

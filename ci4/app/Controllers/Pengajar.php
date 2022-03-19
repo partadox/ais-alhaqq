@@ -499,30 +499,43 @@ class Pengajar extends BaseController
 
             $pengajar_id = $this->request->getVar('pengajar_id');
 
-            //Get data user id
-            $get_user_id = $this->pengajar->get_user_id($pengajar_id);
-            $user_id = $get_user_id->user_id;
-            $updatedata = ['active' => 0, ];
+            if ($pengajar_id[$i] == NULL || $pengajar_id[$i] == 0) {
+                 // Data Log START
+                 $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'GAGAL',
+                    'aktivitas_log'=> 'Hapus Data Pengajar/Penguji  : ' . $pgj_nama,
+                ];
+                $this->log->insert($log);
+                // Data Log END
+            } else {
+                 //Get data user id
+                $get_user_id = $this->pengajar->get_user_id($pengajar_id);
+                $user_id = $get_user_id->user_id;
+                $updatedata = ['active' => 0, ];
 
-            //Get Nama dan NIS
-            $data_pgj   = $this->pengajar->find($pengajar_id[$i]);
-            $pgj_nama   = $data_pgj['nama_pengajar'];
+                //Get Nama dan NIS
+                $data_pgj   = $this->pengajar->find($pengajar_id[$i]);
+                $pgj_nama   = $data_pgj['nama_pengajar'];
 
-            // Update Akun User
-            $this->user->update($user_id, $updatedata);
-            // Hapus Data Pengajar
-            $this->pengajar->delete($pengajar_id);
+                // Update Akun User
+                $this->user->update($user_id, $updatedata);
+                // Hapus Data Pengajar
+                $this->pengajar->delete($pengajar_id);
 
-            // Data Log START
-            $log = [
-                'username_log' => session()->get('username'),
-                'tgl_log'      => date("Y-m-d"),
-                'waktu_log'    => date("H:i:s"),
-                'status_log'   => 'BERHASIL',
-                'aktivitas_log'=> 'Hapus Data Pengajar/Penguji : ' .  $pgj_nama,
-            ];
-            $this->log->insert($log);
-            // Data Log END
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Hapus Data Pengajar/Penguji : ' .  $pgj_nama,
+                ];
+                $this->log->insert($log);
+                // Data Log END
+            }
 
             $msg = [
                 'sukses' => [
@@ -539,31 +552,46 @@ class Pengajar extends BaseController
             $pengajar_id = $this->request->getVar('pengajar_id');
             $jmldata = count($pengajar_id);
             for ($i = 0; $i < $jmldata; $i++) {
-                //Get data user id
-                $get_user_id = $this->pengajar->get_user_id($pengajar_id[$i]);
-                $user_id = $get_user_id->user_id;
-                $updatedata = ['active' => 0, ];
 
-                // Update Akun User
-                $this->user->update($user_id, $updatedata);
+                if ($pengajar_id[$i] == NULL || $pengajar_id[$i] == 0) {
+                    // Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'GAGAL',
+                        'aktivitas_log'=> 'Hapus Data Pengajar/Penguji  : ' . $pgj_nama,
+                    ];
+                    $this->log->insert($log);
+                    // Data Log END
+                } else {
+                    //Get data user id
+                    $get_user_id = $this->pengajar->get_user_id($pengajar_id[$i]);
+                    $user_id = $get_user_id->user_id;
+                    $updatedata = ['active' => 0, ];
 
-                 //Get Nama dan NIS
-                 $data_pgj   = $this->pengajar->find($pengajar_id[$i]);
-                 $pgj_nama   = $data_pgj['nama_pengajar'];
+                    // Update Akun User
+                    $this->user->update($user_id, $updatedata);
 
-                // Hapus Data Peserta
-                $this->pengajar->delete($pengajar_id[$i]);
+                    //Get Nama dan NIS
+                    $data_pgj   = $this->pengajar->find($pengajar_id[$i]);
+                    $pgj_nama   = $data_pgj['nama_pengajar'];
 
-                // Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'BERHASIL',
-                    'aktivitas_log'=> 'Hapus Data Pengajar/Penguji  : ' . $pgj_nama,
-                ];
-                $this->log->insert($log);
-                // Data Log END
+                    // Hapus Data Peserta
+                    $this->pengajar->delete($pengajar_id[$i]);
+
+                    // Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'BERHASIL',
+                        'aktivitas_log'=> 'Hapus Data Pengajar/Penguji  : ' . $pgj_nama,
+                    ];
+                    $this->log->insert($log);
+                    // Data Log END
+                }
+                
             }
 
             $msg = [

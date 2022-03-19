@@ -22,31 +22,15 @@
 
     <!-- Dashboard Peserta -->
     <?php if (session()->get('level') == 4) { ?>
-        <!-- <div class="col-sm-3 col-md-3">
-            <div class="card shadow-lg p-3">
-                <div class="card-heading p-4">
-                    <div class="mini-stat-icon float-right">
-                        <i class="mdi mdi-application-import bg-warning  text-white"></i>
-                    </div>
-                    <div>
-                        <h5 class="font-16">Program Sedang Diikuti</h5>
-                    </div>
-                    <h3 class="mt-4">-</h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-3 col-md-3">
-            <div class="card shadow-lg p-3">
-                <div class="card-heading p-4">
-                    <div class="mini-stat-icon float-right">
-                        <i class="mdi mdi-account-star-outline bg-warning text-white"></i>
-                    </div>
-                    <div>
-                        <h5 class="font-16">Level Peserta</h5>
-                    </div>
-                    <h5 class="mt-4">-</h5>
-                </div>
+        <!-- <div class="card col d-flex justify-content-center">
+            <div class="card-body">
+                <h5 class="card-title">SELAMAT DATANG DI SISTEM INFORMASI AKADEMIK AL-HAQQ</h5>
+                <p class="card-text"> <b>Assalamu’alaikum Warahmatullahi Wabarakatuh</b> <br>
+                Pada sistem ini terdapat beberapa menu seperti pendaftaran program/kelas, melakukan upload bukti pembayaran, cek absensi, dll. Jika terdapat kendala anda dapat segera menghubungi admin kami. <br>
+                <b>Wassalamualaikum Warahmatullahi Wabarakatuh</b> <br> <br>
+                <b>Hormat Kami,</b> <br>
+                <i>Admin & Pengurus Al-Haqq</i>
+                </p>
             </div>
         </div> -->
     <?php } ?>

@@ -520,33 +520,45 @@ class Peserta extends BaseController
 
             $peserta_id = $this->request->getVar('peserta_id');
 
-            //Get data user id
-            $get_user_id = $this->peserta->get_user_id($peserta_id);
-            $user_id = $get_user_id->user_id;
-            $updatedata = ['active' => 0, ];
+            if ($peserta_id == NULL || $peserta_id == 0) {
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'GAGAL',
+                    'aktivitas_log'=> 'Hapus Data Peserta : ' .  $psrt_nis . ' ' . $psrt_nama,
+                ];
+                $this->log->insert($log);
+                // Data Log END
+            } else {
+                //Get data user id
+                $get_user_id = $this->peserta->get_user_id($peserta_id);
+                $user_id = $get_user_id->user_id;
+                $updatedata = ['active' => 0, ];
 
-            // Update Akun User
-            $this->user->update($user_id, $updatedata);
+                // Update Akun User
+                $this->user->update($user_id, $updatedata);
 
-            //Get Nama dan NIS
-            $data_psrt  = $this->peserta->find($peserta_id);
-            $psrt_nis   = $data_psrt['nis'];
-            $psrt_nama  = $data_psrt['nama_peserta'];
+                //Get Nama dan NIS
+                $data_psrt  = $this->peserta->find($peserta_id);
+                $psrt_nis   = $data_psrt['nis'];
+                $psrt_nama  = $data_psrt['nama_peserta'];
 
-            // Hapus Data Peserta
-            $this->peserta->delete($peserta_id);
+                // Hapus Data Peserta
+                $this->peserta->delete($peserta_id);
 
-            // Data Log START
-            $log = [
-                'username_log' => session()->get('username'),
-                'tgl_log'      => date("Y-m-d"),
-                'waktu_log'    => date("H:i:s"),
-                'status_log'   => 'BERHASIL',
-                'aktivitas_log'=> 'Hapus Data Peserta : ' .  $psrt_nis . ' ' . $psrt_nama,
-            ];
-            $this->log->insert($log);
-            // Data Log END
-
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Hapus Data Peserta : ' .  $psrt_nis . ' ' . $psrt_nama,
+                ];
+                $this->log->insert($log);
+                // Data Log END
+            }
             $msg = [
                 'sukses' => [
                     'link' => 'peserta'
@@ -562,32 +574,46 @@ class Peserta extends BaseController
             $peserta_id = $this->request->getVar('peserta_id');
             $jmldata = count($peserta_id);
             for ($i = 0; $i < $jmldata; $i++) {
-                //Get data user id
-                $get_user_id = $this->peserta->get_user_id($peserta_id[$i]);
-                $user_id = $get_user_id->user_id;
-                $updatedata = ['active' => 0, ];
 
-                // Update Akun User
-                $this->user->update($user_id, $updatedata);
+                if($peserta_id[$i] == NULL || $peserta_id[$i] == 0) {
+                    // Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'GAGAL',
+                        'aktivitas_log'=> 'Hapus Data Peserta  : ' .  $psrt_nis . ' ' . $psrt_nama ,
+                    ];
+                    $this->log->insert($log);
+                    // Data Log END
+                } else{
+                    //Get data user id
+                    $get_user_id = $this->peserta->get_user_id($peserta_id[$i]);
+                    $user_id = $get_user_id->user_id;
+                    $updatedata = ['active' => 0, ];
 
-                 //Get Nama dan NIS
-                 $data_psrt  = $this->peserta->find($peserta_id[$i]);
-                 $psrt_nis   = $data_psrt['nis'];
-                 $psrt_nama  = $data_psrt['nama_peserta'];
+                    // Update Akun User
+                    $this->user->update($user_id, $updatedata);
 
-                // Hapus Data Peserta
-                $this->peserta->delete($peserta_id[$i]);
+                    //Get Nama dan NIS
+                    $data_psrt  = $this->peserta->find($peserta_id[$i]);
+                    $psrt_nis   = $data_psrt['nis'];
+                    $psrt_nama  = $data_psrt['nama_peserta'];
 
-                // Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'BERHASIL',
-                    'aktivitas_log'=> 'Hapus Data Peserta  : ' .  $psrt_nis . ' ' . $psrt_nama ,
-                ];
-                $this->log->insert($log);
-                // Data Log END
+                    // Hapus Data Peserta
+                    $this->peserta->delete($peserta_id[$i]);
+
+                    // Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'BERHASIL',
+                        'aktivitas_log'=> 'Hapus Data Peserta  : ' .  $psrt_nis . ' ' . $psrt_nama ,
+                    ];
+                    $this->log->insert($log);
+                    // Data Log END
+                }
             }
 
             $msg = [
