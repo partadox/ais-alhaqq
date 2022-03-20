@@ -54,7 +54,8 @@
                                         Program: <?= $program_bayar[0]['nama_program'] ?> <br>
                                         Kelas: <?= $program_bayar[0]['nama_kelas'] ?> <br>
                                         Hari: <?= $program_bayar[0]['hari_kelas'] ?> <br>
-                                        Jam: <?= $program_bayar[0]['waktu_kelas'] ?>
+                                        Jam: <?= $program_bayar[0]['waktu_kelas'] ?> <br>
+                                        Metode: <?= $program_bayar[0]['metode_kelas'] ?> <br>
                                       </td>
                                       <td>Rp <?= rupiah($program_bayar[0]['biaya_program']) ?></td>
                                       <td>Rp <?= rupiah($program_bayar[0]['biaya_daftar']) ?></td>

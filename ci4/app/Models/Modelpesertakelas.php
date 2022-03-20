@@ -61,6 +61,19 @@ class Modelpesertakelas extends Model
         ->get()->getResultArray();
     }
 
+    public function kelas_peserta_lulus($peserta_id)
+    {
+        return $this->table('peserta_kelas')
+        ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
+        ->join('program_kelas', 'program_kelas.kelas_id = peserta_kelas.data_kelas_id')
+        ->join('program', 'program.program_id = program_kelas.program_id')
+        ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+        ->where('status_peserta_kelas', 'Lulus')
+        ->orwhere('status_peserta_kelas', 'Mengulang')
+        ->where('data_peserta_id', $peserta_id)
+        ->get()->getResultArray();
+    }
+
     //Rekap data pembayaran tiap peserta - Admin panel
     public function admin_rekap_bayar()
     {

@@ -8,7 +8,7 @@ class Modelkonfigurasi extends Model
 {
     protected $table      = 'konfigurasi';
     protected $primaryKey = 'konfigurasi_id';
-    protected $allowedFields = ['nama_web', 'deskripsi', 'visi', 'misi', 'instagram', 'facebook', 'whatsapp', 'email', 'alamat', 'logo', 'icon', 'status_pendaftaran','angkatan_kuliah'];
+    protected $allowedFields = ['nama_web', 'deskripsi', 'visi', 'misi', 'instagram', 'facebook', 'whatsapp', 'email', 'alamat', 'logo', 'icon', 'status_pendaftaran','angkatan_kuliah', 'filter_domisili'];
 
     //backend
     public function list()
@@ -32,6 +32,15 @@ class Modelkonfigurasi extends Model
     {
         return $this->table('konfigurasi')
             ->select('status_pendaftaran')
+            ->get()
+            ->getUnbufferedRow();
+    }
+
+    //Mendapatkan status aktif filter domisili
+    public function filter_domisili()
+    {
+        return $this->table('konfigurasi')
+            ->select('filter_domisili')
             ->get()
             ->getUnbufferedRow();
     }

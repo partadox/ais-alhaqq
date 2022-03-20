@@ -49,22 +49,32 @@ class Program extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
+                'filter_domisili' => [
+                    'label' => 'filter_domisili',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
             ]);
             if (!$valid) {
                 $msg = [
                     'error' => [
                         'angkatan_kuliah'        => $validation->getError('angkatan_kuliah'),
                         'status_pendaftaran'     => $validation->getError('status_pendaftaran'),
+                        'filter_domisili'        => $validation->getError('filter_domisili'),
                     ]
                 ];
             } else {
 
                 $angkatan_kuliah = $this->request->getVar('angkatan_kuliah');
                 $status_daftar   = $this->request->getVar('status_pendaftaran');
+                $filter_domisili = $this->request->getVar('filter_domisili');
 
                 $data = [
                     'angkatan_kuliah'            => $angkatan_kuliah,
                     'status_pendaftaran'         => $status_daftar,
+                    'filter_domisili'            => $filter_domisili, 
                 ];
 
                 $konfig_id = 1;
@@ -77,7 +87,7 @@ class Program extends BaseController
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
                     'status_log'   => 'BERHASIL',
-                    'aktivitas_log'=> 'Ubah Pengaturan Pendaftarn Menjadi : ' .   $status_daftar . 'Angkatan Perkuliahan : ' . $angkatan_kuliah,
+                    'aktivitas_log'=> 'Ubah Pengaturan Pendaftarn Menjadi : ' .   $status_daftar . ' | Angkatan Perkuliahan : ' . $angkatan_kuliah . ' | Filter Domisili - Metode Kuliah : ' . $filter_domisili,
                 ];
                 $this->log->insert($log);
                 // Data Log END

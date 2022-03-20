@@ -261,26 +261,42 @@ class Daftar extends BaseController
 
         //Jika status bukan pekerja maka akan tampil kelas dengan status_kerja = 0 (Kelas di Weekdays saja)
         //Else status pekerja maka akan tampil kelas dengan status_kerja 1 dan 0 (Weekdays dan Weekend Akan Tampil)
+
+        //Aktif Filter Pencocokan Domisili dengan Metode Perkuliahahn
+        $get_filter_domisili = $this->konfigurasi->filter_domisili();
+        $filter_domisili    = $get_filter_domisili->filter_domisili;
         // MAIN FILTER FUNGSI
 
-        if($peserta_status_kerja == 0){
-            if ($peserta_domisili == 'BALIKPAPAN') {
-                //Filter -> 1.level, 2.jenkel, 3.kerja=tidak, 4.domisili=balikpapan
-                $program = $this->program->aktif_balikpapan($peserta_level, $peserta_jenkel, $peserta_status_kerja);
-            } else {
-                //Filter -> 1.level, 2.jenkel, 3.kerja=tidak, 4.domisili=luar
-                $program = $this->program->aktif($peserta_level, $peserta_jenkel, $peserta_status_kerja);
+        if ($filter_domisili == 'AKTIF') {
+            if($peserta_status_kerja == 0){
+                if ($peserta_domisili == 'BALIKPAPAN') {
+                    //Filter -> 1.level, 2.jenkel, 3.kerja=tidak, 4.domisili=balikpapan
+                    $program = $this->program->aktif_balikpapan($peserta_level, $peserta_jenkel, $peserta_status_kerja);
+                } else {
+                    //Filter -> 1.level, 2.jenkel, 3.kerja=tidak, 4.domisili=luar
+                    $program = $this->program->aktif($peserta_level, $peserta_jenkel, $peserta_status_kerja);
+                }
+                    
+            }else{
+                if ($peserta_domisili == "BALIKPAPAN") {
+                    //Filter -> 1.level, 2.jenkel, 3.kerja=ya, 4.domisili=balikpapan
+                    $program = $this->program->aktif_pekerja_balikpapan($peserta_level, $peserta_jenkel);
+                } else {
+                    //Filter -> 1.level, 2.jenkel, 3.kerja=ya, 4.domisili=luar
+                    $program = $this->program->aktif_pekerja($peserta_level, $peserta_jenkel);
+                }
+            } 
+        } elseif ($filter_domisili == 'NONAKTIF') {
+            if($peserta_status_kerja == 0){
+                //Filter -> 1.level, 2.jenkel, 3.kerja=tidak
+                $program = $this->program->aktif_nodomisili($peserta_level, $peserta_jenkel, $peserta_status_kerja);
+            }else{
+                //Filter -> 1.level, 2.jenkel, 3.kerja=ya
+                $program = $this->program->aktif_pekerja_nodomisili($peserta_level, $peserta_jenkel);
             }
-                
-        }else{
-            if ($peserta_domisili == "BALIKPAPAN") {
-                //Filter -> 1.level, 2.jenkel, 3.kerja=ya, 4.domisili=balikpapan
-                $program = $this->program->aktif_pekerja_balikpapan($peserta_level, $peserta_jenkel);
-            } else {
-                //Filter -> 1.level, 2.jenkel, 3.kerja=ya, 4.domisili=luar
-                $program = $this->program->aktif_pekerja($peserta_level, $peserta_jenkel);
-            }
-        } 
+        }
+
+        
 
         //Cek Status Pendaftarn
         $get_status_daftar = $this->konfigurasi->status_pendaftaran();

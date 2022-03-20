@@ -77,8 +77,17 @@
                     <hr>
                     <p> <i class="mdi mdi-calendar"></i> Hari = <?= $data['hari_kelas'] ?> </p>
                     <p> <i class="mdi mdi-clock"></i> Waktu = <?= $data['waktu_kelas'] ?></p>
+                    <a> <i class="mdi mdi-teach"></i>
+                        <?php if($data['metode_kelas'] == 'OFFLINE') { ?>
+                            Tatap Muka = <span class="badge badge-secondary">OFFLINE</span>
+                        <?php } ?>
+                        <?php if($data['metode_kelas'] == 'ONLINE') { ?>
+                            Tatap Muka = <span class="badge badge-success">ONLINE</span>
+                        <?php } ?>
+                    </a>
                     <hr>
                     <p> <i class="mdi mdi-cash-marker"></i> Biaya Pendaftaran = Rp <?= rupiah($data['biaya_daftar']) ?></p>
+                    <p> <i class="mdi mdi-cash-marker"></i> Biaya Modul = Rp <?= rupiah($data['biaya_modul']) ?></p>
                     <p> <i class="mdi mdi-cash-register"></i> SPP per Bulan = Rp <?= rupiah($data['biaya_bulanan']) ?> (x 4 Bulan)</p>
                     <hr>
                     <p> <i class="mdi mdi-bookmark-check"></i> Total Kuota = <?= $data['kouta'] ?></p>

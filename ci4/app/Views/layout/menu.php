@@ -51,7 +51,10 @@
     <li class="menu-title">Pendaftaran Program</li>
     <li>
         <a href="<?= base_url('auth/daftar/program') ?>" class="waves-effect">
-            <i class="mdi mdi-application"></i> <span> Pilih Program & Jadwal </span>
+            <i class="mdi mdi-application"></i> <span>Program Reguler</span>
+        </a>
+        <a href="<?= base_url('#') ?>" class="waves-effect">
+            <i class="mdi mdi-application"></i> <span>Program Non-Reguler</span>
         </a>
         <a href="<?= base_url('auth/daftar/bayar') ?>" class="waves-effect">
             <i class="mdi mdi-cash-register"></i> <span> Pembayaran Daftar </span>
@@ -63,14 +66,11 @@
     <li class="menu-title">Akademik Peserta</li>
     <li>
         <a href="<?= base_url('auth/akademik') ?>" class="waves-effect">
-            <i class="mdi mdi-application"></i> <span> Program yang Diikuti </span>
+            <i class="mdi mdi-application"></i> <span> Program & Absensi </span>
         </a>
-        <a href="<?= base_url('#') ?>" class="waves-effect">
-            <i class="mdi mdi-check-circle"></i> <span> Absensi Peserta </span>
-        </a>
-        <a href="<?= base_url('#') ?>" class="waves-effect">
+        <!-- <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-certificate"></i> <span> Sertifikat</span>
-        </a>
+        </a> -->
     </li>
 <?php } ?>
 
@@ -128,21 +128,21 @@
             <i class="mdi mdi-account-badge-horizontal-outline"></i> <span>  Level</span>
         </a>
     </li>
-    <!-- <li class="menu-title">Akademik</li>
+    <li class="menu-title">Akademik</li>
     <li>
-        <a href="<?= base_url('#') ?>" class="waves-effect">
+        <!-- <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-timeline"></i> <span> Riwayat Kelas Peserta </span>
-        </a>
+        </a> -->
         <a href="<?= base_url('#') ?>" class="waves-effect">
-            <i class="mdi mdi-check-bold"></i> <span> Rekap Absensi Kelas </span>
+            <i class="mdi mdi-check-bold"></i> <span> Rekap Absensi</span>
         </a>
-        <a href="<?= base_url('#') ?>" class="waves-effect">
+        <!-- <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-book"></i> <span> Hasil Ujian </span>
         </a>
         <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-certificate"></i> <span> Sertifikat </span>
-        </a>
-    </li> -->
+        </a> -->
+    </li>
     <li class="menu-title">Peserta & Pengajar</li>
     <li>
         <a href="<?= base_url('auth/peserta') ?>" class="waves-effect">

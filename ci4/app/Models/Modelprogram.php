@@ -24,6 +24,19 @@ class Modelprogram extends Model
             ->get()->getResultArray();
     }
 
+    //Daftar kelas untuk peserta -> TIDAK Bekerja 
+    public function aktif_nodomisili($peserta_level, $peserta_jenkel, $peserta_status_kerja)
+    {
+        return $this->table('program_kelas')
+            ->join('program', 'program.program_id = program_kelas.program_id')
+            ->where('status_kelas', 'aktif')
+            ->where('peserta_level', $peserta_level)
+            ->where('jenkel', $peserta_jenkel)
+            ->where('status_kerja', $peserta_status_kerja)
+            ->orderBy('kelas_id', 'ASC')
+            ->get()->getResultArray();
+    }
+
     //Daftar kelas untuk peserta -> TIDAK Bekerja -> Domisili Balikpapan
     public function aktif_balikpapan($peserta_level, $peserta_jenkel, $peserta_status_kerja)
     {
@@ -47,6 +60,18 @@ class Modelprogram extends Model
             ->where('peserta_level', $peserta_level)
             ->where('jenkel', $peserta_jenkel)
             ->where('metode_kelas', 'ONLINE')
+            ->orderBy('kelas_id', 'ASC')
+            ->get()->getResultArray();
+    }
+
+    //Daftar kelas untuk peserta -> Bekerja 
+    public function aktif_pekerja_nodomisili($peserta_level, $peserta_jenkel)
+    {
+        return $this->table('program_kelas')
+            ->join('program', 'program.program_id = program_kelas.program_id')
+            ->where('status_kelas', 'aktif')
+            ->where('peserta_level', $peserta_level)
+            ->where('jenkel', $peserta_jenkel)
             ->orderBy('kelas_id', 'ASC')
             ->get()->getResultArray();
     }

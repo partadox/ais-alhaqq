@@ -32,6 +32,16 @@
                         <div class="invalid-feedback errorStatus_pendaftaran"></div>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label">Filter Domisili - Metode Kuliah<code>*</code></label>
+                    <div class="col-sm-8">
+                        <select class="form-control btn-square" id="filter_domisili" name="filter_domisili">
+                            <option value="AKTIF" <?php if ($konfig[0]['filter_domisili'] == 'AKTIF') echo "selected"; ?>>AKTIF</option>
+                            <option value="NONAKTIF" <?php if ($konfig[0]['filter_domisili'] == 'NONAKTIF') echo "selected"; ?>>NONAKTIF</option>
+                        </select>
+                        <div class="invalid-feedback errorFilter_domisili"></div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-primary btnsimpan"><i class="fa fa-share-square"></i> Simpan</button>
@@ -75,6 +85,14 @@
                         } else {
                             $('#status_pendaftaran').removeClass('is-invalid');
                             $('.errorStatus_pendaftaran').html('');
+                        }
+
+                        if (response.error.filter_domisili) {
+                            $('#filter_domisili').addClass('is-invalid');
+                            $('.errorFilter_domisili').html(response.error.filter_domisili);
+                        } else {
+                            $('#filter_domisili').removeClass('is-invalid');
+                            $('.errorFilter_domisili').html('');
                         }
 
                     } else {
