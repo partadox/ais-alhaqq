@@ -24,14 +24,23 @@
     <?php } ?>
 
 <?php if ($status_pendaftaran == 'BUKA') { ?>
-    
-        <?php if ($peserta['level_peserta'] == '') { ?>
+        
+        
+
+        <?php if ($cek1 != 0) { ?>
+        <div class="alert alert-secondary alert-dismissible fade show" role="alert"> <i class="mdi mdi-account-multiple-outline"></i>
+                <strong>Anda Sudah Memilih Program dan Perlu Menyelesaikan Pembayaran Pendaftaran.</strong> 
+        </div>  
+        <?php } ?>
+
+        <?php if ($cek1 == 0 && $cek2 == 0) { ?>
+        <div class="container-fluid">
         <p class="mt-1">Catatan :<br>
-            <i class="mdi mdi-information"></i> Anda harus memilih level kelas untuk peserta baru yg akan anda ikuti. <br>
+            <i class="mdi mdi-information"></i> Anda harus memilih level kelas yg akan anda ikuti. <br>
             <i class="mdi mdi-information"></i> Jadwal kelas akan muncul ketika anda telah memilih. <br>
-            <i class="mdi mdi-information"></i> Anda hanya dapat memilih satu kali, harap berhati-hati. <br>
-            <i class="mdi mdi-information"></i> Harap melihat petunjuk di web atau bertanya kepada admin. <br>
+            <i class="mdi mdi-information"></i> Pilih kelas yang masih memiliki kuota. <br>
         </p>
+
         <?= form_open('daftar/simpandaftar_level', ['class' => 'formtambahlevel']) ?>
         <?= csrf_field() ?>
         <div class="form-group">
@@ -51,19 +60,6 @@
             </div>
         </div>
         <?= form_close() ?> 
-        <?php } ?>
-
-        <?php if ($cek1 != 0) { ?>
-        <div class="alert alert-secondary alert-dismissible fade show" role="alert"> <i class="mdi mdi-account-multiple-outline"></i>
-                <strong>Anda Sudah Memilih Program dan Perlu Menyelesaikan Pembayaran Pendaftaran.</strong> 
-        </div>  
-        <?php } ?>
-
-        <?php if ($cek1 == 0 && $cek2 == 0) { ?>
-        <div class="container-fluid">
-        <p class="mt-1">Catatan :<br>
-            <i class="mdi mdi-information"></i> Pilih kelas yang masih memiliki kuota. <br>
-        </p>
         
         <div class="row">
             <?php
