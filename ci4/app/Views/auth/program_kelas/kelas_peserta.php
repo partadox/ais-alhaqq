@@ -58,6 +58,8 @@
                     <td width="8%">
                         <button type="button" class="btn btn-warning" onclick="pindah('<?= $data['peserta_kelas_id'] ?>')" >
                             <i class=" fa fa-sign-in-alt mr-1"></i>Pindah</button>
+                        <button type="button" class="btn btn-danger" onclick="hapus('<?= $data['peserta_kelas_id'] ?>')" >
+                            <i class=" fa fa-trash"></i></button>
                     </td>
                 </tr>
 
@@ -85,6 +87,43 @@
                 }
             }
         });
+    }
+
+    function hapus(peserta_kelas_id) {
+        Swal.fire({
+            title: 'Hapus Data Peserta di Kelas Ini?',
+            text: `Hapus data peserta kelas ini akan berdampak pada terhapusnya data absen peserta`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Tidak'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "<?= site_url('program/hapus_peserta_kelas') ?>",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        peserta_kelas_id : peserta_kelas_id
+                    },
+                    success: function(response) {
+                        if (response.sukses) {
+                            Swal.fire({
+                                title: "Berhasil!",
+                                text: "Anda berhasil menghapus peserta dari kelas ini ini!",
+                                icon: "success",
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(function() {
+                                window.location = response.sukses.link;
+                        });
+                        }
+                    }
+                });
+            }
+        })
     }
 </script>
 

@@ -1116,4 +1116,60 @@ class Program extends BaseController
         }
     }
 
+    public function hapus_peserta_kelas()
+    {
+        if ($this->request->isAJAX()) {
+
+            $peserta_kelas_id   = $this->request->getVar('peserta_kelas_id');
+
+            //get data kelas peserta
+            $get_kelas_peserta  = $this->peserta_kelas->get_kelas_peserta($peserta_kelas_id);
+            $kelas_id           = $get_kelas_peserta->data_kelas_id;
+            $get_sisa_kouta     = $this->program->get_sisa_kouta($kelas_id);
+            $sisa_kouta         = $get_sisa_kouta->sisa_kouta;
+            $get_jumlah_peserta = $this->program->get_jumlah_peserta($kelas_id);
+            $jumlah_peserta     = $get_jumlah_peserta->jumlah_peserta;
+
+            //Untuk penulisan di log
+            $peserta_id        = $this->peserta_kelas->get_peserta_id($peserta_kelas_id);
+            $data_peserta      = $this->peserta->find($peserta_id );
+            $data_kelas        = $this->program->find($kelas_id);
+            $nama_peserta      = $data_peserta[0]['nama_peserta'];
+            $nama_kelas        = $data_kelas[0]['nama_kelas'];
+
+            //operasi penambahan sisa kuota dan pengurangan jumlah peserta
+            $variable1 = 1;
+            $sisa_kouta_new     = $sisa_kouta + 1;
+            $jumlah_peserta_new = $jumlah_peserta - 1;
+
+            //update data kelas
+            $update_data      = [
+                'sisa_kouta'       => $sisa_kouta_new,
+                'jumlah_peserta'   => $jumlah_peserta_new,
+            ];
+            $this->program->update($kelas_id, $update_data);
+            
+            //hapus data peserta_kelas
+            $this->peserta_kelas->delete($peserta_kelas_id);
+
+            // Data Log START
+            $log = [
+                'username_log' => session()->get('username'),
+                'tgl_log'      => date("Y-m-d"),
+                'waktu_log'    => date("H:i:s"),
+                'status_log'    => 'BERHASIL',
+                'aktivitas_log'=> 'Hapus Peserta Kelas, Nama Peserta : ' .  $nama_peserta . ' Pada Kelas ' .  $nama_kelas,
+            ];
+            $this->log->insert($log);
+            // Data Log END
+
+            $msg = [
+                'sukses' => [
+                    'link' => $kelas_id 
+                ]
+            ];
+            echo json_encode($msg);
+        }
+    }
+
 }

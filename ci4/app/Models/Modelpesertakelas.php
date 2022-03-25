@@ -138,5 +138,15 @@ class Modelpesertakelas extends Model
             ->get()->getResultArray();
     }
 
+    // Get Data Kelas dari peserta_kelas_id
+    public function get_kelas_peserta($peserta_kelas_id)
+    {
+        return $this->table('program_kelas')
+            ->select('data_kelas_id')
+            ->where('peserta_kelas_id', $peserta_kelas_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
 
 }
