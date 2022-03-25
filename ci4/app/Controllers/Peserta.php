@@ -857,7 +857,7 @@ class Peserta extends BaseController
                 ->setCellValue('F' . $row, $psrtdata['nik'])
                 ->setCellValue('G' . $row, $psrtdata['level_peserta'])
                 ->setCellValue('H' . $row, $psrtdata['status_peserta'])
-                ->setCellValue('I' . $row, $psrtdata['nama_kantor'])
+                ->setCellValue('I' . $row, $psrtdata['asal_cabang_peserta'])
                 ->setCellValue('J' . $row, $psrtdata['tmp_lahir'])
                 ->setCellValue('K' . $row, $psrtdata['tgl_lahir'])
                 ->setCellValue('L' . $row, $psrtdata['jenkel'])

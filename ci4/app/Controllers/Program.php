@@ -1131,11 +1131,12 @@ class Program extends BaseController
             $jumlah_peserta     = $get_jumlah_peserta->jumlah_peserta;
 
             //Untuk penulisan di log
-            $peserta_id        = $this->peserta_kelas->get_peserta_id($peserta_kelas_id);
-            $data_peserta      = $this->peserta->find($peserta_id );
+            $get_peserta_id    = $this->peserta_kelas->get_peserta_id($peserta_kelas_id);
+            $peserta_id        = $get_peserta_id->data_peserta_id;
+            $data_peserta      = $this->peserta->find($peserta_id);
             $data_kelas        = $this->program->find($kelas_id);
-            $nama_peserta      = $data_peserta[0]['nama_peserta'];
-            $nama_kelas        = $data_kelas[0]['nama_kelas'];
+            $nama_peserta      = $data_peserta['nama_peserta'];
+            $nama_kelas        = $data_kelas['nama_kelas'];
 
             //operasi penambahan sisa kuota dan pengurangan jumlah peserta
             $variable1 = 1;
