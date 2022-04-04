@@ -21,9 +21,10 @@
                     </div>
                     <div class="swal" data-swal="<?= session()->get('pesan'); ?>"></div>
                     <p class="mt-3">Catatan :<br> 
-                      <i class="mdi mdi-information"></i> Anda harus mengupload bukti transfer dan klik tombol "Konfirmasi Pembayaran". <br>
-                      <i class="mdi mdi-information"></i> Jika "Status Konfirmasi" bertulis "Proses" maka, bukti transfer anda berhasil dikirim dan menunggu konfirmasi admin. <br>
+                      <i class="mdi mdi-information"></i> Anda harus mengupload bukti transfer dan klik tombol "Konfirmasi Pembayaran" untuk mendaftar ke kelas yang sudah anda pilih. <br>
+                      <i class="mdi mdi-information"></i> Jika anda berniat mengambil jadwal kelas lain anda dapat membatalkan kelas yang anda pilih dengan cara klik tombol "Batal" pada kolom "Batal Pendaftaran". (Pembatalan pengambilan kelas dapat dilakukan sebelum melakukan pembayaran dan mengisi form pembayaran) jika anda sudah melakukan pembayaran dan berniat mengganti jadwal/kelas harap hubungi admin.<br>
                       <i class="mdi mdi-information"></i> Minimal nilai pembayaran yang harus anda bayarkan adalah <b>Total Pendaftaran + SPP 1 + Modul</b>. <br>
+                      <i class="mdi mdi-information"></i> Masukan angka '0' untuk jenis pembayaran yang tidak termasuk dalam dana yang anda bayarkan. <br>
                     </p>
                     <h6> <u> Metode Pembayaran Transfer Bank Dapat Melalui Pilihan Rekening Berikut:</u> <br></h6>
                     <?php foreach ($bank as $key => $data) { ?>
@@ -80,7 +81,16 @@
                         </div>
                         
                       </div>
-                        <h5 style="text-align:center"> Status Konfirmasi : <button class="btn btn-warning" disabled><?= $program_bayar[0]['status_konfirmasi'] ?></button> </h5>
+                        <h5 style="text-align:center"> Status Konfirmasi :
+                        <?php if($program_bayar[0]['status_konfirmasi'] == NULL) { ?>
+                          <button class="btn btn-warning" disabled> Belum Bayar</button>
+                          <h5 style="text-align:center"><i><b>Lakukan Pembayaran & Harap Lengkapi Form Pembayaran di Bawah ini!</b></i></h5>
+                          <br>
+                        <?php } ?> 
+                        <?php if($program_bayar[0]['status_konfirmasi'] == 'Proses') { ?>
+                          <button class="btn btn-success" disabled> Sudah Bayar, Tunggu Konfirmasi Admin</button>
+                        <?php } ?>  
+                        </h5>
                         <?php
                           if (session()->getFlashdata('pesan_eror')) {
                               echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -189,7 +199,7 @@
                             </div>
                           </div>
                       </div>
-                        <button class="btn btn-warning mt-5" type="submit">Konfirmasi Pembayaran</button>
+                        <button class="btn btn-primary mt-5" type="submit">Konfirmasi Pembayaran</button>
                         <?php echo form_close() ?>
                       </div>
                       <?php } ?>  

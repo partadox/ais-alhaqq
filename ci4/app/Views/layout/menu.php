@@ -53,9 +53,9 @@
         <a href="<?= base_url('auth/daftar/program') ?>" class="waves-effect">
             <i class="mdi mdi-application"></i> <span>Program Reguler</span>
         </a>
-        <a href="<?= base_url('#') ?>" class="waves-effect">
+        <!-- <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-application"></i> <span>Program Non-Reguler</span>
-        </a>
+        </a> -->
         <a href="<?= base_url('auth/daftar/bayar') ?>" class="waves-effect">
             <i class="mdi mdi-cash-register"></i> <span> Pembayaran Daftar </span>
         </a>
@@ -133,9 +133,14 @@
         <!-- <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-timeline"></i> <span> Riwayat Kelas Peserta </span>
         </a> -->
-        <a href="<?= base_url('#') ?>" class="waves-effect">
+        <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-check-bold"></i> <span> Rekap Absensi <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span> </a>
+        <ul class="submenu">
+            <li><a href="#">Semua</a></li>
+            <li><a href="#">Per Kelas</a></li>
+        </ul>
+        <!-- <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-check-bold"></i> <span> Rekap Absensi</span>
-        </a>
+        </a> -->
         <!-- <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-book"></i> <span> Hasil Ujian </span>
         </a>

@@ -74,6 +74,7 @@ class Modelprogrambayar extends Model
         ->join('peserta', 'peserta.peserta_id = program_bayar.bayar_peserta_id')
         ->join('program', 'program_kelas.program_id = program.program_id')
         ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+        ->where('status_konfirmasi !=', NULL)
         ->orderBy('bayar_id', 'DESC')
         ->get()
         ->getResultArray();
