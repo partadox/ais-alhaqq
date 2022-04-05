@@ -32,4 +32,44 @@ class Modelprogramdata extends Model
         return $this->table('program')
         ->countAllResults();
     }
+
+    // Get Biaya Program
+    public function get_biaya_program($program_id)
+    {
+        return $this->table('program')
+            ->select('biaya_program')
+            ->where('program_id', $program_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
+    // Get SPP Bulanan
+    public function get_biaya_bulanan($program_id)
+    {
+        return $this->table('program')
+            ->select('biaya_bulanan')
+            ->where('program_id', $program_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
+    // Get SPP Daftar
+    public function get_biaya_daftar($program_id)
+    {
+        return $this->table('program')
+            ->select('biaya_daftar')
+            ->where('program_id', $program_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
+    // Get SPP Bulanan
+    public function get_biaya_modul($program_id)
+    {
+        return $this->table('program')
+            ->select('biaya_modul')
+            ->where('program_id', $program_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
 }

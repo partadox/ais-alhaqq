@@ -44,7 +44,10 @@
                 <th>No.</th>
                 <th>Program</th>
                 <th>Kelas</th>
-                <th>Pendaftaran</th>
+                <th>Status <br> SPP</th>
+                <th>Terbayar</th>
+                <th>Kekurangan</th>
+                <th>Biaya <br> Pendaftaran</th>
                 <th>SPP-1</th>
                 <th>SPP-2</th>
                 <th>SPP-3</th>
@@ -61,6 +64,16 @@
                     <td width="1%"><?=$nomor?></td>
                     <td width="8%"><?= $data['nama_program'] ?></td>
                     <td width="8%"><?= $data['nama_kelas'] ?></td>
+                    <td width="3%">
+                        <?php if($data['spp_status'] == 'BELUM LUNAS') { ?>
+                            <button class="btn btn-warning btn-sm mb-2" disabled>BELUM LUNAS</button>
+                        <?php } ?>
+                        <?php if($data['spp_status'] == 'LUNAS') { ?>
+                            <button class="btn btn-success btn-sm mb-2" disabled>LUNAS</button>
+                        <?php } ?>
+                    </td>
+                    <td width="3%">Rp <?= rupiah($data['spp_terbayar']) ?></td>
+                    <td width="3%">Rp <?= rupiah($data['spp_piutang']) ?></td>
                     <td width="3%">
                         <?php if($data['byr_daftar'] == 1) { ?>
                             <i class=" fa fa-check" style="color:green"></i>

@@ -141,7 +141,7 @@ var ciDebugBar = {
 	 *
 	 * @param obj
 	 */
-	toggleDataTable : function (obj) {
+	toggle : function (obj) {
 		if (typeof obj == 'string')
 		{
 			obj = document.getElementById(obj + '_table');

@@ -213,7 +213,7 @@
 
 <?php if ($cek1 == 0) { ?>
   <div class="alert alert-secondary alert-dismissible fade show" role="alert"> <i class="mdi mdi-account-multiple-outline"></i>
-        <strong>Anda Belum Memiliki Program Yang Akan Dibayar. Silihkan Pilih Program Dan Kelas Dahulu di Menu Pilih Program & Jadwal</strong> 
+        <strong>Anda Belum Memiliki Program Yang Akan Dibayar. Silihkan Pilih Program Dan Kelas Dahulu di Menu Pilih Program</strong> 
   </div>  
 <?php } ?>
 

@@ -33,7 +33,7 @@
         </div>  
         <?php } ?>
 
-        <?php if ($cek1 == 0 && $cek2 == 0) { ?>
+        <?php if ($cek1 == 0 ) { ?>
         <div class="container-fluid">
         <p class="mt-1">Catatan :<br>
             <i class="mdi mdi-information"></i> Anda harus memilih level kelas yg akan anda ikuti. <br>
@@ -46,7 +46,7 @@
         <div class="form-group">
         <input type="hidden" id="peserta_id" name="peserta_id" value="<?=$peserta['peserta_id'] ?>">
             <div class="mb-3">
-            <label class="form-label">Kelas untuk Peserta Baru <code>*</code></label>
+            <label class="form-label">Silahkan Memilih Level Kelas Terlebih Dahulu <code>*</code></label>
                 <select name="level_peserta" id="level_peserta" class="form-control btn-square js-example-basic-single">
                     <option value="" disabled selected>--PILIH LEVEL KELAS--</option>
                 <?php foreach ($tampil_ondaftar as $key => $data) { ?>
@@ -108,11 +108,11 @@
         </div>
         <?php } ?>
 
-        <?php if ($cek2 != 0) { ?>
+        <!-- sebenarnya cek1 ini adalah cek2 <?php if ($cek1 != 0) { ?>
         <div class="alert alert-success alert-dismissible fade show" role="alert"> <i class="mdi mdi-account-multiple-outline"></i>
                 <strong>Anda Sudah Terdaftar Pada Salah Satu Program di Al-Haqq. Jika Anda Ingin Daftar di Program Lain Silahkan Hubungi Admin</strong> 
         </div> 
-        <?php } ?>
+        <?php } ?> -->
 <?php } ?>
 
 

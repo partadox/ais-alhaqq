@@ -8,7 +8,7 @@ class Modelpesertakelas extends Model
 {
     protected $table      = 'peserta_kelas';
     protected $primaryKey = 'peserta_kelas_id';
-    protected $allowedFields = ['peserta_kelas_id', 'data_peserta_id','data_kelas_id', 'data_absen', 'data_ujian', 'status_peserta_kelas', 'byr_daftar', 'byr_modul','byr_spp1','byr_spp2','byr_spp3', 'byr_spp4',];
+    protected $allowedFields = ['peserta_kelas_id', 'data_peserta_id','data_kelas_id', 'data_absen', 'data_ujian', 'status_peserta_kelas', 'byr_daftar', 'byr_modul','byr_spp1','byr_spp2','byr_spp3', 'byr_spp4', 'spp_status', 'spp_terbayar', 'spp_piutang'];
 
     //Cek jumlah kelas yang diikuti peserta
     public function cek_peserta_kelas($peserta_id)

@@ -99,6 +99,16 @@ class Modelprogram extends Model
             ->getUnbufferedRow();
     }
 
+    // Get Program ID
+    public function get_program_id($kelas_id)
+    {
+        return $this->table('program_kelas')
+            ->select('program_id')
+            ->where('kelas_id', $kelas_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+
     // Get Jumlah Peserta
     public function get_jumlah_peserta($kelas_id)
     {

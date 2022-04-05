@@ -8,7 +8,7 @@
 <?= $this->endSection('judul') ?>
 
 <?= $this->section('isi') ?>
-<button type="button" class="btn btn-primary mb-3" onclick="tambah('')"><i class=" fa fa-plus-circle"></i> Tambah Pembayaran</button>
+<!-- <button type="button" class="btn btn-primary mb-3" onclick="tambah('')"><i class=" fa fa-plus-circle"></i> Tambah Pembayaran</button> -->
 
 <?php
 if (session()->getFlashdata('pesan_error')) {
@@ -34,7 +34,7 @@ if (session()->getFlashdata('pesan_sukses')) {
     <thead>
         <tr>
             <th>No.</th>
-            <th>ID Bayar</th>
+            <th>Transaksi ID</th>
             <th>Peserta</th>
             <th>Program Kelas</th>
             <th>Upload Bayar</th>

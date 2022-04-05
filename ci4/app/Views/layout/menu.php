@@ -51,7 +51,7 @@
     <li class="menu-title">Pendaftaran Program</li>
     <li>
         <a href="<?= base_url('auth/daftar/program') ?>" class="waves-effect">
-            <i class="mdi mdi-application"></i> <span>Program Reguler</span>
+            <i class="mdi mdi-application"></i> <span>Pilih Program</span>
         </a>
         <!-- <a href="<?= base_url('#') ?>" class="waves-effect">
             <i class="mdi mdi-application"></i> <span>Program Non-Reguler</span>

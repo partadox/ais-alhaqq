@@ -152,9 +152,27 @@ class Pembayaran extends BaseController
             $waktu      = date("H:i:s");
             $validator  = session()->get('username');
 
-            $bayar_id = $this->request->getVar('bayar_id');
-            $kelas_id = $this->request->getVar('kelas_id');
+            $bayar_id   = $this->request->getVar('bayar_id');
+            $kelas_id   = $this->request->getVar('kelas_id');
             $peserta_id = $this->request->getVar('peserta_id');
+
+            //Data Peserta
+            $data_peserta       = $this->peserta->find($peserta_id);
+            $log_nama_peserta   = $data_peserta['nama_peserta'];
+            $log_nis_peserta    = $data_peserta['nis'];
+
+            //Get data total bayar
+            $get_program_id    = $this->program->get_program_id($kelas_id);
+            $program_id        = $get_program_id->program_id;
+            $get_biaya_bulanan = $this->program_data->get_biaya_bulanan($program_id);
+            $biaya_bulanan     = $get_biaya_bulanan->biaya_bulanan;
+            $get_biaya_program = $this->program_data->get_biaya_program($program_id);
+            $biaya_program     = $get_biaya_program->biaya_program;
+            $get_biaya_daftar  = $this->program_data->get_biaya_daftar($program_id);
+            $biaya_daftar      = $get_biaya_daftar->biaya_daftar;
+            $get_biaya_modul   = $this->program_data->get_biaya_modul($program_id);
+            $biaya_modul       = $get_biaya_modul->biaya_modul;
+            $total_lunas       = $biaya_program + $biaya_daftar + $biaya_modul;
 
             //Get data sisa kouta dari tabel program_kelas
             $get_sisa_kouta = $this->program->get_sisa_kouta($kelas_id);
@@ -299,12 +317,18 @@ class Pembayaran extends BaseController
                 $this->program_bayar->update($bayar_id, $databayar);
                 
                 //Cek isian form untuk daftar dan spp1
-                if($bayar_daftar != 0 && $bayar_spp1 != 0){
+                if($bayar_daftar != 0 && $bayar_spp1 != 0 && $bayar_modul == $biaya_modul){
                     $data_spp1 = [
                         'spp1_bayar_id' => $bayar_id,
                         'bayar_daftar'  => $bayar_daftar,
                         'bayar_spp1'    => $bayar_spp1,
                         'status_spp1'   => 'Lunas',
+                    ];
+
+                    $data_modul = [
+                        'bayar_modul_id'        => $bayar_id,
+                        'bayar_modul'           => $bayar_modul,
+                        'status_bayar_modul'    => 'Lunas',
                     ];
 
                     $datakelas = [
@@ -320,17 +344,31 @@ class Pembayaran extends BaseController
 
                     // Get last id insert from absen peserta
                     $last_id = $this->absen_peserta->insertID();
+
+                    $sppdaftar = $biaya_bulanan + $biaya_daftar + $biaya_modul;
+                    $piutang1  = $total_lunas - $sppdaftar;
+
+                    if($bayar_modul == 0){
+                        $byr_modul_value = '0';
+                    } else {
+                        $byr_modul_value = '1';
+                    }
         
                     $datapesertakelas = [
                         'data_peserta_id'       => $peserta_id,
                         'data_kelas_id'         => $kelas_id,
                         'data_absen'            => $last_id,
-                        'status_peserta_kelas'  => 'Belum Lulus',
+                        'status_peserta_kelas'  => 'BELUM LULUS',
                         'byr_daftar'            => '1',
                         'byr_spp1'              => '1',
+                        'byr_modul'             => $byr_modul_value,
+                        'spp_terbayar'          => $sppdaftar,
+                        'spp_piutang'           => $piutang1,
+                        'spp_status'            => 'BELUM LUNAS',
                     ];
 
                     $this->spp1->insert($data_spp1);
+                    $this->bayar_modul->insert($data_modul);
                     $this->program->update($kelas_id, $datakelas);
                     $this->peserta_kelas->insert($datapesertakelas);
 
@@ -356,7 +394,14 @@ class Pembayaran extends BaseController
                         $this->spp2->insert($data_spp2);
 
                         // Update status bayar pada tabel peserta kelas
-                        $data_update_spp2 = ['byr_spp2' => '1'];
+                        $spp2daftar = (2*$biaya_bulanan) + $biaya_daftar;
+                        $piutang2   = $total_lunas - $spp2daftar;
+                        $data_update_spp2 = [
+                            'byr_spp2'      => '1',
+                            'spp_terbayar'  => $spp2daftar,
+                            'spp_piutang'   => $piutang2,
+                            'spp_status'    => 'BELUM LUNAS',
+                        ];
                         $this->peserta_kelas->update($last_id_psrt_kls, $data_update_spp2);
                     }
 
@@ -370,7 +415,14 @@ class Pembayaran extends BaseController
                         $this->spp3->insert($data_spp3);
 
                         // Update status bayar pada tabel peserta kelas
-                        $data_update_spp3 = ['byr_spp3' => '1'];
+                        $spp3daftar = (3*$biaya_bulanan) + $biaya_daftar;
+                        $piutang3   = $total_lunas - $spp3daftar;
+                        $data_update_spp3 = [
+                            'byr_spp3'      => '1',
+                            'spp_terbayar'  => $spp3daftar,
+                            'spp_piutang'   => $piutang3,
+                            'spp_status'    => 'BELUM LUNAS',
+                        ];
                         $this->peserta_kelas->update($last_id_psrt_kls, $data_update_spp3);
                     }
 
@@ -384,26 +436,15 @@ class Pembayaran extends BaseController
                         $this->spp4->insert($data_spp4);
 
                         // Update status bayar pada tabel peserta kelas
-                        $data_update_spp4 = ['byr_spp4' => '1'];
-                        $this->peserta_kelas->update($last_id_psrt_kls, $data_update_spp4);
-                    }
-
-                    //Cek isian form untuk modul
-                    if($bayar_modul != 0){
-                        $data_modul = [
-                            'bayar_modul_id'        => $bayar_id,
-                            'bayar_modul'           => $bayar_modul,
-                            'status_bayar_modul'    => 'Lunas',
+                        $spp4daftar = (4*$biaya_bulanan) + $biaya_daftar;
+                        $piutang4   = $total_lunas - $spp4daftar;
+                        $data_update_spp4 = [
+                            'byr_spp4'      => '1',
+                            'spp_terbayar'  => $spp4daftar,
+                            'spp_piutang'   => $piutang4,
+                            'spp_status'    => 'LUNAS',
                         ];
-                        $this->bayar_modul->insert($data_modul);
-
-                        // Update status bayar pada tabel peserta kelas
-                        $data_update_modul = ['byr_modul' => '1'];
-                        $this->peserta_kelas->update($last_id_psrt_kls, $data_update_modul);
-                    } elseif ($bayar_modul == 0) {
-                        // Update status bayar pada tabel peserta kelas
-                        $data_update_modul = ['byr_modul' => '0'];
-                        $this->peserta_kelas->update($last_id_psrt_kls, $data_update_modul);
+                        $this->peserta_kelas->update($last_id_psrt_kls, $data_update_spp4);
                     }
 
                     //Cek isian form untuk lain
@@ -439,7 +480,14 @@ class Pembayaran extends BaseController
                         $this->spp2->insert($data_spp2);
 
                         // Update status bayar pada tabel peserta kelas
-                        $data_update_spp2 = ['byr_spp2' => '1'];
+                        $spp2daftar = (2*$biaya_bulanan) + $biaya_daftar;
+                        $piutang2   = $total_lunas - $spp2daftar;
+                        $data_update_spp2 = [
+                            'byr_spp2' => '1',
+                            'spp_terbayar'  => $spp2daftar,
+                            'spp_piutang'   => $piutang2,
+                            'spp_status'    => 'BELUM LUNAS',
+                        ];
                         $this->peserta_kelas->update($id_psrt_kls, $data_update_spp2);
                     }
 
@@ -453,7 +501,14 @@ class Pembayaran extends BaseController
                         $this->spp3->insert($data_spp3);
 
                         // Update status bayar pada tabel peserta kelas
-                        $data_update_spp3 = ['byr_spp3' => '1'];
+                        $spp3daftar = (3*$biaya_bulanan) + $biaya_daftar;
+                        $piutang3   = $total_lunas - $spp3daftar;
+                        $data_update_spp3 = [
+                            'byr_spp3' => '1',
+                            'spp_terbayar'  => $spp3daftar,
+                            'spp_piutang'   => $piutang3,
+                            'spp_status'    => 'BELUM LUNAS',
+                        ];
                         $this->peserta_kelas->update($id_psrt_kls, $data_update_spp3);
                     }
 
@@ -467,7 +522,14 @@ class Pembayaran extends BaseController
                         $this->spp4->insert($data_spp4);
 
                         // Update status bayar pada tabel peserta kelas
-                        $data_update_spp4 = ['byr_spp4' => '1'];
+                        $spp4daftar = (4*$biaya_bulanan) + $biaya_daftar;
+                        $piutang4   = $total_lunas - $spp4daftar;
+                        $data_update_spp4 = [
+                            'byr_spp4' => '1',
+                            'spp_terbayar'  => $spp4daftar,
+                            'spp_piutang'   => $piutang4,
+                            'spp_status'    => 'LUNAS',
+                        ];
                         $this->peserta_kelas->update($id_psrt_kls, $data_update_spp4);
                     }
 
@@ -482,14 +544,13 @@ class Pembayaran extends BaseController
                     }
                 }
 
-                
-
                 // Data Log START
                 $log = [
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'Konfirmasi Pembayaran ID ' . $bayar_id,
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Konfirmasi Transaksi ID ' . $bayar_id . ' - ' . $log_nis_peserta . ' ' . $log_nama_peserta,
                 ];
                 $this->log->insert($log);
                 // Data Log END
@@ -882,6 +943,159 @@ class Pembayaran extends BaseController
         ];
         
         return view('auth/pembayaran/rekap_bayar_admin', $data);
+    }
+
+    public function rekap_spp_admin_export()
+    {
+        $rekap_spp =  $this->peserta_kelas->admin_rekap_bayar();
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $styleColumn = [
+            'font' => [
+                'bold' => true,
+                'size' => 14,
+            ],
+            'alignment' => [
+                'horizontal'    => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical'      => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ]
+        ];
+
+        $border = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $sheet->setCellValue('A1', "DATA REKAP PEMBAYARAN SPP ALHAQQ - ACADEMIC ALHAQQ INFORMATION SYSTEM");
+        $sheet->mergeCells('A1:U1');
+        $sheet->getStyle('A1')->applyFromArray($styleColumn);
+
+        $sheet->setCellValue('A2', date("Y-m-d"));
+        $sheet->mergeCells('A2:U2');
+        $sheet->getStyle('A2')->applyFromArray($styleColumn);
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A4', 'NIS')
+            ->setCellValue('B4', 'PESERTA')
+            ->setCellValue('C4', 'KELAS')
+            ->setCellValue('D4', 'ANGKATAN PERKULIAHAN')
+            ->setCellValue('E4', 'STATUS PESERTA')
+            ->setCellValue('F4', 'STATUS SPP')
+            ->setCellValue('G4', 'TERBAYAR')
+            ->setCellValue('H4', 'PIUTANG')
+            ->setCellValue('I4', 'BAYAR PENDAFTARAN')
+            ->setCellValue('J4', 'BAYAR SPP-1')
+            ->setCellValue('K4', 'BAYAR SPP-2')
+            ->setCellValue('L4', 'BAYAR SPP-3')
+            ->setCellValue('M4', 'BAYAR SPP-4')
+            ->setCellValue('N4', 'BAYAR MODUL');
+        
+        $sheet->getStyle('A4')->applyFromArray($styleColumn);
+        $sheet->getStyle('A4')->applyFromArray($border);
+        $sheet->getStyle('B4')->applyFromArray($styleColumn);
+        $sheet->getStyle('B4')->applyFromArray($border);
+        $sheet->getStyle('C4')->applyFromArray($styleColumn);
+        $sheet->getStyle('C4')->applyFromArray($border);
+        $sheet->getStyle('D4')->applyFromArray($styleColumn);
+        $sheet->getStyle('D4')->applyFromArray($border);
+        $sheet->getStyle('E4')->applyFromArray($styleColumn);
+        $sheet->getStyle('E4')->applyFromArray($border);
+        $sheet->getStyle('F4')->applyFromArray($styleColumn);
+        $sheet->getStyle('F4')->applyFromArray($border);
+        $sheet->getStyle('G4')->applyFromArray($styleColumn);
+        $sheet->getStyle('G4')->applyFromArray($border);
+        $sheet->getStyle('H4')->applyFromArray($styleColumn);
+        $sheet->getStyle('H4')->applyFromArray($border);
+        $sheet->getStyle('I4')->applyFromArray($styleColumn);
+        $sheet->getStyle('I4')->applyFromArray($border);
+        $sheet->getStyle('J4')->applyFromArray($styleColumn);
+        $sheet->getStyle('J4')->applyFromArray($border);
+        $sheet->getStyle('K4')->applyFromArray($styleColumn);
+        $sheet->getStyle('K4')->applyFromArray($border);
+        $sheet->getStyle('L4')->applyFromArray($styleColumn);
+        $sheet->getStyle('L4')->applyFromArray($border);
+        $sheet->getStyle('M4')->applyFromArray($styleColumn);
+        $sheet->getStyle('M4')->applyFromArray($border);
+        $sheet->getStyle('N4')->applyFromArray($styleColumn);
+        $sheet->getStyle('N4')->applyFromArray($border);
+
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+
+        $row = 5;
+
+        foreach ($rekap_spp as $rekap) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $row, $rekap['nis'])
+                ->setCellValue('B' . $row, $rekap['nama_peserta'])
+                ->setCellValue('C' . $row, $rekap['nama_kelas'])
+                ->setCellValue('D' . $row, $rekap['angkatan_kelas'])
+                ->setCellValue('E' . $row, $rekap['status_peserta'])
+                ->setCellValue('F' . $row, $rekap['spp_status'])
+                ->setCellValue('G' . $row, $rekap['spp_terbayar'])
+                ->setCellValue('H' . $row, $rekap['spp_piutang'])
+                ->setCellValue('I' . $row, $rekap['byr_daftar'])
+                ->setCellValue('J' . $row, $rekap['byr_spp1'])
+                ->setCellValue('K' . $row, $rekap['byr_spp2'])
+                ->setCellValue('L' . $row, $rekap['byr_spp3'])
+                ->setCellValue('M' . $row, $rekap['byr_spp4'])
+                ->setCellValue('N' . $row, $rekap['byr_modul']);
+
+            $sheet->getStyle('A' . $row)->applyFromArray($border);
+            $sheet->getStyle('B' . $row)->applyFromArray($border);
+            $sheet->getStyle('C' . $row)->applyFromArray($border);
+            $sheet->getStyle('D' . $row)->applyFromArray($border);
+            $sheet->getStyle('E' . $row)->applyFromArray($border);
+            $sheet->getStyle('F' . $row)->applyFromArray($border);
+            $sheet->getStyle('G' . $row)->applyFromArray($border);
+            $sheet->getStyle('H' . $row)->applyFromArray($border);
+            $sheet->getStyle('I' . $row)->applyFromArray($border);
+            $sheet->getStyle('J' . $row)->applyFromArray($border);
+            $sheet->getStyle('K' . $row)->applyFromArray($border);
+            $sheet->getStyle('L' . $row)->applyFromArray($border);
+            $sheet->getStyle('M' . $row)->applyFromArray($border);
+            $sheet->getStyle('N' . $row)->applyFromArray($border);
+
+            $row++;
+        }
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $filename =  'Data-Rekap-SPP-'. date('Y-m-d-His');
+
+        // Data Log START
+        $log = [
+            'username_log' => session()->get('username'),
+            'tgl_log'      => date("Y-m-d"),
+            'waktu_log'    => date("H:i:s"),
+            'status_log'   => 'BERHASIL',
+            'aktivitas_log'=> 'Download Data Rekap SPP via Export Excel, Waktu : ' .  date('Y-m-d-H:i:s'),
+        ];
+        $this->log->insert($log);
+        // Data Log END
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
     }
 
     public function peserta_bayar_spp()

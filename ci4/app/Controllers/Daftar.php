@@ -304,7 +304,7 @@ class Daftar extends BaseController
         // Cek ada data yang belum dibayar
         $cek1 = $this->program_bayar->cek_belum_lunas($peserta_id);
         // Cek Sudah punya kelas belum
-        $cek2 = $this->peserta_kelas->cek_peserta_kelas($peserta_id);
+        //$cek2 = $this->peserta_kelas->cek_peserta_kelas($peserta_id);
         
         $data = [
             'title'              => 'Al-Haqq - Daftar Program',
@@ -313,7 +313,7 @@ class Daftar extends BaseController
             'program'            => $program,
             'status_pendaftaran' => $status_daftar,
             'cek1'               => $cek1,
-            'cek2'               => $cek2,
+            //'cek2'               => $cek2,
         ];
         //var_dump($program);
         return view('auth/daftar/daftar', $data);

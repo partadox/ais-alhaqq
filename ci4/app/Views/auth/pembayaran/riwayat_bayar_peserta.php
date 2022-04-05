@@ -16,10 +16,11 @@
   <div class="card-body">
 
   <div class="table-responsive">
-    <table id="kelaspeserta" class="table table-striped table-bordered" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+    <table id="datatable" class="table table-striped table-bordered" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
         <thead>
             <tr>
                 <th>No.</th>
+                <th>Transaksi ID</th>
                 <th>Program</th>
                 <th>Kelas</th>
                 <th>Status <br> Konfirmasi</th>
@@ -37,6 +38,7 @@
                 $nomor++;  ?>
                 <tr>
                     <td width="1%"><?=$nomor?></td>
+                    <td width="1%"><?= $data['bayar_id'] ?></td>
                     <td width="8%"><?= $data['nama_program'] ?></td>
                     <td width="8%"><?= $data['nama_kelas'] ?></td>
                     <td width="10%">
