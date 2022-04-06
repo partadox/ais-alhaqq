@@ -358,7 +358,7 @@ class Pembayaran extends BaseController
                         'data_peserta_id'       => $peserta_id,
                         'data_kelas_id'         => $kelas_id,
                         'data_absen'            => $last_id,
-                        'status_peserta_kelas'  => 'BELUM LULUS',
+                        'status_peserta_kelas'  => 'Belum Lulus',
                         'byr_daftar'            => '1',
                         'byr_spp1'              => '1',
                         'byr_modul'             => $byr_modul_value,
