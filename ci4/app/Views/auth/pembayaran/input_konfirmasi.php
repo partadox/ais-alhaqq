@@ -87,9 +87,28 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label">Status Pembayaran<code>*</code></label>
+                    <div class="col-sm-8">
+                        <select class="form-control btn-square" id="status_bayar_admin" name="status_bayar_admin">
+                            <option value="" disabled selected>-- PILIH --</option>
+                            <option value="SESUAI BAYAR" >SESUAI BAYAR</option>
+                            <option value="KURANG BAYAR">KURANG BAYAR</option>
+                            <option value="LEBIH BAYAR">LEBIH BAYAR</option>
+                            <option value="BELUM BAYAR">BELUM BAYAR</option>
+                        </select>
+                        <div class="invalid-feedback errorStatus_bayar_admin"></div>
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Keterangan Dari Peserta</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" value="<?= $keterangan_bayar ?>" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="" class="col-sm-4 col-form-label">Keterangan Admin</label>
+                    <div class="col-sm-8">
+                        <input class="form-control text-uppercase" type="text-area" id="keterangan_bayar_admin" name="keterangan_bayar_admin" placeholder="Masukan Keterangan Pengiring (jika ada)">
                     </div>
                 </div>
             </div>
@@ -159,6 +178,8 @@
                     bayar_infaq: $('input#bayar_infaq').val(),
                     bayar_modul: $('input#bayar_modul').val(),
                     bayar_lain: $('input#bayar_lain').val(),
+                    status_bayar_admin: $('select#status_bayar_admin').val(),
+                    keterangan_bayar_admin: $('input#keterangan_bayar_admin').val(),
                 },
                 dataType: "json",
                 beforeSend: function() {
@@ -233,6 +254,13 @@
                         } else {
                             $('#bayar_lain').removeClass('is-invalid');
                             $('.errorBayar_lain').html('');
+                        }
+                        if (response.error.status_bayar_admin) {
+                            $('#status_bayar_admin').addClass('is-invalid');
+                            $('.errorStatus_bayar_admin').html(response.error.status_bayar_admin);
+                        } else {
+                            $('#status_bayar_admin').removeClass('is-invalid');
+                            $('.errorStatus_bayar_admin').html('');
                         }
                     } else {
                         Swal.fire({

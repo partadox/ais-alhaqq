@@ -180,6 +180,16 @@ class Modelprogram extends Model
             ->get()->getResultArray();
     }
 
+    public function list_sesuai_angkatan_perkuliahan($angkatan)
+    {
+        return $this->table('program_kelas')
+            ->join('program', 'program.program_id = program_kelas.program_id')
+            ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+            ->where('angkatan_kelas', $angkatan)
+            ->orderBy('kelas_id', 'DESC')
+            ->get()->getResultArray();
+    }
+
     public function list_detail_kelas($kelas_id)
     {
         return $this->table('program_kelas')
@@ -236,5 +246,15 @@ class Modelprogram extends Model
             ->where('kelas_id', $kelas_id)
             ->get()
             ->getUnbufferedRow();
+    }
+
+    //Seluruh angkatan (unik value / Distinct)
+    public function list_unik_angkatan()
+    {
+        return $this->table('program_kelas')
+            ->select('angkatan_kelas')
+            ->orderBy('angkatan_kelas', 'DESC')
+            ->distinct()
+            ->get()->getResultArray();
     }
 }

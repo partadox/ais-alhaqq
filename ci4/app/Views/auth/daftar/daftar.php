@@ -75,10 +75,10 @@
                     <p> <i class="mdi mdi-clock"></i> Waktu = <?= $data['waktu_kelas'] ?></p>
                     <a> <i class="mdi mdi-teach"></i>
                         <?php if($data['metode_kelas'] == 'OFFLINE') { ?>
-                            Tatap Muka = <span class="badge badge-secondary">OFFLINE</span>
+                            Metode Perkuliahan = <span class="badge badge-secondary">TATAP MUKA / OFFLINE</span>
                         <?php } ?>
                         <?php if($data['metode_kelas'] == 'ONLINE') { ?>
-                            Tatap Muka = <span class="badge badge-success">ONLINE</span>
+                            Metode Perkuliahan = <span class="badge badge-success">DARING / ONLINE</span>
                         <?php } ?>
                     </a>
                     <hr>

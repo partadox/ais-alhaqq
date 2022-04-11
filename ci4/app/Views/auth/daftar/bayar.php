@@ -84,7 +84,7 @@
                         <h5 style="text-align:center"> Status Konfirmasi :
                         <?php if($program_bayar[0]['status_konfirmasi'] == NULL) { ?>
                           <button class="btn btn-warning" disabled> Belum Bayar</button>
-                          <h5 style="text-align:center"><i><b>Lakukan Pembayaran & Harap Lengkapi Form Pembayaran di Bawah ini!</b></i></h5>
+                          <h5 style="text-align:center"><i><b>Anda Akan Terdaftar di Kelas yang Anda Pilih Setelah Mengisi Form Pembayaran di Bawah ini.</b></i></h5>
                           <br>
                         <?php } ?> 
                         <?php if($program_bayar[0]['status_konfirmasi'] == 'Proses') { ?>

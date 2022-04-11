@@ -41,6 +41,7 @@ $routes->get('/auth/daftar/login', 'Login::index');
 $routes->get('/auth/program/kelas_peserta/login', 'Login::index');
 $routes->get('/auth/absen/login', 'Login::index');
 $routes->get('/auth/absen/list_absen/login', 'Login::index');
+$routes->get('/auth/pembayaran/tambah_bayar_spp_ganti_angkatan/login', 'Login::index');
 
 $routes->get('/auth/register', 'Register::index');
 $routes->get('/auth/daftar', 'Daftar::index', ['filter' => 'Validasilogin']);
@@ -56,12 +57,20 @@ $routes->get('/auth/daftar/dashboard', 'Dashboard::index', ['filter' => 'Validas
 $routes->get('/auth/program/kelas_peserta/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/absen/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/absen/list_absen/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/pembayaran/tambah_bayar_spp_ganti_angkatan/dashboard', 'Dashboard::index');
 
 $routes->get('/auth/pembayaran/konfirmasi', 'Pembayaran::konfirmasi', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran/admin_rekap_bayar', 'Pembayaran::admin_rekap_bayar', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran/peserta_bayar_spp', 'Pembayaran::peserta_bayar_spp', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran/riwayat_bayar_peserta', 'Pembayaran::riwayat_bayar_peserta', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran', 'Pembayaran::Index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/pembayaran/tambah_bayar_daftar', 'Pembayaran::tambah_bayar_daftar', ['filter' => 'Validasilogin']);
+$routes->get('/auth/pembayaran/tambah_bayar_lain', 'Pembayaran::tambah_bayar_lain', ['filter' => 'Validasilogin']);
+$routes->get('/auth/pembayaran/tambah_bayar_spp', 'Pembayaran::tambah_bayar_spp', ['filter' => 'Validasilogin']);
+$routes->get('/auth/pembayaran/tambah_bayar_spp/(:num)', 'Pembayaran::tambah_bayar_spp/$1', ['filter' => 'Validasilogin']);
+$routes->get('/auth/pembayaran/tambah_bayar_spp_ganti_angkatan', 'Pembayaran::tambah_bayar_spp', ['filter' => 'Validasilogin']);
+$routes->get('/auth/pembayaran/tambah_bayar_spp_ganti_angkatan/(:num)', 'Pembayaran::tambah_bayar_spp_ganti_angkatan/$1', ['filter' => 'Validasilogin']);
+
 $routes->get('/auth/program', 'Program::Index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/program/kelas', 'Program::kelas', ['filter' => 'Validasilogin']);
 $routes->get('/auth/program/level', 'Program::level', ['filter' => 'Validasilogin']);

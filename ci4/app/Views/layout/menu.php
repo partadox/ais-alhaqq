@@ -100,6 +100,12 @@
 <?php if (session()->get('level') == 2) { ?>
     <li class="menu-title"> Pembayaran</li>
     <li>
+        <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-plus-circle-outline"></i> <span> Tambah Bayar <span class="float-right menu-arrow"><i class="mdi mdi-chevron-right"></i></span> </span> </a>
+        <ul class="submenu">
+            <li><a href="<?= base_url('auth/pembayaran/tambah_bayar_daftar') ?>">Pendaftaran</a></li>
+            <li><a href="<?= base_url('auth/pembayaran/tambah_bayar_spp') ?>">SPP</a></li>
+            <li><a href="<?= base_url('auth/pembayaran/tambah_bayar_lain') ?>">Infaq & Lain</a></li>
+        </ul>
         <a href="<?= base_url('auth/pembayaran/konfirmasi') ?>" class="waves-effect">
             <i class="mdi mdi-cash-usd"></i> <span> Konfirmasi Pembayaran</span>
         </a>

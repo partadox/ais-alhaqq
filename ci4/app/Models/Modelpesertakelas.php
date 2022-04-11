@@ -148,5 +148,30 @@ class Modelpesertakelas extends Model
             ->getUnbufferedRow();
     }
 
+    // Get Data Kelas dari peserta_kelas_id
+    public function get_peserta_kelas_id($peserta_id, $kelas_id)
+    {
+        return $this->table('program_kelas')
+            ->select('peserta_kelas_id')
+            ->where('data_peserta_id', $peserta_id)
+            ->where('data_kelas_id', $kelas_id)
+            ->get()
+            ->getUnbufferedRow();
+    }
+    
+    // List untuk pembuatan pembayaran SPP baru di Admin
+    public function list_kelas_peserta($angkatan)
+    {
+        return $this->table('peserta_kelas')
+            ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
+            ->join('program_kelas', 'program_kelas.kelas_id = peserta_kelas.data_kelas_id')
+            ->join('program', 'program.program_id = program_kelas.program_id')
+            // ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+            ->where('angkatan_kelas', $angkatan)
+            //->where('status_peserta_kelas', 'Belum Lulus')
+            // ->orderBy('angkatan_kelas', 'DESC')
+            ->get()->getResultArray();
+    }
+
 
 }
