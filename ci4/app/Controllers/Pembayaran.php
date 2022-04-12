@@ -15,6 +15,24 @@ class Pembayaran extends BaseController
         return view('auth/pembayaran/index', $data);
     }
 
+    public function index_bayar_infaq()
+    {
+        $data = [
+            'title'  => 'Al-Haqq - Rekap Data Pembayaran Infaq',
+            'infaq'  => $this->infaq->list(),
+        ];
+        return view('auth/pembayaran/index_bayar_infaq', $data);
+    }
+
+    public function index_bayar_lain()
+    {
+        $data = [
+            'title'  => 'Al-Haqq - Rekap Data Pembayaran Lain',
+            'lain'   => $this->bayar_lain->list(),
+        ];
+        return view('auth/pembayaran/index_bayar_lain', $data);
+    }
+
     // Halaman List Data Konfirmasi Pembayaran
     public function konfirmasi()
     {
@@ -999,19 +1017,22 @@ class Pembayaran extends BaseController
 
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('A4', 'NIS')
-            ->setCellValue('B4', 'PESERTA')
-            ->setCellValue('C4', 'KELAS')
-            ->setCellValue('D4', 'ANGKATAN PERKULIAHAN')
-            ->setCellValue('E4', 'STATUS PESERTA')
-            ->setCellValue('F4', 'STATUS SPP')
-            ->setCellValue('G4', 'TERBAYAR')
-            ->setCellValue('H4', 'PIUTANG')
-            ->setCellValue('I4', 'BAYAR PENDAFTARAN')
-            ->setCellValue('J4', 'BAYAR SPP-1')
-            ->setCellValue('K4', 'BAYAR SPP-2')
-            ->setCellValue('L4', 'BAYAR SPP-3')
-            ->setCellValue('M4', 'BAYAR SPP-4')
-            ->setCellValue('N4', 'BAYAR MODUL');
+            ->setCellValue('B4', 'NAMA PESERTA')
+            ->setCellValue('C4', 'JENIS KELAMIN')
+            ->setCellValue('D4', 'LEVEL')
+            ->setCellValue('E4', 'ANGKATAN PERKULIAHAN')
+            ->setCellValue('F4', 'STATUS PESERTA')
+            ->setCellValue('G4', 'KELAS')
+            ->setCellValue('H4', 'PENGAJAR')
+            ->setCellValue('I4', 'STATUS SPP')
+            ->setCellValue('J4', 'TERBAYAR')
+            ->setCellValue('K4', 'PIUTANG')
+            ->setCellValue('L4', 'BAYAR PENDAFTARAN')
+            ->setCellValue('M4', 'BAYAR SPP-1')
+            ->setCellValue('N4', 'BAYAR SPP-2')
+            ->setCellValue('O4', 'BAYAR SPP-3')
+            ->setCellValue('P4', 'BAYAR SPP-4')
+            ->setCellValue('Q4', 'BAYAR MODUL');
         
         $sheet->getStyle('A4')->applyFromArray($styleColumn);
         $sheet->getStyle('A4')->applyFromArray($border);
@@ -1041,6 +1062,12 @@ class Pembayaran extends BaseController
         $sheet->getStyle('M4')->applyFromArray($border);
         $sheet->getStyle('N4')->applyFromArray($styleColumn);
         $sheet->getStyle('N4')->applyFromArray($border);
+        $sheet->getStyle('O4')->applyFromArray($styleColumn);
+        $sheet->getStyle('O4')->applyFromArray($border);
+        $sheet->getStyle('P4')->applyFromArray($styleColumn);
+        $sheet->getStyle('P4')->applyFromArray($border);
+        $sheet->getStyle('Q4')->applyFromArray($styleColumn);
+        $sheet->getStyle('Q4')->applyFromArray($border);
 
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
@@ -1056,6 +1083,9 @@ class Pembayaran extends BaseController
         $spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('M')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('N')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('P')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('Q')->setAutoSize(true);
 
         $row = 5;
 
@@ -1063,18 +1093,21 @@ class Pembayaran extends BaseController
             $spreadsheet->setActiveSheetIndex(0)
                 ->setCellValue('A' . $row, $rekap['nis'])
                 ->setCellValue('B' . $row, $rekap['nama_peserta'])
-                ->setCellValue('C' . $row, $rekap['nama_kelas'])
-                ->setCellValue('D' . $row, $rekap['angkatan_kelas'])
-                ->setCellValue('E' . $row, $rekap['status_peserta'])
-                ->setCellValue('F' . $row, $rekap['spp_status'])
-                ->setCellValue('G' . $row, $rekap['spp_terbayar'])
-                ->setCellValue('H' . $row, $rekap['spp_piutang'])
-                ->setCellValue('I' . $row, $rekap['byr_daftar'])
-                ->setCellValue('J' . $row, $rekap['byr_spp1'])
-                ->setCellValue('K' . $row, $rekap['byr_spp2'])
-                ->setCellValue('L' . $row, $rekap['byr_spp3'])
-                ->setCellValue('M' . $row, $rekap['byr_spp4'])
-                ->setCellValue('N' . $row, $rekap['byr_modul']);
+                ->setCellValue('C' . $row, $rekap['jenkel'])
+                ->setCellValue('D' . $row, $rekap['nama_level'])
+                ->setCellValue('E' . $row, $rekap['angkatan_kelas'])
+                ->setCellValue('F' . $row, $rekap['status_peserta'])
+                ->setCellValue('G' . $row, $rekap['nama_kelas'])
+                ->setCellValue('H' . $row, $rekap['nama_pengajar'])
+                ->setCellValue('I' . $row, $rekap['spp_status'])
+                ->setCellValue('J' . $row, $rekap['spp_terbayar'])
+                ->setCellValue('K' . $row, $rekap['spp_piutang'])
+                ->setCellValue('L' . $row, $rekap['byr_daftar'])
+                ->setCellValue('M' . $row, $rekap['byr_spp1'])
+                ->setCellValue('N' . $row, $rekap['byr_spp2'])
+                ->setCellValue('O' . $row, $rekap['byr_spp3'])
+                ->setCellValue('P' . $row, $rekap['byr_spp4'])
+                ->setCellValue('Q' . $row, $rekap['byr_modul']);
 
             $sheet->getStyle('A' . $row)->applyFromArray($border);
             $sheet->getStyle('B' . $row)->applyFromArray($border);
@@ -1090,6 +1123,9 @@ class Pembayaran extends BaseController
             $sheet->getStyle('L' . $row)->applyFromArray($border);
             $sheet->getStyle('M' . $row)->applyFromArray($border);
             $sheet->getStyle('N' . $row)->applyFromArray($border);
+            $sheet->getStyle('O' . $row)->applyFromArray($border);
+            $sheet->getStyle('P' . $row)->applyFromArray($border);
+            $sheet->getStyle('Q' . $row)->applyFromArray($border);
 
             $row++;
         }
@@ -1104,6 +1140,252 @@ class Pembayaran extends BaseController
             'waktu_log'    => date("H:i:s"),
             'status_log'   => 'BERHASIL',
             'aktivitas_log'=> 'Download Data Rekap SPP via Export Excel, Waktu : ' .  date('Y-m-d-H:i:s'),
+        ];
+        $this->log->insert($log);
+        // Data Log END
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function export_infaq()
+    {
+        $rekap_infaq =  $this->infaq->list();
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $styleColumn = [
+            'font' => [
+                'bold' => true,
+                'size' => 14,
+            ],
+            'alignment' => [
+                'horizontal'    => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical'      => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ]
+        ];
+
+        $border = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $sheet->setCellValue('A1', "DATA REKAP PEMBAYARAN INFAQ ALHAQQ - ACADEMIC ALHAQQ INFORMATION SYSTEM");
+        $sheet->mergeCells('A1:I1');
+        $sheet->getStyle('A1')->applyFromArray($styleColumn);
+
+        $sheet->setCellValue('A2', date("Y-m-d"));
+        $sheet->mergeCells('A2:I2');
+        $sheet->getStyle('A2')->applyFromArray($styleColumn);
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A4', 'TRANSAKSI ID')
+            ->setCellValue('B4', 'NIS')
+            ->setCellValue('C4', 'NAMA PESERTA')
+            ->setCellValue('D4', 'TGL BAYAR')
+            ->setCellValue('E4', 'WAKTU BAYAR')
+            ->setCellValue('F4', 'NOMINAL')
+            ->setCellValue('G4', 'VALIDATOR')
+            ->setCellValue('H4', 'KET. PESERTA')
+            ->setCellValue('I4', 'KET. ADMIN');
+        
+        $sheet->getStyle('A4')->applyFromArray($styleColumn);
+        $sheet->getStyle('A4')->applyFromArray($border);
+        $sheet->getStyle('B4')->applyFromArray($styleColumn);
+        $sheet->getStyle('B4')->applyFromArray($border);
+        $sheet->getStyle('C4')->applyFromArray($styleColumn);
+        $sheet->getStyle('C4')->applyFromArray($border);
+        $sheet->getStyle('D4')->applyFromArray($styleColumn);
+        $sheet->getStyle('D4')->applyFromArray($border);
+        $sheet->getStyle('E4')->applyFromArray($styleColumn);
+        $sheet->getStyle('E4')->applyFromArray($border);
+        $sheet->getStyle('F4')->applyFromArray($styleColumn);
+        $sheet->getStyle('F4')->applyFromArray($border);
+        $sheet->getStyle('G4')->applyFromArray($styleColumn);
+        $sheet->getStyle('G4')->applyFromArray($border);
+        $sheet->getStyle('H4')->applyFromArray($styleColumn);
+        $sheet->getStyle('H4')->applyFromArray($border);
+        $sheet->getStyle('I4')->applyFromArray($styleColumn);
+        $sheet->getStyle('I4')->applyFromArray($border);
+
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+
+        $row = 5;
+
+        foreach ($rekap_infaq as $rekap) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $row, $rekap['bayar_id'])
+                ->setCellValue('B' . $row, $rekap['nis'])
+                ->setCellValue('C' . $row, $rekap['nama_peserta'])
+                ->setCellValue('D' . $row, $rekap['tgl_bayar'])
+                ->setCellValue('E' . $row, $rekap['waktu_bayar'])
+                ->setCellValue('F' . $row, $rekap['bayar_infaq'])
+                ->setCellValue('G' . $row, $rekap['validator'])
+                ->setCellValue('H' . $row, $rekap['keterangan_bayar'])
+                ->setCellValue('I' . $row, $rekap['keterangan_bayar_admin']);
+
+            $sheet->getStyle('A' . $row)->applyFromArray($border);
+            $sheet->getStyle('B' . $row)->applyFromArray($border);
+            $sheet->getStyle('C' . $row)->applyFromArray($border);
+            $sheet->getStyle('D' . $row)->applyFromArray($border);
+            $sheet->getStyle('E' . $row)->applyFromArray($border);
+            $sheet->getStyle('F' . $row)->applyFromArray($border);
+            $sheet->getStyle('G' . $row)->applyFromArray($border);
+            $sheet->getStyle('H' . $row)->applyFromArray($border);
+            $sheet->getStyle('I' . $row)->applyFromArray($border);
+
+            $row++;
+        }
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $filename =  'Data-Rekap-Infaq-'. date('Y-m-d-His');
+
+        // Data Log START
+        $log = [
+            'username_log' => session()->get('username'),
+            'tgl_log'      => date("Y-m-d"),
+            'waktu_log'    => date("H:i:s"),
+            'status_log'   => 'BERHASIL',
+            'aktivitas_log'=> 'Download Data Rekap Infaq via Export Excel, Waktu : ' .  date('Y-m-d-H:i:s'),
+        ];
+        $this->log->insert($log);
+        // Data Log END
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function export_lain()
+    {
+        $rekap_lain =  $this->bayar_lain->list();
+
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $styleColumn = [
+            'font' => [
+                'bold' => true,
+                'size' => 14,
+            ],
+            'alignment' => [
+                'horizontal'    => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical'      => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ]
+        ];
+
+        $border = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $sheet->setCellValue('A1', "DATA REKAP PEMBAYARAN LAINNYA ALHAQQ - ACADEMIC ALHAQQ INFORMATION SYSTEM");
+        $sheet->mergeCells('A1:I1');
+        $sheet->getStyle('A1')->applyFromArray($styleColumn);
+
+        $sheet->setCellValue('A2', date("Y-m-d"));
+        $sheet->mergeCells('A2:I2');
+        $sheet->getStyle('A2')->applyFromArray($styleColumn);
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A4', 'TRANSAKSI ID')
+            ->setCellValue('B4', 'NIS')
+            ->setCellValue('C4', 'NAMA PESERTA')
+            ->setCellValue('D4', 'TGL BAYAR')
+            ->setCellValue('E4', 'WAKTU BAYAR')
+            ->setCellValue('F4', 'NOMINAL')
+            ->setCellValue('G4', 'VALIDATOR')
+            ->setCellValue('H4', 'KET. PESERTA')
+            ->setCellValue('I4', 'KET. ADMIN');
+        
+        $sheet->getStyle('A4')->applyFromArray($styleColumn);
+        $sheet->getStyle('A4')->applyFromArray($border);
+        $sheet->getStyle('B4')->applyFromArray($styleColumn);
+        $sheet->getStyle('B4')->applyFromArray($border);
+        $sheet->getStyle('C4')->applyFromArray($styleColumn);
+        $sheet->getStyle('C4')->applyFromArray($border);
+        $sheet->getStyle('D4')->applyFromArray($styleColumn);
+        $sheet->getStyle('D4')->applyFromArray($border);
+        $sheet->getStyle('E4')->applyFromArray($styleColumn);
+        $sheet->getStyle('E4')->applyFromArray($border);
+        $sheet->getStyle('F4')->applyFromArray($styleColumn);
+        $sheet->getStyle('F4')->applyFromArray($border);
+        $sheet->getStyle('G4')->applyFromArray($styleColumn);
+        $sheet->getStyle('G4')->applyFromArray($border);
+        $sheet->getStyle('H4')->applyFromArray($styleColumn);
+        $sheet->getStyle('H4')->applyFromArray($border);
+        $sheet->getStyle('I4')->applyFromArray($styleColumn);
+        $sheet->getStyle('I4')->applyFromArray($border);
+
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+
+        $row = 5;
+
+        foreach ($rekap_lain as $rekap) {
+            $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $row, $rekap['bayar_id'])
+                ->setCellValue('B' . $row, $rekap['nis'])
+                ->setCellValue('C' . $row, $rekap['nama_peserta'])
+                ->setCellValue('D' . $row, $rekap['tgl_bayar'])
+                ->setCellValue('E' . $row, $rekap['waktu_bayar'])
+                ->setCellValue('F' . $row, $rekap['bayar_lainnya'])
+                ->setCellValue('G' . $row, $rekap['validator'])
+                ->setCellValue('H' . $row, $rekap['keterangan_bayar'])
+                ->setCellValue('I' . $row, $rekap['keterangan_bayar_admin']);
+
+            $sheet->getStyle('A' . $row)->applyFromArray($border);
+            $sheet->getStyle('B' . $row)->applyFromArray($border);
+            $sheet->getStyle('C' . $row)->applyFromArray($border);
+            $sheet->getStyle('D' . $row)->applyFromArray($border);
+            $sheet->getStyle('E' . $row)->applyFromArray($border);
+            $sheet->getStyle('F' . $row)->applyFromArray($border);
+            $sheet->getStyle('G' . $row)->applyFromArray($border);
+            $sheet->getStyle('H' . $row)->applyFromArray($border);
+            $sheet->getStyle('I' . $row)->applyFromArray($border);
+
+            $row++;
+        }
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $filename =  'Data-Rekap-Pembyaran-Lain-'. date('Y-m-d-His');
+
+        // Data Log START
+        $log = [
+            'username_log' => session()->get('username'),
+            'tgl_log'      => date("Y-m-d"),
+            'waktu_log'    => date("H:i:s"),
+            'status_log'   => 'BERHASIL',
+            'aktivitas_log'=> 'Download Data Rekap Pemby. Lain via Export Excel, Waktu : ' .  date('Y-m-d-H:i:s'),
         ];
         $this->log->insert($log);
         // Data Log END

@@ -16,10 +16,9 @@
     <table id="datatable" class="table table-bordered mt-5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
         <thead>
             <tr>
-                <th>Urutan</th>
                 <th>ID Level</th>
                 <th>Level</th>
-                <th>Tampil Di Pendaftaran Awal Peserta Baru</th>
+                <th>Tampil Di Pendaftaran Awal Peserta</th>
                 <th>Tindakan</th> 
             </tr>
         </thead>
@@ -29,7 +28,7 @@
             foreach ($list as $data) :
                 ?>
                 <tr>
-                    <td width="5%"><?= $data['urutan_level'] ?></td>
+                    <!-- <td width="5%"><?= $data['urutan_level'] ?></td> -->
                     <td width="7%"><?= $data['peserta_level_id'] ?></td>
                     <td width="20%"><?= $data['nama_level'] ?></td>
                     <td width="15%">

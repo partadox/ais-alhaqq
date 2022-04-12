@@ -14,7 +14,7 @@ class Modellevel extends Model
     public function list()
     {
         return $this->table('peserta_level')
-            ->orderBy('urutan_level', 'ASC')
+            ->orderBy('peserta_level_id', 'ASC')
             ->get()->getResultArray();
     }
 
@@ -22,7 +22,7 @@ class Modellevel extends Model
     {
         return $this->table('peserta_level')
             ->where('tampil_ondaftar',1)
-            ->orderBy('urutan_level', 'ASC')
+            ->orderBy('peserta_level_id', 'ASC')
             ->get()->getResultArray();
     }
 

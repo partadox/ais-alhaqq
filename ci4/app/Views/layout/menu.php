@@ -115,9 +115,12 @@
         <a href="<?= base_url('auth/pembayaran/admin_rekap_bayar') ?>" class="waves-effect">
             <i class="mdi mdi-cash-multiple"></i> <span> Rekap Pembayaran SPP</span>
         </a>
-        <!-- <a href="<?= base_url('auth/pembayaran') ?>" class="waves-effect">
-            <i class="mdi mdi-cash-register"></i> <span>  Download & Hapus Bukti TF </span>
-        </a> -->
+        <a href="<?= base_url('auth/pembayaran/index_bayar_infaq') ?>" class="waves-effect">
+            <i class="mdi mdi-cash-multiple"></i> <span>Rekap Infaq</span>
+        </a>
+        <a href="<?= base_url('auth/pembayaran/index_bayar_lain') ?>" class="waves-effect">
+            <i class="mdi mdi-cash-multiple"></i> <span>Rekap Pemby. Lain</span>
+        </a>
     </li>
     <li class="menu-title">Program & Kelas</li>
     <li>

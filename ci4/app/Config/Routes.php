@@ -64,6 +64,8 @@ $routes->get('/auth/pembayaran/admin_rekap_bayar', 'Pembayaran::admin_rekap_baya
 $routes->get('/auth/pembayaran/peserta_bayar_spp', 'Pembayaran::peserta_bayar_spp', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran/riwayat_bayar_peserta', 'Pembayaran::riwayat_bayar_peserta', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran', 'Pembayaran::Index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/pembayaran/index_bayar_lain', 'Pembayaran::Index_bayar_lain', ['filter' => 'Validasilogin']);
+$routes->get('/auth/pembayaran/index_bayar_infaq', 'Pembayaran::Index_bayar_infaq', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran/tambah_bayar_daftar', 'Pembayaran::tambah_bayar_daftar', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran/tambah_bayar_lain', 'Pembayaran::tambah_bayar_lain', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran/tambah_bayar_spp', 'Pembayaran::tambah_bayar_spp', ['filter' => 'Validasilogin']);

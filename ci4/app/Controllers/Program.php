@@ -834,13 +834,13 @@ class Program extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
-                'urutan_level' => [
-                    'label' => 'urutan_level',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong',
-                    ]
-                ],
+                // 'urutan_level' => [
+                //     'label' => 'urutan_level',
+                //     'rules' => 'required',
+                //     'errors' => [
+                //         'required' => '{field} tidak boleh kosong',
+                //     ]
+                // ],
                 'tampil_ondaftar' => [
                     'label' => 'tampil_ondaftar',
                     'rules' => 'required',
@@ -853,14 +853,14 @@ class Program extends BaseController
                 $msg = [
                     'error' => [
                         'nama_level'        => $validation->getError('nama_level'),
-                        'urutan_level'      => $validation->getError('urutan_level'),
+                        // 'urutan_level'      => $validation->getError('urutan_level'),
                         'tampil_ondaftar'   => $validation->getError('tampil_ondaftar'),
                     ]
                 ];
             } else {
                 $simpandata = [
                     'nama_level'        => strtoupper($this->request->getVar('nama_level')),
-                    'urutan_level'      => $this->request->getVar('urutan_level'),
+                    // 'urutan_level'      => $this->request->getVar('urutan_level'),
                     'tampil_ondaftar'   => $this->request->getVar('tampil_ondaftar'),
                 ];
 
@@ -871,6 +871,7 @@ class Program extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Buat Data Level Nama : ' .  $this->request->getVar('nama_level'),
                 ];
                 $this->log->insert($log);
@@ -896,7 +897,7 @@ class Program extends BaseController
                 'title'             => 'Ubah Data Level',
                 'peserta_level_id'  => $level['peserta_level_id'],
                 'nama_level'        => $level['nama_level'],
-                'urutan_level'      => $level['urutan_level'],
+                // 'urutan_level'      => $level['urutan_level'],
                 'tampil_ondaftar'   => $level['tampil_ondaftar'],
             ];
             $msg = [
@@ -918,13 +919,13 @@ class Program extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
-                'urutan_level' => [
-                    'label' => 'urutan_level',
-                    'rules' => 'required',
-                    'errors' => [
-                        'required' => '{field} tidak boleh kosong',
-                    ]
-                ],
+                // 'urutan_level' => [
+                //     'label' => 'urutan_level',
+                //     'rules' => 'required',
+                //     'errors' => [
+                //         'required' => '{field} tidak boleh kosong',
+                //     ]
+                // ],
                 'tampil_ondaftar' => [
                     'label' => 'tampil_ondaftar',
                     'rules' => 'required',
@@ -937,7 +938,7 @@ class Program extends BaseController
                 $msg = [
                     'error' => [
                         'nama_level'        => $validation->getError('nama_level'),
-                        'urutan_level'      => $validation->getError('urutan_level'),
+                        // 'urutan_level'      => $validation->getError('urutan_level'),
                         'tampil_ondaftar'   => $validation->getError('tampil_ondaftar'),
                     ]
                 ];
@@ -945,7 +946,7 @@ class Program extends BaseController
 
                 $updatedata = [
                     'nama_level'        => strtoupper($this->request->getVar('nama_level')),
-                    'urutan_level'      => $this->request->getVar('urutan_level'),
+                    // 'urutan_level'      => $this->request->getVar('urutan_level'),
                     'tampil_ondaftar'   => $this->request->getVar('tampil_ondaftar'),
                 ];
 
@@ -957,6 +958,7 @@ class Program extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Ubah Data Level Nama : ' .  $this->request->getVar('nama_level'),
                 ];
                 $this->log->insert($log);

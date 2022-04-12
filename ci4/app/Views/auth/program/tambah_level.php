@@ -18,13 +18,13 @@
                         <div class="invalid-feedback errorNama_level"></div>
                     </div>
                 </div>
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Urutan Level<code>*</code></label>
                     <div class="col-sm-8">
                         <input type="number" class="form-control" id="urutan_level" name="urutan_level">
                         <div class="invalid-feedback errorUrutan_level"></div>
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Tampil Di Daftar Peserta Baru <code>*</code></label>
                     <div class="col-sm-8">
@@ -58,7 +58,7 @@
                 url: $(this).attr('action'),
                 data: {
                     nama_level: $('input#nama_level').val(),
-                    urutan_level: $('input#urutan_level').val(),
+                    // urutan_level: $('input#urutan_level').val(),
                     tampil_ondaftar: $('select#tampil_ondaftar').val(),
                 },
                 dataType: "json",
@@ -80,13 +80,13 @@
                             $('.errorNama_level').html('');
                         }
 
-                        if (response.error.urutan_level) {
-                            $('#urutan_level').addClass('is-invalid');
-                            $('.errorUrutan_level').html(response.error.urutan_level);
-                        } else {
-                            $('#urutan_level').removeClass('is-invalid');
-                            $('.errorUrutan_level').html('');
-                        }
+                        // if (response.error.urutan_level) {
+                        //     $('#urutan_level').addClass('is-invalid');
+                        //     $('.errorUrutan_level').html(response.error.urutan_level);
+                        // } else {
+                        //     $('#urutan_level').removeClass('is-invalid');
+                        //     $('.errorUrutan_level').html('');
+                        // }
 
                         if (response.error.tampil_ondaftar) {
                             $('#tampil_ondaftar').addClass('is-invalid');
