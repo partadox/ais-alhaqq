@@ -23,12 +23,13 @@
                     <p class="mt-3">Catatan :<br> 
                       <i class="mdi mdi-information"></i> Anda harus mengupload bukti transfer dan klik tombol "Konfirmasi Pembayaran" untuk mendaftar ke kelas yang sudah anda pilih. <br>
                       <i class="mdi mdi-information"></i> Jika anda berniat mengambil jadwal kelas lain anda dapat membatalkan kelas yang anda pilih dengan cara klik tombol "Batal" pada kolom "Batal Pendaftaran". (Pembatalan pengambilan kelas dapat dilakukan sebelum melakukan pembayaran dan mengisi form pembayaran) jika anda sudah melakukan pembayaran dan berniat mengganti jadwal/kelas harap hubungi admin.<br>
-                      <i class="mdi mdi-information"></i> Minimal nilai pembayaran yang harus anda bayarkan adalah <b>Total Pendaftaran + SPP 1 + Modul</b>. <br>
+                      <i class="mdi mdi-information"></i> Minimal nilai pembayaran yang harus anda bayarkan adalah <b>Total Pendaftaran + SPP 1 + Modul</b> <br>
                       <i class="mdi mdi-information"></i> Masukan angka '0' untuk jenis pembayaran yang tidak termasuk dalam dana yang anda bayarkan. <br>
+                      <i class="mdi mdi-information"></i> Jika anda melakukan pembayaran melebihi batas waktu maka formulir ini akan terhapus, dan kuota kelas yang anda ambil akan kembali seperti semula (Anda belum terdaftar ke kelas yang anda pilih).
                     </p>
-                    <h6> <u> Metode Pembayaran Transfer Bank Dapat Melalui Pilihan Rekening Berikut:</u> <br></h6>
+                    <h6 style="text-align:center"> <u> Metode Pembayaran Transfer Bank Dapat Melalui Pilihan Rekening Berikut:</u> <br></h6>
                     <?php foreach ($bank as $key => $data) { ?>
-                      <h6><i class="mdi mdi-bank-transfer"></i> <?= $data['nama_bank'] ?> = <?= $data['rekening_bank'] ?> a.n <?= $data['atas_nama_bank'] ?></h6>
+                      <h5 style="text-align:center"><i class="mdi mdi-bank-transfer"></i> <?= $data['nama_bank'] ?> = <?= $data['rekening_bank'] ?> a.n <?= $data['atas_nama_bank'] ?></h5>
                       <?php } ?>
                     
                     <h5  style="text-align:center"> Anda Daftar Pada Program : </h5>
@@ -69,7 +70,7 @@
                                       </td>
                                       <td>
                                       <?php if($program_bayar[0]['status_konfirmasi'] == '') { ?>
-                                        <button type="button" class="btn btn-danger btn-sm" onclick="hapus('<?= $program_bayar[0]['bayar_id'] ?>')">Batal</button>
+                                        <button type="button" class="btn btn-danger btn-sm" onclick="hapus(<?= $program_bayar[0]['bayar_id'] ?>, <?= $program_bayar[0]['kelas_id'] ?>, <?= $program_bayar[0]['bayar_peserta_id'] ?>)">Batal</button>
                                       <?php } ?>
                                       <?php if($program_bayar[0]['status_konfirmasi'] != '') { ?>
                                         <p>-</p>
@@ -84,8 +85,11 @@
                         <h5 style="text-align:center"> Status Konfirmasi :
                         <?php if($program_bayar[0]['status_konfirmasi'] == NULL) { ?>
                           <button class="btn btn-warning" disabled> Belum Bayar</button>
-                          <h5 style="text-align:center"><i><b>Anda Akan Terdaftar di Kelas yang Anda Pilih Setelah Mengisi Form Pembayaran di Bawah ini.</b></i></h5>
-                          <br>
+                          <h5 style="text-align:center">
+                          <i><b>Anda Akan Terdaftar di Kelas yang Anda Pilih Setelah Mengisi Form Pembayaran di Bawah ini.</b></i>
+                          </h5> <br>
+                          <h5 style="text-align:center">Lakukan Pembayaran Sebelum Batas Waktu Bayar!</h5>
+                          <h5 style="text-align:center; color:red">Batas Waktu Pembayaran : <br> Tgl: <?= shortdate_indo($program_bayar[0]['tgl_bayar_dl']) ?>, Jam: <?= $program_bayar[0]['waktu_bayar_dl'] ?> WITA</h5> <br>
                         <?php } ?> 
                         <?php if($program_bayar[0]['status_konfirmasi'] == 'Proses') { ?>
                           <button class="btn btn-success" disabled> Sudah Bayar, Tunggu Konfirmasi Admin</button>
@@ -121,6 +125,8 @@
                         ?>
                         <?= csrf_field() ?>
                         <input type="hidden" name="bayar_id" id="bayar_id" value="<?= $program_bayar[0]['bayar_id'] ?>" />
+                        <input type="hidden" name="peserta_id" id="peserta_id" value="<?= $peserta_id ?>" />
+                        <input type="hidden" name="kelas_id" id="kelas_id" value="<?= $program_bayar[0]['kelas_id'] ?>" />
                         <div class="form-group">
                           <div class="mb-3">
                             <label class="form-label">Total Nominal Transfer<code>*</code></label>
@@ -231,7 +237,7 @@
   });
 
 
-  function hapus(bayar_id) {
+  function hapus(bayar_id, kelas_id, bayar_peserta_id) {
         Swal.fire({
             title: 'Batal Daftar?',
             text: `Apakah anda yakin membatalkan pendaftaran program/kelas ini?`,
@@ -248,7 +254,9 @@
                     type: "post",
                     dataType: "json",
                     data: {
-                        bayar_id: bayar_id
+                        bayar_id: bayar_id,
+                        kelas_id: kelas_id,
+                        bayar_peserta_id: bayar_peserta_id,
                     },
                     success: function(response) {
                         if (response.sukses) {

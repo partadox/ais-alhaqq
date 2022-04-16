@@ -8,7 +8,7 @@ class Modelprogrambayar extends Model
 {
     protected $table      = 'program_bayar ';
     protected $primaryKey = 'bayar_id';
-    protected $allowedFields = ['kelas_id', 'bayar_peserta_id','status_bayar',  'status_bayar_admin','status_konfirmasi', 'awal_bayar', 'awal_bayar_daftar', 'awal_bayar_infaq', 'awal_bayar_modul', 'awal_bayar_lainnya', 'awal_bayar_spp1', 'awal_bayar_spp2', 'awal_bayar_spp3', 'awal_bayar_spp4', 'nominal_bayar','bukti_bayar', 'keterangan_bayar', 'keterangan_bayar_admin','tgl_bayar', 'waktu_bayar', 'tgl_bayar_konfirmasi', 'waktu_bayar_konfirmasi', 'validator'];
+    protected $allowedFields = ['kelas_id', 'bayar_peserta_id','status_bayar',  'status_bayar_admin','status_konfirmasi', 'awal_bayar', 'awal_bayar_daftar', 'awal_bayar_infaq', 'awal_bayar_modul', 'awal_bayar_lainnya', 'awal_bayar_spp1', 'awal_bayar_spp2', 'awal_bayar_spp3', 'awal_bayar_spp4', 'nominal_bayar','bukti_bayar', 'keterangan_bayar', 'keterangan_bayar_admin','tgl_bayar', 'waktu_bayar', 'tgl_bayar_dl', 'waktu_bayar_dl','tgl_bayar_konfirmasi', 'waktu_bayar_konfirmasi', 'validator'];
 
     
     //Custom Query
@@ -101,6 +101,7 @@ class Modelprogrambayar extends Model
         ->join('peserta', 'peserta.peserta_id = program_bayar.bayar_peserta_id')
         //->join('program', 'program_kelas.program_id = program.program_id')
         ->where('bayar_peserta_id', $peserta_id)
+        ->where('status_konfirmasi !=', NULL)
         ->orderBy('bayar_id', 'DESC')
         ->get()
         ->getResultArray();
@@ -112,5 +113,21 @@ class Modelprogrambayar extends Model
         return $this->table('program_bayar')
         ->where('status_konfirmasi', 'Proses')
         ->countAllResults();
+    }
+
+    //Cek pembayaran peserta sudah expired, CRON JOB
+    public function bayar_expired($tgl, $waktu)
+    {
+        return $this->table('program_bayar')
+        ->select('bayar_id')
+        //->join('program_kelas', 'program_kelas.kelas_id = program_bayar.kelas_id')
+        //->join('peserta', 'peserta.peserta_id = program_bayar.bayar_peserta_id')
+        //->join('program', 'program_kelas.program_id = program.program_id')
+        ->where('tgl_bayar_dl', $tgl)
+        ->where('waktu_bayar_dl <=', $waktu)
+        ->where('status_konfirmasi', NULL)
+        // ->orderBy('bayar_id', 'DESC')
+        ->get()
+        ->getResultArray();
     }
 }

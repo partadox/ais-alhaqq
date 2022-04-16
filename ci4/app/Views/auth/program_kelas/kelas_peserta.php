@@ -32,6 +32,7 @@
                 <th>Domisili</th>
                 <th>HP</th>
                 <th>Status</th>
+                <th>Status SPP</th>
                 <th>Tindakan</th>
             </tr>
         </thead>
@@ -55,11 +56,27 @@
                             <button class="btn btn-success btn-sm" disabled>Lulus</button> 
                         <?php } ?>
                     </td>
+                    <td width="10%">
+                        <?php if($data['spp_status'] == 'BELUM LUNAS') { ?>
+                            <button class="btn btn-warning btn-sm" disabled>Belum Lunas</button> 
+                        <?php } ?>
+                        <?php if($data['spp_status'] == 'LUNAS') { ?>
+                            <button class="btn btn-success btn-sm" disabled>Lunas</button> 
+                        <?php } ?>
+                        <?php if($data['spp_status'] == 'BELUM BAYAR PENDAFTARAN') { ?>
+                            BELUM BAYAR PENDAFTARAN
+                        <?php } ?>
+                    </td>
                     <td width="8%">
-                        <button type="button" class="btn btn-warning" onclick="pindah('<?= $data['peserta_kelas_id'] ?>')" >
+                        <?php if($data['spp_status'] == 'BELUM BAYAR PENDAFTARAN') { ?>
+                            
+                        <?php } ?>
+                        <?php if($data['spp_status'] != 'BELUM BAYAR PENDAFTARAN') { ?>
+                            <button type="button" class="btn btn-warning" onclick="pindah('<?= $data['peserta_kelas_id'] ?>')" >
                             <i class=" fa fa-sign-in-alt mr-1"></i>Pindah</button>
-                        <button type="button" class="btn btn-danger" onclick="hapus('<?= $data['peserta_kelas_id'] ?>')" >
+                            <button type="button" class="btn btn-danger" onclick="hapus('<?= $data['peserta_kelas_id'] ?>')" >
                             <i class=" fa fa-trash"></i></button>
+                        <?php } ?>
                     </td>
                 </tr>
 

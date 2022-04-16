@@ -25,15 +25,6 @@
                         <div class="invalid-feedback errorAwal_bayar"></div>
                     </div>
                 </div>
-
-                <div class="form-group row">
-                    <label for="" class="col-sm-2 col-form-label">Infaq<code>*</code></label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="awal_bayar_infaq" name="awal_bayar_infaq" placeholder="Rp">
-                        <div class="invalid-feedback errorInfaq"></div>
-                    </div>
-                </div>
-
                 
                 <div class="form-group row">
                     <label for="" class="col-sm-2 col-form-label">SPP-2<code>*</code></label>
@@ -57,7 +48,15 @@
                         <input type="text" class="form-control" id="awal_bayar_spp4" name="awal_bayar_spp4" placeholder="Rp">
                         <div class="invalid-feedback errorSpp4"></div>
                     </div>
-                </div>   
+                </div> 
+                
+                <div class="form-group row">
+                    <label for="" class="col-sm-2 col-form-label">Infaq<code>*</code></label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="awal_bayar_infaq" name="awal_bayar_infaq" placeholder="Rp">
+                        <div class="invalid-feedback errorInfaq"></div>
+                    </div>
+                </div>
 
 
                 <div class="form-group row">

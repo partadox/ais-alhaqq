@@ -323,18 +323,72 @@ class Daftar extends BaseController
     {
         if ($this->request->isAJAX()) {
             $validation = \Config\Services::validation();
+            //Get Tgl Today
+            $tgl        = date("Y-m-d");
+            // $tgl_dl     = 
+            $waktu      = date("H:i:s");
+            $timestamp  = time() + 60*60; // now + 1 hour
+            $waktu_dl   = date('H:i:s', $timestamp);
+            $strwaktu   = date("H-i-s");
+
+            //Global variable
+            $peserta_id     = $this->request->getVar('peserta_id');
+            $kelas_id      = $this->request->getVar('kelas_id');
+
+            //Get data sisa kouta dari tabel program_kelas
+            $get_sisa_kouta = $this->program->get_sisa_kouta($kelas_id);
+            $sisa_kouta = $get_sisa_kouta->sisa_kouta;
+
+            //Pengurangan Kouta
+            $minus1 = 1;
+            $kouta_kurang = $sisa_kouta - $minus1;
+
+            //Get data jumlah peserta dari tabel program_kelas
+            $get_jml_peserta = $this->program->get_jumlah_peserta($kelas_id);
+            $jumlah_peserta = $get_jml_peserta ->jumlah_peserta;
+
+            //Penambahan jumlah peserta
+            $plus1 = 1;
+            $tambah_peserta = $jumlah_peserta + $plus1;
+
                 $simpandata = [
-                    'kelas_id'              => $this->request->getVar('kelas_id'),
-                    'bayar_peserta_id'      => $this->request->getVar('peserta_id'),
+                    'kelas_id'              => $kelas_id,
+                    'bayar_peserta_id'      => $peserta_id,
                     'status_bayar'          => 'Belum Lunas',
                     'tgl_bayar'             => '1000-01-01',
+                    'tgl_bayar_dl'          => $tgl,
                     'tgl_bayar_konfirmasi'  => '1000-01-01',
                     'waktu_bayar'           => '00:00:00',
+                    'waktu_bayar_dl'        => $waktu_dl,
                     'waktu_bayar_konfirmasi'=> '00:00:00',
                     'bukti_bayar'           => 'default.png',
                 ];
                 //var_dump($simpandata);
                 $this->program_bayar->insert($simpandata);
+
+                $datakelas = [
+                    'sisa_kouta'      => $kouta_kurang,
+                    'jumlah_peserta'  => $tambah_peserta,
+                ];
+
+                $datapesertakelas = [
+                    'data_peserta_id'       => $peserta_id,
+                    'data_kelas_id'         => $kelas_id,
+                    'status_peserta_kelas'  => 'Belum Lulus',
+                    'spp_status'            => 'BELUM BAYAR PENDAFTARAN',
+                    'expired_tgl_daftar'    => $tgl,
+                    'expired_waktu_daftar'  => $waktu_dl,
+                    // 'data_absen'            => $last_id,
+                    // 'byr_daftar'            => $bayar_daftar,
+                    // 'byr_spp1'              => $bayar_spp1,
+                    // 'byr_modul'             => $byr_modul_value,
+                    // 'spp_terbayar'          => $sppdaftar,
+                    // 'spp_piutang'           => $piutang1,
+                ];
+
+                $this->program->update($kelas_id, $datakelas);
+                $this->peserta_kelas->insert($datapesertakelas);
+
                 $msg = [
                     'sukses' => [
                         'link' => 'bayar'
@@ -365,6 +419,7 @@ class Daftar extends BaseController
         $data = [
             'title'         => 'Al-Haqq - Bayar Daftar Program',
             'peserta'       => $get_peserta,
+            'peserta_id'    => $peserta_id,
             'program_bayar' => $program_bayar,
             //'bayar_lunas'   => $bayar_lunas,
             'cek1'           => $cek1,
@@ -503,6 +558,18 @@ class Daftar extends BaseController
                  $awal_bayar_modul        = $awal_bayar_modul_int;
                  $awal_bayar_lain         = $awal_bayar_lain_int;
 
+                //Get Data Peserta, Kelas -> Untuk cari data peserta kelas
+                $peserta_id                = $this->request->getVar('peserta_id');
+                $kelas_id                  = $this->request->getVar('kelas_id');
+                //Get peserta_kelas_id
+                $get_peserta_kelas_id   = $this->peserta_kelas->get_peserta_kelas_id($peserta_id, $kelas_id);
+                $peserta_kelas_id       = $get_peserta_kelas_id->peserta_kelas_id;
+
+                $datapesertakelas = [
+                    'expired_tgl_daftar'    => NULL,
+                    'expired_waktu_daftar'  => NULL,
+                ];
+                $this->peserta_kelas->update($peserta_kelas_id, $datapesertakelas);
 
                 $data_bayar = [
                     'status_konfirmasi'         => 'Proses',
@@ -549,8 +616,38 @@ class Daftar extends BaseController
     {
         if ($this->request->isAJAX()) {
 
-            $bayar_id = $this->request->getVar('bayar_id');
+            $bayar_id   = $this->request->getVar('bayar_id');
+            $kelas_id   = $this->request->getVar('kelas_id');
+            $peserta_id = $this->request->getVar('bayar_peserta_id');
 
+            //Get peserta_kelas_id
+            $get_peserta_kelas_id   = $this->peserta_kelas->get_peserta_kelas_id($peserta_id, $kelas_id);
+            $peserta_kelas_id       = $get_peserta_kelas_id->peserta_kelas_id;
+
+             //Get data sisa kouta dari tabel program_kelas
+             $get_sisa_kouta = $this->program->get_sisa_kouta($kelas_id);
+             $sisa_kouta = $get_sisa_kouta->sisa_kouta;
+ 
+             //Penambahan Kuota
+             $plus1 = 1;
+             $tambah_kouta = $sisa_kouta + $plus1;
+ 
+             //Get data jumlah peserta dari tabel program_kelas
+             $get_jml_peserta = $this->program->get_jumlah_peserta($kelas_id);
+             $jumlah_peserta = $get_jml_peserta ->jumlah_peserta;
+ 
+             //Pengurangan jumlah peserta
+             $minus1 = 1;
+             $kurang_peserta = $jumlah_peserta - $minus1;
+
+             $datakelas = [
+                'sisa_kouta'      => $tambah_kouta,
+                'jumlah_peserta'  => $kurang_peserta,
+            ];
+
+            $this->program->update($kelas_id, $datakelas);
+
+            $this->peserta_kelas->delete($peserta_kelas_id);
             $this->program_bayar->delete($bayar_id);
             $msg = [
                 'sukses' => [
@@ -559,6 +656,58 @@ class Daftar extends BaseController
             ];
             echo json_encode($msg);
         }
+    }
+
+    public function batalprogram_expired()
+    {
+            //Get Tgl & Waktu Today CRON JOB
+            $tgl        = date("Y-m-d");
+            $waktu      = date("H:i:s");
+
+            $bayar          = $this->program_bayar->bayar_expired($tgl, $waktu);
+            $peserta_kelas  = $this->peserta_kelas->daftar_expired($tgl, $waktu);
+            //var_dump($peserta_kelas);
+            $jmldata_bayar = count($bayar);
+            for ($i = 0; $i < $jmldata_bayar; $i++) {
+                // Hapus Data Pembayaran Expired
+                $this->program_bayar->delete($bayar[$i]);
+            }
+
+            $jmldata_peserta_kelas = count($peserta_kelas);
+            for ($i = 0; $i < $jmldata_peserta_kelas; $i++) {
+                //Pengurangan Kuota
+                $get_data_kelas = $this->peserta_kelas->find($peserta_kelas[$i]);
+                $kelas_id       = $get_data_kelas[0]['data_kelas_id'];
+                //var_dump($kelas_id);
+
+                //Get data sisa kouta dari tabel program_kelas
+                $get_sisa_kouta = $this->program->get_sisa_kouta($kelas_id);
+                $sisa_kouta = $get_sisa_kouta->sisa_kouta;
+                
+    
+                //Penambahan Kuota
+                $plus1 = 1;
+                $tambah_kouta = $sisa_kouta + $plus1;
+    
+                //Get data jumlah peserta dari tabel program_kelas
+                $get_jml_peserta = $this->program->get_jumlah_peserta($kelas_id);
+                $jumlah_peserta = $get_jml_peserta ->jumlah_peserta;
+    
+                //Pengurangan jumlah peserta
+                $minus1 = 1;
+                $kurang_peserta = $jumlah_peserta - $minus1;
+
+                $datakelas = [
+                    'sisa_kouta'      => $tambah_kouta,
+                    'jumlah_peserta'  => $kurang_peserta,
+                ];
+
+                $this->program->update($kelas_id, $datakelas);
+
+                //Hapus Data Daftar Peserta Kelas Expired
+                $this->peserta_kelas->delete($peserta_kelas[$i]);
+            }
+        
     }
 
 }

@@ -174,6 +174,10 @@ class Pembayaran extends BaseController
             $kelas_id   = $this->request->getVar('kelas_id');
             $peserta_id = $this->request->getVar('peserta_id');
 
+            //Get peserta_kelas_id
+            $get_peserta_kelas_id   = $this->peserta_kelas->get_peserta_kelas_id($peserta_id, $kelas_id);
+            $peserta_kelas_id       = $get_peserta_kelas_id->peserta_kelas_id;
+
             //Data Peserta
             $data_peserta       = $this->peserta->find($peserta_id);
             $log_nama_peserta   = $data_peserta['nama_peserta'];
@@ -192,21 +196,21 @@ class Pembayaran extends BaseController
             $biaya_modul       = $get_biaya_modul->biaya_modul;
             $total_lunas       = $biaya_program + $biaya_daftar + $biaya_modul;
 
-            //Get data sisa kouta dari tabel program_kelas
-            $get_sisa_kouta = $this->program->get_sisa_kouta($kelas_id);
-            $sisa_kouta = $get_sisa_kouta->sisa_kouta;
+            // //Get data sisa kouta dari tabel program_kelas
+            // $get_sisa_kouta = $this->program->get_sisa_kouta($kelas_id);
+            // $sisa_kouta = $get_sisa_kouta->sisa_kouta;
 
-            //Pengurangan Kouta
-            $minus1 = 1;
-            $kouta_kurang = $sisa_kouta - $minus1;
+            // //Pengurangan Kouta
+            // $minus1 = 1;
+            // $kouta_kurang = $sisa_kouta - $minus1;
 
-            //Get data jumlah peserta dari tabel program_kelas
-            $get_jml_peserta = $this->program->get_jumlah_peserta($kelas_id);
-            $jumlah_peserta = $get_jml_peserta ->jumlah_peserta;
+            // //Get data jumlah peserta dari tabel program_kelas
+            // $get_jml_peserta = $this->program->get_jumlah_peserta($kelas_id);
+            // $jumlah_peserta = $get_jml_peserta ->jumlah_peserta;
 
-            //Pengurangan Kouta
-            $plus1 = 1;
-            $tambah_peserta = $jumlah_peserta + $plus1;
+            // //Pengurangan Kouta
+            // $plus1 = 1;
+            // $tambah_peserta = $jumlah_peserta + $plus1;
 
             $validation = \Config\Services::validation();
             $valid = $this->validate([
@@ -363,10 +367,10 @@ class Pembayaran extends BaseController
                         'status_bayar_modul'    => 'Lunas',
                     ];
 
-                    $datakelas = [
-                        'sisa_kouta'      => $kouta_kurang,
-                        'jumlah_peserta'  => $tambah_peserta,
-                    ];
+                    // $datakelas = [
+                    //     'sisa_kouta'      => $kouta_kurang,
+                    //     'jumlah_peserta'  => $tambah_peserta,
+                    // ];
 
                     //Create Absen Peserta di Kelas
                     $dataabsen = [
@@ -387,8 +391,8 @@ class Pembayaran extends BaseController
                     }
         
                     $datapesertakelas = [
-                        'data_peserta_id'       => $peserta_id,
-                        'data_kelas_id'         => $kelas_id,
+                        // 'data_peserta_id'       => $peserta_id,
+                        // 'data_kelas_id'         => $kelas_id,
                         'data_absen'            => $last_id,
                         'status_peserta_kelas'  => 'Belum Lulus',
                         'byr_daftar'            => $bayar_daftar,
@@ -401,11 +405,11 @@ class Pembayaran extends BaseController
 
                     $this->spp1->insert($data_spp1);
                     $this->bayar_modul->insert($data_modul);
-                    $this->program->update($kelas_id, $datakelas);
-                    $this->peserta_kelas->insert($datapesertakelas);
+                    // $this->program->update($kelas_id, $datakelas);
+                    $this->peserta_kelas->update($peserta_kelas_id, $datapesertakelas);
 
                     // Get last id insert from peserta kelas
-                    $last_id_psrt_kls = $this->peserta_kelas->insertID();
+                    //$last_id_psrt_kls = $this->peserta_kelas->insertID();
 
                     //Cek isian form untuk infaq
                     if($bayar_infaq != 0){
@@ -435,7 +439,7 @@ class Pembayaran extends BaseController
                             'spp_piutang'   => $piutang2,
                             'spp_status'    => 'BELUM LUNAS',
                         ];
-                        $this->peserta_kelas->update($last_id_psrt_kls, $data_update_spp2);
+                        $this->peserta_kelas->update($peserta_kelas_id, $data_update_spp2);
                     }
 
                     //Cek isian form untuk spp3
@@ -456,7 +460,7 @@ class Pembayaran extends BaseController
                             'spp_piutang'   => $piutang3,
                             'spp_status'    => 'BELUM LUNAS',
                         ];
-                        $this->peserta_kelas->update($last_id_psrt_kls, $data_update_spp3);
+                        $this->peserta_kelas->update($peserta_kelas_id, $data_update_spp3);
                     }
 
                     //Cek isian form untuk spp4
@@ -477,7 +481,7 @@ class Pembayaran extends BaseController
                             'spp_piutang'   => $piutang4,
                             'spp_status'    => 'LUNAS',
                         ];
-                        $this->peserta_kelas->update($last_id_psrt_kls, $data_update_spp4);
+                        $this->peserta_kelas->update($peserta_kelas_id, $data_update_spp4);
                     }
 
                     //Cek isian form untuk lain
@@ -493,8 +497,8 @@ class Pembayaran extends BaseController
 
                 } elseif ($bayar_daftar == 0 && $bayar_spp1 == 0) {
                     // Get id from peserta kelas
-                    $get_id_psrt_kelas = $this->peserta_kelas->get_peserta_kelas_id($peserta_id, $kelas_id);
-                    $id_psrt_kls = $get_id_psrt_kelas->peserta_kelas_id;
+                    // $get_id_psrt_kelas = $this->peserta_kelas->get_peserta_kelas_id($peserta_id, $kelas_id);
+                    // $id_psrt_kls = $get_id_psrt_kelas->peserta_kelas_id;
 
                     //Cek isian form untuk infaq
                     if($bayar_infaq != 0){
@@ -523,7 +527,7 @@ class Pembayaran extends BaseController
                             'spp_piutang'   => $piutang2,
                             'spp_status'    => 'BELUM LUNAS',
                         ];
-                        $this->peserta_kelas->update($id_psrt_kls, $data_update_spp2);
+                        $this->peserta_kelas->update($peserta_kelas_id, $data_update_spp2);
                     }
 
                     //Cek isian form untuk spp3
@@ -544,7 +548,7 @@ class Pembayaran extends BaseController
                             'spp_piutang'   => $piutang3,
                             'spp_status'    => 'BELUM LUNAS',
                         ];
-                        $this->peserta_kelas->update($id_psrt_kls, $data_update_spp3);
+                        $this->peserta_kelas->update($peserta_kelas_id, $data_update_spp3);
                     }
 
                     //Cek isian form untuk spp4
@@ -565,7 +569,7 @@ class Pembayaran extends BaseController
                             'spp_piutang'   => $piutang4,
                             'spp_status'    => 'LUNAS',
                         ];
-                        $this->peserta_kelas->update($id_psrt_kls, $data_update_spp4);
+                        $this->peserta_kelas->update($peserta_kelas_id, $data_update_spp4);
                     }
 
                     //Cek isian form untuk lain
@@ -1723,7 +1727,7 @@ class Pembayaran extends BaseController
                 $peserta_id         = $this->request->getVar('peserta');
                 $kelas_id           = $this->request->getVar('kelas');
                 $status_bayar_admin = $this->request->getVar('status_bayar_admin');
-                $keterangan_admin   = $this->request->getVar('keterangan_admin');
+                $keterangan_admin   = strtoupper($this->request->getVar('keterangan_admin'));
 
                 //Get data total bayar
                 $get_program_id    = $this->program->get_program_id($kelas_id);
@@ -2100,7 +2104,7 @@ class Pembayaran extends BaseController
                 //Get inputan peserta, kelas, status bayar dan keterangan admin
                 $peserta_kelas_id   = $this->request->getVar('peserta_kelas_id');
                 $status_bayar_admin = $this->request->getVar('status_bayar_admin');
-                $keterangan_admin   = $this->request->getVar('keterangan_admin');
+                $keterangan_admin   = strtoupper($this->request->getVar('keterangan_admin'));
 
                 //Get Data Peserta-Kelas, Peserta, dan Data Kelas
                 $get_data_peserta_kelas = $this->peserta_kelas->find($peserta_kelas_id);;
@@ -2390,7 +2394,7 @@ class Pembayaran extends BaseController
                 //Get inputan peserta, kelas, status bayar dan keterangan admin
                 $peserta_id         = $this->request->getVar('peserta_id');
                 $status_bayar_admin = $this->request->getVar('status_bayar_admin');
-                $keterangan_admin   = $this->request->getVar('keterangan_admin');
+                $keterangan_admin   = strtoupper($this->request->getVar('keterangan_admin'));
 
                 $get_data_peserta       = $this->peserta->find($peserta_id);
                 $nama_peserta           = $get_data_peserta['nama_peserta'];

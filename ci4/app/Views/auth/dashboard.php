@@ -22,17 +22,24 @@
 
     <!-- Dashboard Peserta -->
     <?php if (session()->get('level') == 4) { ?>
-        <!-- <div class="card col d-flex justify-content-center">
-            <div class="card-body">
-                <h5 class="card-title">SELAMAT DATANG DI SISTEM INFORMASI AKADEMIK AL-HAQQ</h5>
-                <p class="card-text"> <b>Assalamu’alaikum Warahmatullahi Wabarakatuh</b> <br>
-                Pada sistem ini terdapat beberapa menu seperti pendaftaran program/kelas, melakukan upload bukti pembayaran, cek absensi, dll. Jika terdapat kendala anda dapat segera menghubungi admin kami. <br>
-                <b>Wassalamualaikum Warahmatullahi Wabarakatuh</b> <br> <br>
-                <b>Hormat Kami,</b> <br>
-                <i>Admin & Pengurus Al-Haqq</i>
-                </p>
+        <?php if ($cek1 != 0) { ?>
+            <div class="container-fluid">
+                <div class="row">
+
+                    <div class="col-sm-3 col-md-3">
+                        <div class="card shadow-lg p-3 mb-5 bg-white rounded">
+                            <div class="card-body">
+                                <h5 style="text-align:center; color:red">Perhatian!</h5>
+                                <i class="mdi mdi-information"></i> Anda telah memilih Kelas.<br>
+                                <i class="mdi mdi-information"></i> Batas waktu bayar adalah 1 jam setelah anda memilih kelas, informasi lebih detail silahkan buka menu "Pembayaran Daftar"<br>
+                                <i class="mdi mdi-information"></i> Anda harus mengupload bukti transfer dan isi formulir pembayaran agar terdaftar pada kelas yang sudah anda pilih.<br>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div> -->
+        <?php } ?>
     <?php } ?>
 
     <!-- Dashboard Admin -->

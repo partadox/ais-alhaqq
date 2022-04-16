@@ -8,7 +8,7 @@ class Modelpesertakelas extends Model
 {
     protected $table      = 'peserta_kelas';
     protected $primaryKey = 'peserta_kelas_id';
-    protected $allowedFields = ['peserta_kelas_id', 'data_peserta_id','data_kelas_id', 'data_absen', 'data_ujian', 'status_peserta_kelas', 'byr_daftar', 'byr_modul','byr_spp1','byr_spp2','byr_spp3', 'byr_spp4', 'spp_status', 'spp_terbayar', 'spp_piutang'];
+    protected $allowedFields = ['peserta_kelas_id', 'data_peserta_id','data_kelas_id', 'data_absen', 'data_ujian', 'status_peserta_kelas', 'byr_daftar', 'byr_modul','byr_spp1','byr_spp2','byr_spp3', 'byr_spp4', 'spp_status', 'spp_terbayar', 'spp_piutang', 'expired_tgl_daftar','expired_waktu_daftar'];
 
     //Cek jumlah kelas yang diikuti peserta
     public function cek_peserta_kelas($peserta_id)
@@ -56,7 +56,8 @@ class Modelpesertakelas extends Model
         ->join('program_kelas', 'program_kelas.kelas_id = peserta_kelas.data_kelas_id')
         ->join('program', 'program.program_id = program_kelas.program_id')
         ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
-        ->where('status_peserta_kelas', 'Belum Lulus')
+        // ->where('status_peserta_kelas', 'Belum Lulus')
+        ->where('data_absen !=', NULL)
         ->where('data_peserta_id', $peserta_id)
         ->get()->getResultArray();
     }
@@ -83,8 +84,8 @@ class Modelpesertakelas extends Model
             ->join('program', 'program.program_id = program_kelas.program_id')
             ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
             ->join('peserta_level', 'peserta_level.peserta_level_id = peserta.level_peserta')
-            // ->where('status_peserta_kelas', 'Belum Lulus')
-            ->orderBy('angkatan_kelas', 'DESC')
+            ->where('spp_status !=', 'BELUM BAYAR PENDAFTARAN')
+            ->orderBy('nama_peserta', 'DESC')
             ->get()->getResultArray();
     }
 
@@ -172,6 +173,17 @@ class Modelpesertakelas extends Model
             //->where('status_peserta_kelas', 'Belum Lulus')
             // ->orderBy('angkatan_kelas', 'DESC')
             ->get()->getResultArray();
+    }
+
+    //Cek pendaftaran peserta sudah expired, CRON JOB
+    public function daftar_expired($tgl, $waktu)
+    {
+        return $this->table('peserta_kelas')
+        ->select('peserta_kelas_id')
+        ->where('expired_tgl_daftar', $tgl)
+        ->where('expired_waktu_daftar <=', $waktu)
+        ->get()
+        ->getResultArray();
     }
 
 

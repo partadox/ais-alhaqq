@@ -82,7 +82,8 @@ if (session()->getFlashdata('pesan_sukses')) {
                         <a>SPP4: Rp <?= rupiah($data['awal_bayar_spp4']) ?></a><br>
                         <a>Modul: Rp <?= rupiah($data['awal_bayar_modul']) ?></a> <br>
                         <a>Infaq: Rp <?= rupiah($data['awal_bayar_infaq']) ?></a> <br>
-                        <a>Lain: Rp <?= rupiah($data['awal_bayar_lain']) ?></a> 
+                        <a>Lain: Rp <?= rupiah($data['awal_bayar_lain']) ?></a> <br>
+                        <a>Ket: <?= $data['keterangan_bayar'] ?></a> 
                     <?php } ?>
                     <?php if($data['status_konfirmasi'] == 'Proses') { ?>
                         <button class="btn btn-warning btn-sm mb-2" disabled>Proses</button>
@@ -95,7 +96,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                     <?php if($data['status_bayar_admin'] != 'SESUAI BAYAR') { ?>
                         <button class="btn btn-secondary btn-sm mb-2" disabled><?= $data['status_bayar_admin'] ?></button>
                     <?php } ?>
-                    <p>Ket. <?= $data['keterangan_bayar_admin'] ?></p>
+                    <p>Ket Adm: <br> <?= $data['keterangan_bayar_admin'] ?></p>
                 </td>
                 <td width="18%">
                 <style>

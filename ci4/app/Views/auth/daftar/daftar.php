@@ -53,7 +53,7 @@
                     <option value="<?= $data['peserta_level_id'] ?>"><?= $data['nama_level'] ?></option>
                 <?php } ?>
                 </select>
-            <div class="invalid-feedback errorLevel_peserta">
+            <!-- <div class="invalid-feedback errorLevel_peserta"> -->
             </div>
             <div class="row">
             <input  class="btn btn-warning ml-3 mt-3 mb-6 mr-4" type="submit" value="Pilih" ></input>
@@ -175,13 +175,13 @@
                 success: function(response) {
                     if (response.error) {
 
-                        if (response.error.level_peserta) {
-                            $('#level_peserta').addClass('is-invalid');
-                            $('.errorLevel_peserta').html(response.error.level_peserta);
-                        } else {
-                            $('#level_peserta').removeClass('is-invalid');
-                            $('.errorLevel_peserta').html('');
-                        }
+                        // if (response.error.level_peserta) {
+                        //     $('#level_peserta').addClass('is-invalid');
+                        //     $('.errorLevel_peserta').html(response.error.level_peserta);
+                        // } else {
+                        //     $('#level_peserta').removeClass('is-invalid');
+                        //     $('.errorLevel_peserta').html('');
+                        // }
 
                     } else {
                         Swal.fire({

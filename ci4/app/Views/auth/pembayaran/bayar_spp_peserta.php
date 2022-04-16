@@ -45,6 +45,7 @@
                 <th>Program</th>
                 <th>Kelas</th>
                 <th>Status <br> SPP</th>
+                <th>Nominal SPP</th>
                 <th>Terbayar</th>
                 <th>Kekurangan</th>
                 <th>Biaya <br> Pendaftaran</th>
@@ -72,6 +73,7 @@
                             <button class="btn btn-success btn-sm mb-2" disabled>LUNAS</button>
                         <?php } ?>
                     </td>
+                    <td width="3%"> Rp <?= rupiah($data['biaya_bulanan']) ?></td>
                     <td width="3%">Rp <?= rupiah($data['spp_terbayar']) ?></td>
                     <td width="3%">Rp <?= rupiah($data['spp_piutang']) ?></td>
                     <td width="3%">
@@ -94,7 +96,7 @@
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
-                    <td width="4%">
+                    <td width="5%">
                         <?php if($data['byr_spp4'] != NULL && $data['byr_spp4'] != '0') { ?>
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
@@ -107,9 +109,9 @@
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
-                    <td width="10%">
-                            <button type="button" class="btn btn-success" onclick="bayar(<?= $data['kelas_id'] ?>, <?= $data['peserta_id'] ?>, <?= $data['peserta_kelas_id'] ?>)" >
-                            <i class=" fa fa-money-bill-wave mr-1"></i>Lakukan Pembayaran</button>
+                    <td width="8%">
+                            <button type="button"  title="Formulir Pembayaran SPP" class="btn btn-success" onclick="bayar(<?= $data['kelas_id'] ?>, <?= $data['peserta_id'] ?>, <?= $data['peserta_kelas_id'] ?>)" >
+                            <i class=" fa fa-money-bill-wave mr-1"></i>Bayar</button>
                     </td>
                 </tr>
 
