@@ -186,5 +186,28 @@ class Modelpesertakelas extends Model
         ->getResultArray();
     }
 
+    //Pie Chart - Rekap SPP - Dashboard Amin
+    public function pie_spp_belum_lunas($angkatan)
+    {
+        return $this->table('peserta_kelas')
+        ->selectCount('spp_status')
+        ->join('program_kelas', 'program_kelas.kelas_id = peserta_kelas.data_kelas_id')
+        ->where('spp_status', 'BELUM LUNAS')
+        ->where('angkatan_kelas', $angkatan)
+        ->get()
+        ->getUnbufferedRow();
+    }
+
+    public function pie_spp_lunas($angkatan)
+    {
+        return $this->table('peserta_kelas')
+        ->selectCount('spp_status')
+        ->join('program_kelas', 'program_kelas.kelas_id = peserta_kelas.data_kelas_id')
+        ->where('spp_status', 'LUNAS')
+        ->where('angkatan_kelas', $angkatan)
+        ->get()
+        ->getUnbufferedRow();
+    }
+
 
 }

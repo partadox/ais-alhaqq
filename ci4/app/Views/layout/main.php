@@ -30,6 +30,9 @@ $konfigurasi = $this->konfigurasi->orderBy('konfigurasi_id')->first();
     <link href="<?= base_url() ?>/assets/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <link href="<?= base_url() ?>/assets/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    
+    <!-- Hightcharts JS-->
+    <script src="<?= base_url() ?>/assets/js/highcharts.js"></script>
 
     <!-- Responsive datatable examples -->
     <link href="<?= base_url() ?>/assets/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />

@@ -43,7 +43,7 @@
     <?php } ?>
 
     <!-- Dashboard Admin -->
-    <?php if (session()->get('level') == 2) { ?>
+    <?php if (session()->get('level') == 2 || session()->get('level') == 3) { ?>
         <div class="col-sm-3 col-md-3">
             <div class="card shadow-lg p-3">
                 <div class="card-heading p-4">
@@ -118,6 +118,20 @@
             <div class="card shadow-lg p-3">
                 <div class="card-heading p-4">
                     <div class="mini-stat-icon float-right">
+                        <i class="mdi mdi-account-badge bg-warning text-white"></i>
+                    </div>
+                    <div>
+                        <h5 class="font-16">Jumlah Akun Pengajar</h5>
+                    </div>
+                    <h5 class="mt-4"><?= $akun_pengajar ?></h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3 col-md-3">
+            <div class="card shadow-lg p-3">
+                <div class="card-heading p-4">
+                    <div class="mini-stat-icon float-right">
                         <i class="mdi mdi-account bg-warning text-white"></i>
                     </div>
                     <div>
@@ -128,66 +142,169 @@
             </div>
         </div>
 
+        <div class="col-sm-3 col-md-3">
+            <div class="card shadow-lg p-3">
+                <div class="card-heading p-4">
+                    <div class="mini-stat-icon float-right">
+                        <i class="mdi mdi-account-badge bg-warning text-white"></i>
+                    </div>
+                    <div>
+                        <h5 class="font-16">Jumlah Akun Peserta</h5>
+                    </div>
+                    <h5 class="mt-4"><?= $akun_peserta ?></h5>
+                </div>
+            </div>
+        </div>
+
     <?php } ?>
 
-    <!-- Dashboard BEKAS -->
-    <!-- <?php if (session()->get('level') == 1) { ?>
-    <div class="col-sm-6 col-xl-3">
-        <div class="card">
-            <div class="card-heading p-4">
-                <div class="mini-stat-icon float-right">
-                    <i class="mdi mdi-folder-image bg-danger text-white"></i>
-                </div>
-                <div>
-                    <h5 class="font-16">Gallery</h5>
-                </div>
-                <h3 class="mt-4"><?= $gallery['gallery_id'] ?></h3>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-xl-3">
-        <div class="card">
-            <div class="card-heading p-4">
-                <div class="mini-stat-icon float-right">
-                    <i class="mdi mdi-newspaper bg-warning text-white"></i>
-                </div>
-                <div>
-                    <h5 class="font-16">Berita</h5>
-                </div>
-                <h3 class="mt-4"><?= $berita['berita_id'] ?></h3>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-xl-3">
-        <div class="card">
-            <div class="card-heading p-4">
-                <div class="mini-stat-icon float-right">
-                    <i class="mdi mdi-bullhorn-outline bg-primary text-white"></i>
-                </div>
-                <div>
-                    <h5 class="font-16">Kelulusan</h5>
-                </div>
-                <h3 class="mt-4"><?= $kelulusan['kelulusan_id'] ?></h3>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-sm-6 col-xl-3">
-        <div class="card">
-            <div class="card-heading p-4">
-                <div class="mini-stat-icon float-right">
-                    <i class="mdi mdi-bullhorn-outline bg-secondary text-white"></i>
-                </div>
-                <div>
-                    <h5 class="font-16">Pengumuman</h5>
-                </div>
-                <h3 class="mt-4"><?= $pengumuman['pengumuman_id'] ?></h3>
-            </div>
-        </div>
-    </div>
-    <?php } ?> -->
 </div>
+
+<!-- Dashboard Admin Chart-->
+<?php if (session()->get('level') == 2 || session()->get('level') == 3) { ?>
+        <div class="card shadow-lg">
+            <div class="card-header pb-0">
+                <h6 class="card-title mb-2">Rekap Pembayaran SPP Peserta Angkatan Perkuliahan <?= $angkatan ?></h6>
+                <div class="card-options"><a class="card-options-collapse" href="#" data-bs-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="#" data-bs-toggle="card-remove"><i class="fe fe-x"></i></a></div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <div id="bar_spp"></div>
+                    </div>
+                    <div class="col-4">
+                        <div id="pie_spp"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
+
+    <script>
+    // Create the chart
+    Highcharts.setOptions({
+    colors: ['#fcbe2d', '#28a745']
+    
+    });
+
+    Highcharts.chart('pie_spp', {
+    chart: {
+    type: 'pie'
+    },
+    title: {
+    text: ''
+    },
+
+    accessibility: {
+    announceNewData: {
+        enabled: true
+    },
+    point: {
+    //   valueSuffix: '%'
+    }
+    },
+
+    credits: {
+    enabled: false
+    },
+
+    plotOptions: {
+    series: {
+        dataLabels: {
+        enabled: true,
+        format: '{point.name}: {point.y:.0f}'
+        }
+    }
+    },
+
+    tooltip: {
+    headerFormat: '<span style="font-size:14px">{series.name}</span><br>',
+    pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.0f}</b> of total<br/>'
+    },
+
+    series: [
+    {
+        name: "SPP Peserta",
+        colorByPoint: true,
+        data: [
+        {
+            name: "BELUM LUNAS",
+            y: <?= $spp_belum_lunas ?>,
+        //   drilldown: "Chrome"
+        },
+        {
+            name: "LUNAS",
+            y: <?= $spp_lunas ?>,
+        //   drilldown: "Firefox"
+        }
+        ]
+    }
+    ]
+    })
+
+    //Bar chart
+    Highcharts.chart('bar_spp', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: ''
+    },
+    credits: {
+    enabled: false
+    },
+    xAxis: {
+        categories: [
+        // 'Jan',
+        // 'Feb',
+        // 'Mar',
+        // 'Apr',
+        // 'May',
+        // 'Jun',
+        // 'Jul',
+        // 'Aug',
+        // 'Sep',
+        // 'Oct',
+        // 'Nov',
+        'Mushafy'
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+        text: 'JUMLAH PESERTA'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:14px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        '<td style="padding:0"><b>{point.y:.0f} ORANG</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+        },
+        bar: {
+        dataLabels: {
+        enabled: true
+        }
+        }
+    },
+    series: [{
+        name: 'BELUM LUNAS',
+        data: [<?= $spp_belum_lunas ?>]
+
+    }, {
+        name: 'LUNAS',
+        data: [<?= $spp_lunas ?>]
+
+    }]
+    });
+    </script>
 
 <?= $this->endSection('isi') ?>

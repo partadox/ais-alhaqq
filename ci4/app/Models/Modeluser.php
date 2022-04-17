@@ -110,4 +110,21 @@ class Modeluser extends Model
             ->countAllResults();
     }
 
+    //Dashboard - Admin - Jumlah Akun Pengajar
+    public function jml_akun_pengajar()
+    {
+        return $this->table('user')
+        ->where('level', 5)
+        ->orwhere('level', 6)
+        ->countAllResults();
+    }
+
+    //Dashboard - Admin - Jumlah Akun Peserta
+    public function jml_akun_peserta()
+    {
+        return $this->table('user')
+        ->where('level', 4)
+        ->countAllResults();
+    }
+
 }
