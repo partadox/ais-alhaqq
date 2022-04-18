@@ -993,19 +993,21 @@ class Program extends BaseController
 
             $peserta_kelas_id   = $this->request->getVar('peserta_kelas_id');
             $peserta_kelas      = $this->peserta_kelas->find($peserta_kelas_id);
+            
 
             //get id peserta
-            $peserta_id        = $this->peserta_kelas->get_peserta_id($peserta_kelas_id);
+            $peserta_id        = $peserta_kelas['data_peserta_id'];
             $data_peserta      = $this->peserta->find($peserta_id );
+            //var_dump($peserta_id);
 
             $data = [
                 'title'             => 'Pindah Kelas Peserta',
                 'peserta_kelas_id'  => $peserta_kelas_id,
                 'data_kelas_id'     => $peserta_kelas['data_kelas_id'],
                 'kelas'             => $this->program->list(),
-                'nama_peserta'      => $data_peserta[0]['nama_peserta'],
-                'nis'               => $data_peserta[0]['nis'],
-                'domisili'          => $data_peserta[0]['domisili_peserta']
+                'nama_peserta'      => $data_peserta['nama_peserta'],
+                'nis'               => $data_peserta['nis'],
+                'domisili'          => $data_peserta['domisili_peserta']
             ];
             $msg = [
                 'sukses' => view('auth/program_kelas/kelas_peserta_pindah', $data)
@@ -1103,6 +1105,7 @@ class Program extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Pindah Peserta Nama : ' . $nama_peserta . ' Dipindahkan Ke Kelas ' . $nama_kelas_tujuan   . ' Dari Kelas ' . $nama_kelas_asal,
                 ];
                 $this->log->insert($log);

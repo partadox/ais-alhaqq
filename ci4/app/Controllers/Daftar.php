@@ -436,9 +436,10 @@ class Daftar extends BaseController
             //Get Nama User
             $user_nama = session()->get('nama');
             //Get Tgl Today
-            $tgl = date("Y-m-d");
-            $waktu = date("H:i:s");
-            $strwaktu = date("H-i-s");
+            $tgl        = date("Y-m-d");
+            $waktu      = date("H:i:s");
+            $datetime   = date("Y-m-d H:i:s");
+            $strwaktu   = date("H-i-s");
 
             $valid = $this->validate([
                 'awal_bayar' => [
@@ -565,9 +566,32 @@ class Daftar extends BaseController
                 $get_peserta_kelas_id   = $this->peserta_kelas->get_peserta_kelas_id($peserta_id, $kelas_id);
                 $peserta_kelas_id       = $get_peserta_kelas_id->peserta_kelas_id;
 
+                //If bayar spp2, spp3, spp4
+                if ($awal_bayar_spp2 == '0') {
+                    $dt_spp2 = NULL;
+                } else {
+                    $dt_spp2 = $datetime;
+                }
+
+                if ($awal_bayar_spp3 == '0') {
+                    $dt_spp3 = NULL;
+                } else {
+                    $dt_spp3 = $datetime;
+                }
+
+                if ($awal_bayar_spp4 == '0') {
+                    $dt_spp4 = NULL;
+                } else {
+                    $dt_spp4 = $datetime;
+                }
+
                 $datapesertakelas = [
                     'expired_tgl_daftar'    => NULL,
                     'expired_waktu_daftar'  => NULL,
+                    'dt_bayar_daftar'       => $datetime,
+                    'dt_bayar_spp2'         => $dt_spp2,
+                    'dt_bayar_spp3'         => $dt_spp3,
+                    'dt_bayar_spp4'         => $dt_spp4,
                 ];
                 $this->peserta_kelas->update($peserta_kelas_id, $datapesertakelas);
 

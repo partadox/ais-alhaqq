@@ -168,6 +168,7 @@ class Pembayaran extends BaseController
 
             $tgl        = date("Y-m-d");
             $waktu      = date("H:i:s");
+            $datetime   = date("Y-m-d H:i:s");
             $validator  = session()->get('username');
 
             $bayar_id   = $this->request->getVar('bayar_id');
@@ -400,6 +401,7 @@ class Pembayaran extends BaseController
                         'byr_modul'             => $byr_modul_value,
                         'spp_terbayar'          => $sppdaftar,
                         'spp_piutang'           => $piutang1,
+                        'dt_konfirmasi_daftar'  => $datetime,
                         'spp_status'            => 'BELUM LUNAS',
                     ];
 
@@ -434,10 +436,11 @@ class Pembayaran extends BaseController
                         $spp2daftar = (2*$biaya_bulanan) + $biaya_daftar + $biaya_modul;
                         $piutang2   = $total_lunas - $spp2daftar;
                         $data_update_spp2 = [
-                            'byr_spp2'      => $bayar_spp2,
-                            'spp_terbayar'  => $spp2daftar,
-                            'spp_piutang'   => $piutang2,
-                            'spp_status'    => 'BELUM LUNAS',
+                            'byr_spp2'          => $bayar_spp2,
+                            'spp_terbayar'      => $spp2daftar,
+                            'spp_piutang'       => $piutang2,
+                            'dt_konfirmasi_spp2'=> $datetime,
+                            'spp_status'        => 'BELUM LUNAS',
                         ];
                         $this->peserta_kelas->update($peserta_kelas_id, $data_update_spp2);
                     }
@@ -455,10 +458,11 @@ class Pembayaran extends BaseController
                         $spp3daftar = (3*$biaya_bulanan) + $biaya_daftar + $biaya_modul;
                         $piutang3   = $total_lunas - $spp3daftar;
                         $data_update_spp3 = [
-                            'byr_spp3'      => $bayar_spp3,
-                            'spp_terbayar'  => $spp3daftar,
-                            'spp_piutang'   => $piutang3,
-                            'spp_status'    => 'BELUM LUNAS',
+                            'byr_spp3'          => $bayar_spp3,
+                            'spp_terbayar'      => $spp3daftar,
+                            'spp_piutang'       => $piutang3,
+                            'dt_konfirmasi_spp3'=> $datetime,
+                            'spp_status'        => 'BELUM LUNAS',
                         ];
                         $this->peserta_kelas->update($peserta_kelas_id, $data_update_spp3);
                     }
@@ -476,10 +480,11 @@ class Pembayaran extends BaseController
                         $spp4daftar = (4*$biaya_bulanan) + $biaya_daftar + $biaya_modul;
                         $piutang4   = $total_lunas - $spp4daftar;
                         $data_update_spp4 = [
-                            'byr_spp4'      => $bayar_spp4,
-                            'spp_terbayar'  => $spp4daftar,
-                            'spp_piutang'   => $piutang4,
-                            'spp_status'    => 'LUNAS',
+                            'byr_spp4'          => $bayar_spp4,
+                            'spp_terbayar'      => $spp4daftar,
+                            'spp_piutang'       => $piutang4,
+                            'dt_konfirmasi_spp4'=> $datetime,
+                            'spp_status'        => 'LUNAS',
                         ];
                         $this->peserta_kelas->update($peserta_kelas_id, $data_update_spp4);
                     }
@@ -522,10 +527,11 @@ class Pembayaran extends BaseController
                         $spp2daftar = (2*$biaya_bulanan) + $biaya_daftar + $biaya_modul;
                         $piutang2   = $total_lunas - $spp2daftar;
                         $data_update_spp2 = [
-                            'byr_spp2'      => $bayar_spp2,
-                            'spp_terbayar'  => $spp2daftar,
-                            'spp_piutang'   => $piutang2,
-                            'spp_status'    => 'BELUM LUNAS',
+                            'byr_spp2'          => $bayar_spp2,
+                            'spp_terbayar'      => $spp2daftar,
+                            'spp_piutang'       => $piutang2,
+                            'dt_konfirmasi_spp2'=> $datetime,
+                            'spp_status'        => 'BELUM LUNAS',
                         ];
                         $this->peserta_kelas->update($peserta_kelas_id, $data_update_spp2);
                     }
@@ -543,10 +549,11 @@ class Pembayaran extends BaseController
                         $spp3daftar = (3*$biaya_bulanan) + $biaya_daftar + $biaya_modul;
                         $piutang3   = $total_lunas - $spp3daftar;
                         $data_update_spp3 = [
-                            'byr_spp3'      => $bayar_spp3,
-                            'spp_terbayar'  => $spp3daftar,
-                            'spp_piutang'   => $piutang3,
-                            'spp_status'    => 'BELUM LUNAS',
+                            'byr_spp3'          => $bayar_spp3,
+                            'spp_terbayar'      => $spp3daftar,
+                            'spp_piutang'       => $piutang3,
+                            'dt_konfirmasi_spp3'=> $datetime,
+                            'spp_status'        => 'BELUM LUNAS',
                         ];
                         $this->peserta_kelas->update($peserta_kelas_id, $data_update_spp3);
                     }
@@ -564,10 +571,11 @@ class Pembayaran extends BaseController
                         $spp4daftar = (4*$biaya_bulanan) + $biaya_daftar + $biaya_modul;
                         $piutang4   = $total_lunas - $spp4daftar;
                         $data_update_spp4 = [
-                            'byr_spp4'      => $bayar_spp4,
-                            'spp_terbayar'  => $spp4daftar,
-                            'spp_piutang'   => $piutang4,
-                            'spp_status'    => 'LUNAS',
+                            'byr_spp4'          => $bayar_spp4,
+                            'spp_terbayar'      => $spp4daftar,
+                            'spp_piutang'       => $piutang4,
+                            'dt_konfirmasi_spp4'=> $datetime,
+                            'spp_status'        => 'LUNAS',
                         ];
                         $this->peserta_kelas->update($peserta_kelas_id, $data_update_spp4);
                     }
@@ -1012,11 +1020,11 @@ class Pembayaran extends BaseController
         ];
 
         $sheet->setCellValue('A1', "DATA REKAP PEMBAYARAN SPP ALHAQQ - ACADEMIC ALHAQQ INFORMATION SYSTEM");
-        $sheet->mergeCells('A1:U1');
+        $sheet->mergeCells('A1:Y1');
         $sheet->getStyle('A1')->applyFromArray($styleColumn);
 
         $sheet->setCellValue('A2', date("Y-m-d"));
-        $sheet->mergeCells('A2:U2');
+        $sheet->mergeCells('A2:Y2');
         $sheet->getStyle('A2')->applyFromArray($styleColumn);
 
         $spreadsheet->setActiveSheetIndex(0)
@@ -1036,7 +1044,17 @@ class Pembayaran extends BaseController
             ->setCellValue('N4', 'BAYAR SPP-2')
             ->setCellValue('O4', 'BAYAR SPP-3')
             ->setCellValue('P4', 'BAYAR SPP-4')
-            ->setCellValue('Q4', 'BAYAR MODUL');
+            ->setCellValue('Q4', 'BAYAR MODUL')
+
+            ->setCellValue('R4', 'DT BYR PENDAFTARAN')
+            ->setCellValue('S4', 'DT KONF. PENDAFTARAN')
+            ->setCellValue('T4', 'DT BYR SPP2')
+            ->setCellValue('U4', 'DT KONF. SPP2')
+
+            ->setCellValue('V4', 'DT BYR SPP3')
+            ->setCellValue('W4', 'DT KONF. SPP3')
+            ->setCellValue('X4', 'DT BYR SPP4')
+            ->setCellValue('Y4', 'DT KONF. SPP4');
         
         $sheet->getStyle('A4')->applyFromArray($styleColumn);
         $sheet->getStyle('A4')->applyFromArray($border);
@@ -1073,6 +1091,24 @@ class Pembayaran extends BaseController
         $sheet->getStyle('Q4')->applyFromArray($styleColumn);
         $sheet->getStyle('Q4')->applyFromArray($border);
 
+        $sheet->getStyle('R4')->applyFromArray($styleColumn);
+        $sheet->getStyle('R4')->applyFromArray($border);
+        $sheet->getStyle('S4')->applyFromArray($styleColumn);
+        $sheet->getStyle('S4')->applyFromArray($border);
+        $sheet->getStyle('T4')->applyFromArray($styleColumn);
+        $sheet->getStyle('T4')->applyFromArray($border);
+        $sheet->getStyle('U4')->applyFromArray($styleColumn);
+        $sheet->getStyle('U4')->applyFromArray($border);
+        $sheet->getStyle('V4')->applyFromArray($styleColumn);
+        $sheet->getStyle('V4')->applyFromArray($border);
+        $sheet->getStyle('W4')->applyFromArray($styleColumn);
+        $sheet->getStyle('W4')->applyFromArray($border);
+        $sheet->getStyle('X4')->applyFromArray($styleColumn);
+        $sheet->getStyle('X4')->applyFromArray($border);
+        $sheet->getStyle('Y4')->applyFromArray($styleColumn);
+        $sheet->getStyle('Y4')->applyFromArray($border);
+
+
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
@@ -1090,6 +1126,15 @@ class Pembayaran extends BaseController
         $spreadsheet->getActiveSheet()->getColumnDimension('O')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('P')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('Q')->setAutoSize(true);
+
+        $spreadsheet->getActiveSheet()->getColumnDimension('R')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('S')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('T')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('U')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('V')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('W')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('X')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('Y')->setAutoSize(true);
 
         $row = 5;
 
@@ -1111,7 +1156,16 @@ class Pembayaran extends BaseController
                 ->setCellValue('N' . $row, $rekap['byr_spp2'])
                 ->setCellValue('O' . $row, $rekap['byr_spp3'])
                 ->setCellValue('P' . $row, $rekap['byr_spp4'])
-                ->setCellValue('Q' . $row, $rekap['byr_modul']);
+                ->setCellValue('Q' . $row, $rekap['byr_modul'])
+
+                ->setCellValue('R' . $row, $rekap['dt_bayar_daftar'])
+                ->setCellValue('S' . $row, $rekap['dt_konfirmasi_daftar'])
+                ->setCellValue('T' . $row, $rekap['dt_bayar_spp2'])
+                ->setCellValue('U' . $row, $rekap['dt_konfirmasi_spp2'])
+                ->setCellValue('V' . $row, $rekap['dt_bayar_spp3'])
+                ->setCellValue('W' . $row, $rekap['dt_konfirmasi_spp3'])
+                ->setCellValue('X' . $row, $rekap['dt_bayar_spp4'])
+                ->setCellValue('Y' . $row, $rekap['dt_konfirmasi_spp4']);
 
             $sheet->getStyle('A' . $row)->applyFromArray($border);
             $sheet->getStyle('B' . $row)->applyFromArray($border);
@@ -1130,6 +1184,14 @@ class Pembayaran extends BaseController
             $sheet->getStyle('O' . $row)->applyFromArray($border);
             $sheet->getStyle('P' . $row)->applyFromArray($border);
             $sheet->getStyle('Q' . $row)->applyFromArray($border);
+            $sheet->getStyle('R' . $row)->applyFromArray($border);
+            $sheet->getStyle('S' . $row)->applyFromArray($border);
+            $sheet->getStyle('T' . $row)->applyFromArray($border);
+            $sheet->getStyle('U' . $row)->applyFromArray($border);
+            $sheet->getStyle('V' . $row)->applyFromArray($border);
+            $sheet->getStyle('W' . $row)->applyFromArray($border);
+            $sheet->getStyle('X' . $row)->applyFromArray($border);
+            $sheet->getStyle('Y' . $row)->applyFromArray($border);
 
             $row++;
         }
@@ -1454,9 +1516,10 @@ class Pembayaran extends BaseController
             //Get Nama User
             $user_nama = session()->get('nama');
             //Get Tgl Today
-            $tgl = date("Y-m-d");
-            $waktu = date("H:i:s");
-            $strwaktu = date("H-i-s");
+            $tgl        = date("Y-m-d");
+            $waktu      = date("H:i:s");
+            $datetime   = date("Y-m-d H:i:s");
+            $strwaktu   = date("H-i-s");
 
             $valid = $this->validate([
                 'awal_bayar' => [
@@ -1540,6 +1603,36 @@ class Pembayaran extends BaseController
                 $awal_bayar_spp3         = $awal_bayar_spp3_int;
                 $awal_bayar_spp4         = $awal_bayar_spp4_int;
                 $awal_bayar_lainnya      = $awal_bayar_lainnya_int;
+
+                //Get peserta_kelas_id
+                $get_peserta_kelas_id   = $this->peserta_kelas->get_peserta_kelas_id($peserta_id, $kelas_id);
+                $peserta_kelas_id       = $get_peserta_kelas_id->peserta_kelas_id;
+
+                //If bayar spp2, spp3, spp4
+                if ($awal_bayar_spp2 == '0') {
+                    $dt_spp2 = NULL;
+                } else {
+                    $dt_spp2 = $datetime;
+                }
+
+                if ($awal_bayar_spp3 == '0') {
+                    $dt_spp3 = NULL;
+                } else {
+                    $dt_spp3 = $datetime;
+                }
+
+                if ($awal_bayar_spp4 == '0') {
+                    $dt_spp4 = NULL;
+                } else {
+                    $dt_spp4 = $datetime;
+                }
+
+                $datapesertakelas = [
+                    'dt_bayar_spp2'         => $dt_spp2,
+                    'dt_bayar_spp3'         => $dt_spp3,
+                    'dt_bayar_spp4'         => $dt_spp4,
+                ];
+                $this->peserta_kelas->update($peserta_kelas_id, $datapesertakelas);
 
                 $data_bayar = [
                     'bayar_peserta_id'          => $peserta_id,
