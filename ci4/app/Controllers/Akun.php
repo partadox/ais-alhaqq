@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use Config\Services;
+use App\Models\Modeluser;
 
 class Akun extends BaseController
 {
@@ -15,10 +16,70 @@ class Akun extends BaseController
     {
         $data = [
             'title' => 'Al-Haqq - Akun User Peserta',
-            'list' => $this->user->list_peserta()
+            // 'list' => $this->user->list_peserta()
         ];
         //var_dump($data);
         return view('auth/akun/user_peserta', $data);
+    }
+
+    public function getdata_list_userpeserta()
+    {
+        if ($this->request->isAJAX()) {
+            $data = [
+                'title' => 'Al-Haqq - Akun User Peserta',
+                'list' => $this->user->list_peserta()
+
+            ];
+            $msg = [
+                'data' => view('auth/akun/list_userpeserta', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function getdata_userpeserta()
+    {
+        $request = Services::request();
+        $datamodel = $this->user;
+        if ($request->getMethod()) {
+            $lists = $datamodel->get_datatables();
+            $data = [];
+            $no = $request->getPost("start");
+            foreach ($lists as $list) {
+                $no++;
+
+                $row = [];
+                $edit = "<button type=\"button\" title=\"Edit Akun\" class=\"btn btn-warning btn-sm\" onclick=\"edit('" . $list->user_id . "')\">
+                <i class=\"fa fa-edit mr-1\"></i>Edit
+            </button>";
+                $edit_username = "<button type=\"button\" title=\"Edit Username\" class=\"btn btn-warning btn-sm\" onclick=\"edit_username('" . $list->user_id . "')\">
+                <i class=\"fa fa-edit mr-1\"></i>Edit Username
+            </button>";
+                $hapus = "<button type=\"button\" title=\"Hapus Akun\" class=\"btn btn-danger btn-sm\" onclick=\"hapus('" . $list->user_id . "')\">
+                <i class=\"fa fa-trash mr-1\"></i>Hapus
+            </button>";
+                $username = "<h6><b>$list->username</b></h6>";
+                if($list->active == 0){$active = "<button type=\"button\" class=\"btn btn-secondary btn-sm\" disabled>NONAKTIF</button>";}
+                elseif($list->active == 1){$active = "<button type=\"button\" class=\"btn btn-success btn-sm\" disabled>AKTIF</button>";}
+                elseif($list->active == 2){$active = "<button type=\"button\" class=\"btn btn-warning btn-sm\" disabled>LOCK</button>";};
+                $row[] = "<input type=\"checkbox\" name=\"user_id[]\" class=\"centangUserid\" value=\"$list->user_id\">";
+
+                $row[] = $no;
+                $row[] = $list->user_id;
+                $row[] = $list->nama;
+                $row[] = $username . " " . $edit_username;
+                $row[] = $active;
+                $row[] = $edit . " " . $hapus;
+                $data[] = $row; 
+            }
+            $output = [
+                "recordTotal" => $datamodel->count_all(),
+                "recordsFiltered" => $datamodel->count_filtered(),
+                "data" => $data
+            ];
+
+            echo json_encode($output);
+        }
     }
 
     public function user_pengajar()

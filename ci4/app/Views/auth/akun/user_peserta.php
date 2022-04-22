@@ -9,7 +9,7 @@
 
 <?= $this->section('isi') ?>
 <a> 
-    <button type="button" class="btn btn-primary mb-3" onclick="tambah('')" ><i class=" fa fa-plus-circle"></i> Tambah Akun Peserta</button>
+    <button type="button" class="btn btn-primary mb-3 tambah"><i class=" fa fa-plus-circle"></i> Tambah Akun Peserta</button>
 </a>
 
 <a class="ml-5"> 
@@ -45,71 +45,10 @@ if (session()->getFlashdata('pesan_sukses')) {
 }
 ?>
 
-
-<div class="table-responsive">
-    <?= form_open('akun/hapusall_peserta', ['class' => 'formhapus']) ?>
-
-    <button type="submit" class="btn btn-danger btn">
-    <i class="fa fa-trash"></i> Hapus yang Diceklist
-    </button>
-
-    <hr>
-    <table id="datatable" class="table table-striped table-bordered nowrap mt-5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-        <thead>
-            <tr>
-                <th>
-                    <input type="checkbox" id="centangSemua">
-                </th>
-                <th>No.</th>
-                <th>User Id</th>
-                <th>Nama</th>
-                <th>Username</th> 
-                <th>Status Aktif</th>
-                <th>Tindakan</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <?php $nomor = 0;
-            foreach ($list as $data) :
-                $nomor++; ?>
-                <tr>
-                    <td  width="1%">
-                        <input type="checkbox" name="user_id[]" class="centangUserid" value="<?= $data['user_id'] ?>">
-                    </td>
-                    <td width="5%"><?= $nomor ?></td>
-                    <td width="6%"><?= $data['user_id'] ?></td>
-                    <td width="20%"><?= $data['nama'] ?></td>
-                    <td width="15%">
-                        <h6><?= $data['username'] ?></h6>
-                        <button type="button" class="btn btn-warning btn-sm" onclick="edit_username('<?= $data['user_id'] ?>')" >
-                        <i class=" fa fa-edit mr-1"></i>Ubah</button>
-                    </td>
-                    <td width="10%">
-                        <?php if($data['active'] == '0') { ?>
-                            <button class="btn btn-secondary btn-sm" disabled>Nonaktif</button> 
-                        <?php } ?>
-                        <?php if($data['active'] == '1') { ?>
-                            <button class="btn btn-success btn-sm" disabled>Aktif</button> 
-                        <?php } ?>
-                    </td>
-                    <td width="5%">
-                        <button type="button" class="btn btn-warning" onclick="edit('<?= $data['user_id'] ?>')" >
-                        <i class=" fa fa-edit mr-1"></i>Edit</button> 
-                        <?php if($data['active'] == '0') { ?>
-                            <button type="button" class="btn btn-danger" onclick="hapus('<?= $data['user_id'] ?>')" >
-                            <i class=" fa fa-trash mr-1"></i>Hapus</button>
-                        <?php } ?>
-                    </td>
-                </tr>
-
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <?= form_close() ?>
+<div class="modalakuntambah">
 </div>
 
-<div class="modalakuntambah">
+<div class="viewdata">
 </div>
 
 <div class="viewmodaldataeditusername">
@@ -189,151 +128,32 @@ if (session()->getFlashdata('pesan_sukses')) {
 <!-- End Modal Multiple Edit -->
 
 <script>
-
+    function list_userpeserta() {
+        $.ajax({
+            url: "<?= site_url('akun/getdata_list_userpeserta') ?>",
+            dataType: "json",
+            success: function(response) {
+                $('.viewdata').html(response.data);
+            }
+        });
+    }
     $(document).ready(function() {
-
-    $('#datatable').DataTable({
-
-    });
-
-    $('#centangSemua').click(function(e) {
-        if ($(this).is(':checked')) {
-            $('.centangUserid').prop('checked', true);
-        } else {
-            $('.centangUserid').prop('checked', false);
-        }
-    });
-
-    $('.formhapus').submit(function(e) {
-        e.preventDefault();
-        let jmldata = $('.centangUserid:checked');
-        if (jmldata.length === 0) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Ooops!',
-                text: 'Silahkan pilih data!',
-                showConfirmButton: false,
-                timer: 1500
-            })
-        } else {
-            Swal.fire({
-                title: 'Hapus data',
-                text: `Apakah anda yakin ingin menghapus sebanyak ${jmldata.length} data?`,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "post",
-                        url: $(this).attr('action'),
-                        data: $(this).serialize(),
-                        dataType: "json",
-                        success: function(response) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: 'Data berhasil dihapus!',
-                                showConfirmButton: false,
-                                timer: 1500
-                            }).then(function() {
-                            window.location = response.sukses.link;
-                    });
-                        }
-                    });
-                }
-            })
-        }
-    });
-    });
-
-    function tambah() {
-        $.ajax({
-            type: "post",
-            url: "<?= site_url('akun/input_user_peserta') ?>",
-            data: {
-            },
-            dataType: "json",
-            success: function(response) {
-                if (response.sukses) {
-                    $('.modalakuntambah').html(response.sukses).show();
-                    $('#modalakuntambah').modal('show');
-                }
-            }
-        });
-    }
-
-    function edit(user_id) {
-        $.ajax({
-            type: "post",
-            url: "<?= site_url('akun/edit_user_peserta') ?>",
-            data: {
-                user_id : user_id
-            },
-            dataType: "json",
-            success: function(response) {
-                if (response.sukses) {
-                    $('.viewmodaldataedit').html(response.sukses).show();
-                    $('#modaledit').modal('show');
-                }
-            }
-        });
-    }
-
-    function edit_username(user_id) {
-        $.ajax({
-            type: "post",
-            url: "<?= site_url('akun/edit_user_username_peserta') ?>",
-            data: {
-                user_id : user_id
-            },
-            dataType: "json",
-            success: function(response) {
-                if (response.sukses) {
-                    $('.viewmodaldataeditusername').html(response.sukses).show();
-                    $('#modaleditusername').modal('show');
-                }
-            }
-        });
-    }
-
-    function hapus(user_id) {
-        Swal.fire({
-            title: 'Yakin Hapus Data Akun User ini?',
-            text: `Data Akun User Akan Dihapus.`,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya',
-            cancelButtonText: 'Tidak'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "<?= site_url('akun/hapus_user_peserta') ?>",
-                    type: "post",
-                    dataType: "json",
-                    data: {
-                        user_id : user_id
-                    },
-                    success: function(response) {
-                        if (response.sukses) {
-                            Swal.fire({
-                                title: "Berhasil!",
-                                text: "Anda berhasil menghapus data akun user peserta!",
-                                icon: "success",
-                                showConfirmButton: false,
-                                timer: 1500
-                            }).then(function() {
-                                window.location = response.sukses.link;
-                        });
-                        }
+        list_userpeserta();
+        $('.tambah').click(function(e) {
+            $.ajax({
+                type: "post",
+                url: "<?= site_url('akun/input_user_peserta') ?>",
+                data: {
+                },
+                dataType: "json",
+                success: function(response) {
+                    if (response.sukses) {
+                        $('.modalakuntambah').html(response.sukses).show();
+                        $('#modalakuntambah').modal('show');
                     }
-                });
-            }
-        })
-    }
+                }
+            });
+        });
+    });
 </script>
 <?= $this->endSection('isi') ?>

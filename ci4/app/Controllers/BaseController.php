@@ -90,8 +90,8 @@ class BaseController extends Controller
 		// $this->pengumuman = new Modelpengumuman;
 		// $this->kelulusan = new Modelkelulusan($request);
 		$this->konfigurasi = new Modelkonfigurasi;
-		$this->user = new Modeluser;
-		$this->peserta = new Modelpeserta;
+		$this->user = new Modeluser($request);
+		$this->peserta = new Modelpeserta($request);
 		$this->program = new Modelprogram;
 		$this->program_bayar = new Modelprogrambayar;
 		$this->spp1 = new Modelspp1;

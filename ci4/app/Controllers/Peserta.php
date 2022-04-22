@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use Config\Services;
+use App\Models\Modelpeserta;
 
 class Peserta extends BaseController
 {
@@ -10,9 +11,76 @@ class Peserta extends BaseController
     {
         $data = [
             'title' => 'Al-Haqq - Peserta',
-            'list' => $this->peserta->list()
+            // 'list' => $this->peserta->list()
         ];
         return view('auth/peserta/index', $data);
+    }
+
+    public function getdata_listpeserta()
+    {
+        if ($this->request->isAJAX()) {
+            $data = [
+                'title' => 'Al-Haqq - Peserta',
+                'list' => $this->peserta->list()
+
+            ];
+            $msg = [
+                'data' => view('auth/peserta/list_peserta', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function getdata_peserta()
+    {
+        $request = Services::request();
+        $datamodel = $this->peserta;
+        if ($request->getMethod()) {
+            $lists = $datamodel->get_datatables();
+            $data = [];
+            $no = $request->getPost("start");
+            foreach ($lists as $list) {
+                $no++;
+
+                $row = [];
+                $edit = "<button type=\"button\" title=\"Edit Data Peserta\" class=\"btn btn-warning btn-sm\" onclick=\"edit('" . $list->peserta_id . "')\">
+                <i class=\"fa fa-edit\"></i>
+            </button>";
+                $hapus = "<button type=\"button\" title=\"Hapus Peserta\" class=\"btn btn-danger btn-sm\" onclick=\"hapus('" . $list->peserta_id . "')\">
+                <i class=\"fa fa-trash\"></i>
+            </button>";
+                $datadiri = "<button type=\"button\" title=\"Data Diri Peserta\" class=\"btn btn-secondary btn-sm\" onclick=\"datadiri('" . $list->peserta_id . "')\">
+                <i class=\"fa fa-info\"></i>
+            </button>";
+                if($list->status_peserta == 'AKTIF'){$status_peserta = "<button type=\"button\" class=\"btn btn-success btn-sm\" disabled>AKTIF</button>";}
+                elseif($list->status_peserta == 'OFF'){$status_peserta = "<button type=\"button\" class=\"btn btn-secondary btn-sm\" disabled>OFF</button>";}
+                elseif($list->status_peserta == 'CUTI'){$status_peserta = "<button type=\"button\" class=\"btn btn-info btn-sm\" disabled>CUTI</button>";};
+                $row[] = "<input type=\"checkbox\" name=\"peserta_id[]\" class=\"centangPesertaid\" value=\"$list->peserta_id\">";
+
+                $row[] = $no;
+                $row[] = $list->peserta_id;
+                $row[] = $list->nis;
+                $row[] = $list->nama_peserta;
+                $row[] = $list->nik;
+                $row[] = $list->nama_kantor;
+                $row[] = $list->jenkel;
+                $row[] = $list->hp;
+                $row[] = $list->nama_level;
+                $row[] = $list->angkatan;
+                $row[] = umur($list->tgl_lahir);
+                $row[] = $status_peserta;
+                $row[] = "ID:" . $list->user_id . "-" . $list->username;
+                $row[] = $datadiri . " " . $edit . " " . $hapus;
+                $data[] = $row;
+            }
+            $output = [
+                "recordTotal" => $datamodel->count_all(),
+                "recordsFiltered" => $datamodel->count_filtered(),
+                "data" => $data
+            ];
+
+            echo json_encode($output);
+        }
     }
 
     public function datadiri()
