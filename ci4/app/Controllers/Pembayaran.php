@@ -1075,8 +1075,15 @@ class Pembayaran extends BaseController
         }
 
         $uri           = service('uri');
-        $peserta_id    = $uri->getSegment(4);
-        $kelas_id      = $uri->getSegment(5);
+        $cek           = $uri->getSegment(4);
+        if (is_numeric($cek)) {
+            $peserta_id    = $uri->getSegment(4);
+            $kelas_id      = $uri->getSegment(5);
+        } elseif (is_string($cek)) {
+            $peserta_id    = $uri->getSegment(5);
+            $kelas_id      = $uri->getSegment(6);
+        }
+        
 
         //Data peserta
         $data_peserta  = $this->peserta->find($peserta_id);

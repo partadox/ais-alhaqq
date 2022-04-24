@@ -96,7 +96,7 @@ $routes->get('/auth/program', 'Program::Index', ['filter' => 'Validasilogin']);
 //Ganti Angkatan Kelas - start
 $routes->get('/auth/program/kelas', 'Program::kelas', ['filter' => 'Validasilogin']);
 $routes->get('/auth/program/kelas/(:num)', 'Program::kelas/$1', ['filter' => 'Validasilogin']);
-$routes->get('/auth/program/kelas/kelas_peserta/(:num)', 'Pembayaran::kelas_peserta/$1', ['filter' => 'Validasilogin']);
+$routes->get('/auth/program/kelas/kelas_peserta/(:num)', 'Program::kelas_peserta/$1', ['filter' => 'Validasilogin']);
 //Ganti Angkatan Kelas - End
 $routes->get('/auth/program/level', 'Program::level', ['filter' => 'Validasilogin']);
 $routes->get('/auth/peserta', 'Peserta::Index', ['filter' => 'Validasilogin']);
