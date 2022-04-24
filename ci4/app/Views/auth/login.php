@@ -34,7 +34,7 @@ $konfigurasi = $this->konfigurasi->orderBy('konfigurasi_id')->first();
 
                 <div id="signin">
                     <div class="text-center m-t-0 m-b-15">
-                        <a href="index.html" class="logo logo-admin"><img src="<?= base_url('img/logo-alhaqq.png') ?>" alt="" height="55"></a>
+                        <a href="" class="logo logo-admin"><img src="<?= base_url('img/logo-alhaqq.png') ?>" alt="" height="55"></a>
                     </div>
                     <h6>Isi form dibawah untuk masuk akun!</h6>
                     <?= form_open('login/validasi', ['class' => 'formlogin']) ?>

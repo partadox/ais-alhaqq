@@ -2,7 +2,7 @@
 
 <?= $this->section('judul') ?>
 <div class="col-sm-6">
-    <h4 class="page-title">Dashboard</h4>
+    <h3 class="page-title">Dashboard - Angkatan Perkuliahan Saat ini : <?= $angkatan ?></h3>
 </div>
 <div class="col-sm-6">
     <ol class="breadcrumb float-right">

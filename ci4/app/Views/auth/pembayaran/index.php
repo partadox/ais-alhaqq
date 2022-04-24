@@ -10,6 +10,17 @@
 <?= $this->section('isi') ?>
 <!-- <button type="button" class="btn btn-primary mb-3" onclick="tambah('')"><i class=" fa fa-plus-circle"></i> Tambah Pembayaran</button> -->
 
+<div class="row">
+    <div class="col-sm-auto mb-2">
+        <label for="angkatan_kelas">Pilih Angkatan Perkuliahan</label>
+        <select onchange="javascript:location.href = this.value;" class="form-control js-example-basic-single" name="angkatan_kelas" id="angkatan_kelas" class="js-example-basic-single mb-2">
+            <?php foreach ($list_angkatan as $key => $data) { ?>
+            <option value="/auth/pembayaran/<?= $data['angkatan_kelas'] ?>" <?php if ($angkatan_pilih == $data['angkatan_kelas']) echo "selected"; ?>> <?= $data['angkatan_kelas'] ?> </option>
+            <?php } ?>
+        </select>
+    </div>
+</div>
+
 <?php
 if (session()->getFlashdata('pesan_error')) {
     echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -30,7 +41,7 @@ if (session()->getFlashdata('pesan_sukses')) {
 ?>
 
 <div class="table-responsive">
-<table id="datatable" class="table table-striped table-bordered" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+<table id="listbayar" class="table table-striped table-bordered" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
     <thead>
         <tr>
             <th>No.</th>
@@ -131,9 +142,9 @@ if (session()->getFlashdata('pesan_sukses')) {
                     <?php } ?>
                 </td>
                 <td width="10%">
-                        <button type="button" class="btn btn-warning" onclick="edit('<?= $data['bayar_id'] ?>')" >
+                        <button type="button" class="btn btn-warning mb-2" onclick="edit('<?= $data['bayar_id'] ?>')" >
                         <i class=" fa fa-edit mr-1"></i>Edit</button>
-                        <button type="button" class="btn btn-danger mt-2" onclick="hapus('<?= $data['bayar_id'] ?>')" >
+                        <button type="button" class="btn btn-danger mb-2" onclick="hapus('<?= $data['bayar_id'] ?>')" >
                         <i class=" fa fa-trash mr-1"></i>Hapus</button>
                 </td>
             </tr>
@@ -150,6 +161,39 @@ if (session()->getFlashdata('pesan_sukses')) {
 </div>
 
 <script>
+     $('#angkatan_kelas').bind('change', function () { // bind change event to select
+        var url = $(this).val(); // get selected value
+        if (url != '') { // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    });
+
+    $(document).ready(function() {
+        $('#listbayar').DataTable( {
+            initComplete: function () {
+                this.api().columns().every( function () {
+                    var column = this;
+                    var select = $('<select><option value=""></option></select>')
+                        .appendTo( $(column.footer()).empty() )
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+    
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        } );
+    
+                    column.data().unique().sort().each( function ( d, j ) {
+                        select.append( '<option value="'+d+'">'+d+'</option>' )
+                    } );
+                } );
+            }
+        } );
+    } );
+
     function tambah() {
         $.ajax({
             type: "post",

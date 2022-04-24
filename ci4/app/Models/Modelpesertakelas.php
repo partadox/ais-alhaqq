@@ -76,7 +76,7 @@ class Modelpesertakelas extends Model
     }
 
     //Rekap data pembayaran tiap peserta - Admin panel
-    public function admin_rekap_bayar()
+    public function admin_rekap_bayar($angkatan)
     {
         return $this->table('peserta_kelas')
             ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
@@ -85,6 +85,23 @@ class Modelpesertakelas extends Model
             ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
             ->join('peserta_level', 'peserta_level.peserta_level_id = peserta.level_peserta')
             ->where('spp_status !=', 'BELUM BAYAR PENDAFTARAN')
+            ->where('angkatan_kelas', $angkatan)
+            ->orderBy('nama_peserta', 'DESC')
+            ->get()->getResultArray();
+    }
+
+    //Rekap data absen peserta - Admin panel
+    public function admin_rekap_absen_peserta($angkatan)
+    {
+        return $this->table('peserta_kelas')
+            ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
+            ->join('program_kelas', 'program_kelas.kelas_id = peserta_kelas.data_kelas_id')
+            ->join('program', 'program.program_id = program_kelas.program_id')
+            ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+            ->join('peserta_level', 'peserta_level.peserta_level_id = peserta.level_peserta')
+            ->join('absen_peserta', 'absen_peserta.absen_peserta_id = peserta_kelas.data_absen')
+            ->where('spp_status !=', 'BELUM BAYAR PENDAFTARAN')
+            ->where('angkatan_kelas', $angkatan)
             ->orderBy('nama_peserta', 'DESC')
             ->get()->getResultArray();
     }

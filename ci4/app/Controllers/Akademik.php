@@ -28,4 +28,52 @@ class Akademik extends BaseController
 
         return view('auth/akademik/index', $data); 
     }
+
+    public function admin_rekap_absen_peserta()
+    {
+        $uri                = service('uri');
+        $get_angkatan_url   = $uri->getSegment(4);
+        if ($get_angkatan_url == NULL) {
+            $get_angkatan       = $this->konfigurasi->angkatan_kuliah();
+            //Angkatan perkuliahan
+            $angkatan           = $get_angkatan->angkatan_kuliah;
+        } elseif ($get_angkatan_url != NULL) {
+            $angkatan = $get_angkatan_url;
+        }
+        
+        $list_angkatan      = $this->program->list_unik_angkatan();
+        $list_absensi       = $this->peserta_kelas->admin_rekap_absen_peserta($angkatan);
+
+        $data = [
+            'title'         => 'Al-Haqq - Data Absensi Peserta pada Angkatan Perkuliahan ' . $angkatan,
+            'list'          => $list_absensi,
+            'list_angkatan' => $list_angkatan,
+            'angkatan_pilih'=> $angkatan,
+        ];
+        return view('auth/akademik/rekap_absen_peserta', $data);
+    }
+
+    public function admin_rekap_absen_pengajar()
+    {
+        $uri                = service('uri');
+        $get_angkatan_url   = $uri->getSegment(4);
+        if ($get_angkatan_url == NULL) {
+            $get_angkatan       = $this->konfigurasi->angkatan_kuliah();
+            //Angkatan perkuliahan
+            $angkatan           = $get_angkatan->angkatan_kuliah;
+        } elseif ($get_angkatan_url != NULL) {
+            $angkatan = $get_angkatan_url;
+        }
+        
+        $list_angkatan      = $this->program->list_unik_angkatan();
+        $list_absensi       = $this->program->admin_rekap_absen_pengajar($angkatan);
+        
+        $data = [
+            'title'         => 'Al-Haqq - Data Absensi Pengajar pada Angkatan Perkuliahan ' . $angkatan,
+            'list'          => $list_absensi,
+            'list_angkatan' => $list_angkatan,
+            'angkatan_pilih'=> $angkatan,
+        ];
+        return view('auth/akademik/rekap_absen_pengajar', $data);
+    }
 }

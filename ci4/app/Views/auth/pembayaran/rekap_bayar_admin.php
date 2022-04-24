@@ -9,9 +9,21 @@
 
 <?= $this->section('isi') ?>
 
-<a href="<?= base_url('pembayaran/rekap_spp_admin_export') ?>"> 
-    <button type="button" class="btn btn-secondary mb-3"><i class=" fa fa-file-download"></i> Export Excel (Download)</button>
-</a>
+<div class="row">
+    <div class="col-sm-auto">
+        <a href="<?= base_url('pembayaran/rekap_spp_admin_export') ?>"> 
+            <button type="button" class="btn btn-secondary mb-3"><i class=" fa fa-file-download"></i> Export Excel (Download)</button>
+        </a>
+    </div>
+    <div class="col-sm-auto mb-2">
+        <label for="angkatan_kelas">Pilih Angkatan Perkuliahan</label>
+        <select onchange="javascript:location.href = this.value;" class="form-control js-example-basic-single" name="angkatan_kelas" id="angkatan_kelas" class="js-example-basic-single mb-2">
+            <?php foreach ($list_angkatan as $key => $data) { ?>
+            <option value="/auth/pembayaran/admin_rekap_bayar/<?= $data['angkatan_kelas'] ?>" <?php if ($angkatan_pilih == $data['angkatan_kelas']) echo "selected"; ?>> <?= $data['angkatan_kelas'] ?> </option>
+            <?php } ?>
+        </select>
+    </div>
+</div>
 
 <div class="table-responsive">
     <table id="datatable" class="table table-striped table-bordered nowrap mt-1" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -101,8 +113,9 @@
                         <?php } ?>
                     </td>
                     <td width="8%">
-                        <button type="button" class="btn btn-warning" onclick="rincian('')" >
-                            <i class=" fa fa-info mr-1"></i>Rincian</button>
+                        <a href="/auth/pembayaran/rekap_spp_peserta/<?= $data['peserta_id'] ?>/<?= $data['kelas_id'] ?>" class="btn btn-info">
+                            <i class=" fa fa-info mr-1"> Rincian</i>
+                        </a>
                     </td>
                 </tr>
 
@@ -115,7 +128,13 @@
 </div>
 
 <script>
-
+    $('#angkatan_kelas').bind('change', function () { // bind change event to select
+        var url = $(this).val(); // get selected value
+        if (url != '') { // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    });
 </script>
 
 <?= $this->endSection('isi') ?>

@@ -384,13 +384,50 @@ class Program extends BaseController
 
     public function kelas()
     {
+        if (!session()->get('user_id')) {
+            return redirect()->to('login');
+        }
+
+        $uri                = service('uri');
+        $get_angkatan_url   = $uri->getSegment(4);
+        if ($get_angkatan_url == NULL) {
+            $get_angkatan       = $this->konfigurasi->angkatan_kuliah();
+            //Angkatan perkuliahan
+            $angkatan           = $get_angkatan->angkatan_kuliah;
+        } elseif (is_numeric($get_angkatan_url)) {
+            $angkatan = $get_angkatan_url;
+        } elseif ($get_angkatan_url == 'pembayaran') {
+            $get_angkatan       = $this->konfigurasi->angkatan_kuliah();
+            //Angkatan perkuliahan
+            $angkatan           = $get_angkatan->angkatan_kuliah;
+        } 
+        
+        $list_angkatan      = $this->program->list_unik_angkatan();
+        $list_kelas         = $this->program->list_2nd($angkatan);
         $data = [
-            'title'             => 'Al-Haqq - Kelas',
-            'list'              => $this->program->list(),
+            'title'             => 'Al-Haqq - Kelas Angkatan ' . $angkatan,
+            'list'              => $list_kelas,
+            'list_angkatan'     => $list_angkatan,
+            'angkatan_pilih'    => $angkatan,
         ];
-        //var_dump($data);
         return view('auth/program_kelas/index', $data);
     }
+
+    // public function kelas_ganti($angkatan_kelas)
+    // {
+    //     //Angkatan perkuliahan
+    //     $angkatan           = $angkatan_kelas;
+        
+    //     $list_angkatan      = $this->program->list_unik_angkatan();
+    //     $list_kelas         = $this->program->list_2nd($angkatan);
+    //     $data = [
+    //         'title'             => 'Al-Haqq - Kelas Angkatan '  . $angkatan,
+    //         'list'              => $list_kelas,
+    //         'list_angkatan'     => $list_angkatan,
+    //         'angkatan_pilih'    => $angkatan,
+    //     ];
+    //     return view('auth/program_kelas/index', $data);
+    // }
 
     public function input_kelas()
     {
@@ -991,6 +1028,8 @@ class Program extends BaseController
     {
         if ($this->request->isAJAX()) {
 
+            $get_angkatan       = $this->konfigurasi->angkatan_kuliah();
+
             $peserta_kelas_id   = $this->request->getVar('peserta_kelas_id');
             $peserta_kelas      = $this->peserta_kelas->find($peserta_kelas_id);
             
@@ -998,13 +1037,14 @@ class Program extends BaseController
             //get id peserta
             $peserta_id        = $peserta_kelas['data_peserta_id'];
             $data_peserta      = $this->peserta->find($peserta_id );
+            $list_kelas        = $this->program->list(); 
             //var_dump($peserta_id);
 
             $data = [
                 'title'             => 'Pindah Kelas Peserta',
                 'peserta_kelas_id'  => $peserta_kelas_id,
                 'data_kelas_id'     => $peserta_kelas['data_kelas_id'],
-                'kelas'             => $this->program->list(),
+                'kelas'             => $list_kelas,
                 'nama_peserta'      => $data_peserta['nama_peserta'],
                 'nis'               => $data_peserta['nis'],
                 'domisili'          => $data_peserta['domisili_peserta']

@@ -80,14 +80,15 @@ class Modelprogrambayar extends Model
         ->getResultArray();
     }
 
-    public function list_without_kelas()
+    public function list_2nd($angkatan)
     {
         return $this->table('program_bayar')
-        //->join('program_kelas', 'program_kelas.kelas_id = program_bayar.kelas_id')
+        ->join('program_kelas', 'program_kelas.kelas_id = program_bayar.kelas_id')
         ->join('peserta', 'peserta.peserta_id = program_bayar.bayar_peserta_id')
         //->join('program', 'program_kelas.program_id = program.program_id')
         //->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
         ->where('status_konfirmasi !=', NULL)
+        ->where('angkatan_kelas', $angkatan)
         ->orderBy('bayar_id', 'DESC')
         ->get()
         ->getResultArray();
@@ -106,6 +107,21 @@ class Modelprogrambayar extends Model
         ->get()
         ->getResultArray();
     }
+
+     //Get list rician pembayran peserta - Admin Panel 
+     public function rincian_bayar_peserta($peserta_id)
+     {
+         return $this->table('program_bayar')
+         ->join('program_kelas', 'program_kelas.kelas_id = program_bayar.kelas_id')
+         ->join('peserta', 'peserta.peserta_id = program_bayar.bayar_peserta_id')
+         ->join('program', 'program_kelas.program_id = program.program_id')
+         ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+         ->where('bayar_peserta_id', $peserta_id)
+         //->where('nama_kelas', $nama_kelas)
+         ->orderBy('bayar_id', 'DESC')
+         ->get()
+         ->getResultArray();
+     }
 
     //Dashboard - Admin
     public function jml_bayar_proses()

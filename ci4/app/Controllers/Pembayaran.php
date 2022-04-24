@@ -8,9 +8,28 @@ class Pembayaran extends BaseController
 {
     public function index()
     {
+        $uri                = service('uri');
+        $get_angkatan_url   = $uri->getSegment(3);
+        if ($get_angkatan_url == NULL) {
+            $get_angkatan       = $this->konfigurasi->angkatan_kuliah();
+            //Angkatan perkuliahan
+            $angkatan           = $get_angkatan->angkatan_kuliah;
+        } elseif (is_numeric($get_angkatan_url)) {
+            $angkatan = $get_angkatan_url;
+        } elseif ($get_angkatan_url == 'pembayaran') {
+            $get_angkatan       = $this->konfigurasi->angkatan_kuliah();
+            //Angkatan perkuliahan
+            $angkatan           = $get_angkatan->angkatan_kuliah;
+        } 
+        
+        $list_angkatan      = $this->program->list_unik_angkatan();
+        $list_bayar         = $this->program_bayar->list_2nd($angkatan);
+
         $data = [
-            'title' => 'Al-Haqq - Seluruh Data Pembayaran',
-            'list'  => $this->program_bayar->list_without_kelas(),
+            'title'         => 'Al-Haqq - Data Pembayaran Peserta pada Angkatan Perkuliahan ' . $angkatan,
+            'list'          => $list_bayar,
+            'list_angkatan' => $list_angkatan,
+            'angkatan_pilih'=> $angkatan,
         ];
         return view('auth/pembayaran/index', $data);
     }
@@ -812,6 +831,9 @@ class Pembayaran extends BaseController
                 'awal_bayar_spp3'       => $pembayaran['awal_bayar_spp3'],
                 'awal_bayar_spp4'       => $pembayaran['awal_bayar_spp4'],
                 'keterangan_bayar'      => $pembayaran['keterangan_bayar'],
+                'keterangan_bayar'      => $pembayaran['keterangan_bayar'],
+                'status_bayar_admin'    => $pembayaran['status_bayar_admin'],
+                'keterangan_bayar_admin'=> $pembayaran['keterangan_bayar_admin'],
             ];
             $msg = [
                 'sukses' => view('auth/pembayaran/edit', $data)
@@ -874,6 +896,13 @@ class Pembayaran extends BaseController
                         'required' => '{field} tidak boleh kosong',
                     ]
                 ],
+                'status_bayar_admin' => [
+                    'label' => 'status_bayar_admin',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
             ]);
             if (!$valid) {
                 $msg = [
@@ -885,6 +914,7 @@ class Pembayaran extends BaseController
                         'awal_bayar_spp2'   => $validation->getError('awal_bayar_spp2'),
                         'awal_bayar_spp3'   => $validation->getError('awal_bayar_spp3'),
                         'awal_bayar_spp4'   => $validation->getError('awal_bayar_spp4'),
+                        'status_bayar_admin'=> $validation->getError('status_bayar_admin'),
                     ]
                 ];
             } else {
@@ -897,6 +927,8 @@ class Pembayaran extends BaseController
                 $get_awal_bayar_spp2    =  $this->request->getVar('awal_bayar_spp2');
                 $get_awal_bayar_spp3    =  $this->request->getVar('awal_bayar_spp3');
                 $get_awal_bayar_spp4    =  $this->request->getVar('awal_bayar_spp4');
+                $status_bayar_admin     =  $this->request->getVar('status_bayar_admin');
+                $keterangan_bayar_admin =  $this->request->getVar('keterangan_bayar_admin');
 
                 //Replace Rp. and thousand separtor from input
                 $awal_bayar_int           = str_replace(str_split('Rp. .'), '', $get_awal_bayar);
@@ -918,14 +950,16 @@ class Pembayaran extends BaseController
                 $awal_bayar_spp4         = $awal_bayar_spp4_int;
 
                 $update_data = [
-                    'awal_bayar'        => $awal_bayar ,
-                    'awal_bayar_infaq'  => $awal_bayar_infaq ,
-                    'awal_bayar_daftar' => $awal_bayar_daftar,
-                    'awal_bayar_spp1'   => $awal_bayar_spp1,
-                    'awal_bayar_spp2'   => $awal_bayar_spp2,
-                    'awal_bayar_spp3'   => $awal_bayar_spp3,
-                    'awal_bayar_spp4'   => $awal_bayar_spp4,
-                    'keterangan_bayar'  => $keterangan_bayar, 
+                    'awal_bayar'            => $awal_bayar ,
+                    'awal_bayar_infaq'      => $awal_bayar_infaq ,
+                    'awal_bayar_daftar'     => $awal_bayar_daftar,
+                    'awal_bayar_spp1'       => $awal_bayar_spp1,
+                    'awal_bayar_spp2'       => $awal_bayar_spp2,
+                    'awal_bayar_spp3'       => $awal_bayar_spp3,
+                    'awal_bayar_spp4'       => $awal_bayar_spp4,
+                    'keterangan_bayar'      => $keterangan_bayar,
+                    'status_bayar_admin'    => $status_bayar_admin,
+                    'keterangan_bayar_admin'=> $keterangan_bayar_admin,
                 ];
 
                 $bayar_id = $this->request->getVar('bayar_id');
@@ -936,6 +970,7 @@ class Pembayaran extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Ubah Data Pembayaran ID : ' .  $this->request->getVar('bayar_id'),
                 ];
                 $this->log->insert($log);
@@ -984,12 +1019,80 @@ class Pembayaran extends BaseController
             return redirect()->to('login');
         }
 
+        $uri                = service('uri');
+        $get_angkatan_url   = $uri->getSegment(4);
+        if ($get_angkatan_url == NULL) {
+            $get_angkatan       = $this->konfigurasi->angkatan_kuliah();
+            //Angkatan perkuliahan
+            $angkatan           = $get_angkatan->angkatan_kuliah;
+        } elseif (is_numeric($get_angkatan_url)) {
+            $angkatan = $get_angkatan_url;
+        } elseif ($get_angkatan_url == 'pembayaran') {
+            $get_angkatan       = $this->konfigurasi->angkatan_kuliah();
+            //Angkatan perkuliahan
+            $angkatan           = $get_angkatan->angkatan_kuliah;
+        } 
+        
+        $list_angkatan      = $this->program->list_unik_angkatan();
+        $list_rekap         = $this->peserta_kelas->admin_rekap_bayar($angkatan);
+
         $data = [
-            'title'         => 'Al-Haqq - Rekap Data Pembayaran Peserta',
-            'list'          => $this->peserta_kelas->admin_rekap_bayar(),
+            'title'         => 'Al-Haqq - Rekap Data Pembayaran Peserta Angkatan ' . $angkatan,
+            'list_angkatan' => $list_angkatan,
+            'list'          => $list_rekap,
+            'angkatan_pilih'=> $angkatan,
         ];
         
         return view('auth/pembayaran/rekap_bayar_admin', $data);
+    }
+
+    // public function admin_rekap_bayar_ganti_angkatan($angkatan_kelas)
+    // {
+    //     if (!session()->get('user_id')) {
+    //         return redirect()->to('login');
+    //     }
+
+    //     //Angkatan perkuliahan
+    //     $angkatan           = $angkatan_kelas;
+        
+    //     $list_angkatan      = $this->program->list_unik_angkatan();
+    //     $list_rekap         = $this->peserta_kelas->admin_rekap_bayar($angkatan);
+
+    //     $data = [
+    //         'title'         => 'Al-Haqq - Rekap Data Pembayaran Peserta Angkatan ' . $angkatan,
+    //         'list_angkatan' => $list_angkatan,
+    //         'list'          => $list_rekap,
+    //         'angkatan_pilih'=> $angkatan,
+    //     ];
+        
+    //     return view('auth/pembayaran/rekap_bayar_admin', $data);
+    // }
+
+    public function rekap_spp_peserta()
+    {
+        if (!session()->get('user_id')) {
+        return redirect()->to('login');
+        }
+
+        $uri           = service('uri');
+        $peserta_id    = $uri->getSegment(4);
+        $kelas_id      = $uri->getSegment(5);
+
+        //Data peserta
+        $data_peserta  = $this->peserta->find($peserta_id);
+
+        //Data kelas
+        $data_kelas    = $this->program->find($kelas_id);
+        $nama_kelas    = $data_kelas['nama_kelas']; //di query tidak bisa pakai kelas_id karena join nama kolom kelas_id sama di dua table
+
+        //Query List Bayar
+        $list          = $this->program_bayar->rincian_bayar_peserta($peserta_id);
+
+        $data = [
+            'title'         => 'Rincian Pembayaran ' . $data_peserta['nama_peserta'],
+            'list'          => $list,
+        ];
+        return view('auth/pembayaran/rekap_spp_peserta', $data);
     }
 
     public function rekap_spp_admin_export()

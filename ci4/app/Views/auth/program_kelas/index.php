@@ -8,13 +8,26 @@
 <?= $this->endSection('judul') ?>
 
 <?= $this->section('isi') ?>
-<a> 
-    <button type="button" class="btn btn-primary mb-3" onclick="tambah('')" ><i class=" fa fa-plus-circle"></i> Tambah Kelas</button>
-</a>
 
-<a class="ml-5"> 
-    <button type="button" class="btn btn-success mb-3" onclick="AturDaftar('')" ><i class="fa fa-screwdriver"></i> Pengaturan Pendaftaran</button>
-</a>
+<div class="row">
+    <div class="col-sm-auto">
+        <button type="button" class="btn btn-primary mb-3" onclick="tambah('')" ><i class=" fa fa-plus-circle"></i> Tambah Kelas</button>
+    </div>
+    <div class="col-sm-auto">
+        <button type="button" class="btn btn-success mb-3" onclick="AturDaftar('')" ><i class="fa fa-screwdriver"></i> Pengaturan Pendaftaran</button>
+    </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-auto ml-4 mb-2">
+        <label for="angkatan_kelas">Pilih Angkatan Perkuliahan</label>
+        <select onchange="javascript:location.href = this.value;" class="form-control js-example-basic-single" name="angkatan_kelas" id="angkatan_kelas" class="js-example-basic-single mb-2">
+            <?php foreach ($list_angkatan as $key => $data) { ?>
+            <option value="/auth/program/kelas/<?= $data['angkatan_kelas'] ?>" <?php if ($angkatan_pilih == $data['angkatan_kelas']) echo "selected"; ?>> <?= $data['angkatan_kelas'] ?> </option>
+            <?php } ?>
+        </select>
+    </div>
+</div>
 
 <div class="table-responsive">
     <table id="datatable" class="table table-striped table-bordered nowrap mt-5" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -36,7 +49,6 @@
                 <th>Tindakan</th>
             </tr>
         </thead>
-
         <tbody>
             <?php $nomor = 0;
             foreach ($list as $data) :
@@ -82,7 +94,7 @@
                             <button type="button" class="btn btn-info" ><i class="fa fa-user-graduate"></i></button>
                         </form> -->
                         
-                        <a href="kelas_peserta/<?= $data['kelas_id'] ?>" class="btn btn-info">
+                        <a href="/auth/program/kelas_peserta/<?= $data['kelas_id'] ?>" class="btn btn-info">
                             <i class=" fa fa-user-graduate"></i>
                         </a>
                         <!-- <button type="button" class="btn btn-info" onclick="peserta('<?= $data['kelas_id'] ?>')" >
@@ -105,6 +117,14 @@
 </div>
 
 <script>
+    $('#angkatan_kelas').bind('change', function () { // bind change event to select
+        var url = $(this).val(); // get selected value
+        if (url != '') { // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    });
+
     function AturDaftar() {
         $.ajax({
             type: "post",

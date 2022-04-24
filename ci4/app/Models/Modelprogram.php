@@ -170,6 +170,17 @@ class Modelprogram extends Model
             ->get()->getResultArray();
     }
 
+     public function list_2nd($angkatan)
+     {
+         return $this->table('program_kelas')
+             ->join('program', 'program.program_id = program_kelas.program_id')
+             ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+             ->join('peserta_level', 'peserta_level.peserta_level_id = program_kelas.peserta_level')
+             ->where('angkatan_kelas', $angkatan)
+             ->orderBy('kelas_id', 'DESC')
+             ->get()->getResultArray();
+     }
+
     public function list_ada_kouta()
     {
         return $this->table('program_kelas')
@@ -255,6 +266,23 @@ class Modelprogram extends Model
             ->select('angkatan_kelas')
             ->orderBy('angkatan_kelas', 'DESC')
             ->distinct()
+            ->get()->getResultArray();
+    }
+
+    //Rekap data absen pengajar - Admin panel
+    public function admin_rekap_absen_pengajar($angkatan)
+    {
+        return $this->table('program_kelas')
+            //->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
+            //->join('program_kelas', 'program_kelas.kelas_id = peserta_kelas.data_kelas_id')
+            ->join('program', 'program.program_id = program_kelas.program_id')
+            ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+            ->join('peserta_level', 'peserta_level.peserta_level_id = program_kelas.peserta_level')
+            ->join('kantor_cabang', 'kantor_cabang.kantor_id = pengajar.asal_kantor')
+            ->join('absen_pengajar', 'absen_pengajar.absen_pengajar_id = program_kelas.data_absen_pengajar')
+            //->where('spp_status !=', 'BELUM BAYAR PENDAFTARAN')
+            ->where('angkatan_kelas', $angkatan)
+            ->orderBy('nama_pengajar', 'DESC')
             ->get()->getResultArray();
     }
 }

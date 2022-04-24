@@ -73,10 +73,30 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="" class="col-sm-2 col-form-label">Keterangan Bayar</label>
+                    <label for="" class="col-sm-2 col-form-label">Keterangan Bayar Peserta</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="keterangan_bayar" name="keterangan_bayar" value="<?= $keterangan_bayar ?>">
                         <div class="invalid-feedback errorKeterangan_bayar"></div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="" class="col-sm-2 col-form-label">Status Pembayaran<code>*</code></label>
+                    <div class="col-sm-10">
+                        <select class="form-control btn-square" id="status_bayar_admin" name="status_bayar_admin">
+                            <option value="SESUAI BAYAR"  <?php if ($status_bayar_admin == 'SESUAI BAYAR') echo "selected"; ?> >SESUAI BAYAR</option>
+                            <option value="KURANG BAYAR" <?php if ($status_bayar_admin == 'KURANG BAYAR') echo "selected"; ?>>KURANG BAYAR</option>
+                            <option value="LEBIH BAYAR" <?php if ($status_bayar_admin == 'LEBIH BAYAR') echo "selected"; ?>>LEBIH BAYAR</option>
+                            <option value="BELUM BAYAR" <?php if ($status_bayar_admin == 'BELUM BAYAR') echo "selected"; ?>>BELUM BAYAR</option>
+                        </select>
+                        <div class="invalid-feedback errorStatus_bayar_admin"></div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="" class="col-sm-2 col-form-label">Keterangan Admin</label>
+                    <div class="col-sm-10">
+                        <input class="form-control text-uppercase" type="text-area" id="keterangan_bayar_admin" name="keterangan_bayar_admin" value="<?= $keterangan_bayar_admin ?>">
                     </div>
                 </div>
 
@@ -177,6 +197,14 @@
                         } else {
                             $('#awal_bayar_spp4').removeClass('is-invalid');
                             $('.errorSpp4').html('');
+                        }
+
+                        if (response.error.status_bayar_admin) {
+                            $('#status_bayar_admin').addClass('is-invalid');
+                            $('.errorStatus_bayar_admin').html(response.error.status_bayar_admin);
+                        } else {
+                            $('#status_bayar_admin').removeClass('is-invalid');
+                            $('.errorStatus_bayar_admin').html('');
                         }
 
                     } else {
