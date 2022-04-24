@@ -20,7 +20,7 @@ $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Login');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
-$routes->set404Override('Dashboard::index');
+$routes->set404Override();
 $routes->setAutoRoute(true);
 
 /**
@@ -47,6 +47,8 @@ $routes->get('/auth/program/kelas/login', 'Login::index');
 $routes->get('/auth/pembayaran/rekap_spp_peserta/(:num)/login', 'Login::index');
 $routes->get('/auth/akademik/admin_rekap_absen_peserta/login', 'Login::index');
 $routes->get('/auth/akademik/admin_rekap_absen_pengajar/login', 'Login::index');
+$routes->get('/auth/pembayaran/admin_rekap_bayar/rekap_spp_peserta/(:num)/login', 'Login::index');
+$routes->get('/auth/program/kelas/kelas_peserta/login', 'Login::index');
 
 $routes->get('/auth/register', 'Register::index');
 $routes->get('/auth/daftar', 'Daftar::index', ['filter' => 'Validasilogin']);
@@ -68,6 +70,8 @@ $routes->get('/auth/program/kelas/dashboard', 'Dashboard::index');
 $routes->get('/auth/pembayaran/rekap_spp_peserta/(:num)/dashboard', 'Dashboard::index');
 $routes->get('/auth/akademik/admin_rekap_absen_peserta/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_rekap_absen_pengajar/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/pembayaran/admin_rekap_bayar/rekap_spp_peserta/(:num)/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/program/kelas/kelas_peserta/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 
 $routes->get('/auth/pembayaran/konfirmasi', 'Pembayaran::konfirmasi', ['filter' => 'Validasilogin']);
 //Ganti Angakatan Rekap SPP - start
