@@ -113,7 +113,7 @@
                         <?php } ?>
                     </td>
                     <td width="8%">
-                        <a href="/auth/pembayaran/rekap_spp_peserta/<?= $data['peserta_id'] ?>/<?= $data['kelas_id'] ?>" class="btn btn-info">
+                        <a href="rekap_spp_peserta/<?= $data['peserta_id'] ?>/<?= $data['kelas_id'] ?>" class="btn btn-info">
                             <i class=" fa fa-info mr-1"> Rincian</i>
                         </a>
                     </td>

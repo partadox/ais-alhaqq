@@ -94,7 +94,7 @@
                             <button type="button" class="btn btn-info" ><i class="fa fa-user-graduate"></i></button>
                         </form> -->
                         
-                        <a href="/auth/program/kelas_peserta/<?= $data['kelas_id'] ?>" class="btn btn-info">
+                        <a href="kelas_peserta/<?= $data['kelas_id'] ?>" class="btn btn-info">
                             <i class=" fa fa-user-graduate"></i>
                         </a>
                         <!-- <button type="button" class="btn btn-info" onclick="peserta('<?= $data['kelas_id'] ?>')" >
