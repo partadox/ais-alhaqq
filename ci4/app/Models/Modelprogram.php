@@ -282,7 +282,7 @@ class Modelprogram extends Model
             ->join('absen_pengajar', 'absen_pengajar.absen_pengajar_id = program_kelas.data_absen_pengajar')
             //->where('spp_status !=', 'BELUM BAYAR PENDAFTARAN')
             ->where('angkatan_kelas', $angkatan)
-            ->orderBy('nama_pengajar', 'DESC')
+            ->orderBy('nama_pengajar', 'ASC')
             ->get()->getResultArray();
     }
 }

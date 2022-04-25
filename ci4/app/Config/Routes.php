@@ -45,6 +45,7 @@ $routes->get('/auth/pembayaran/tambah_bayar_spp_ganti_angkatan/login', 'Login::i
 $routes->get('/auth/pembayaran/admin_rekap_bayar/login', 'Login::index');
 $routes->get('/auth/program/kelas/login', 'Login::index');
 $routes->get('/auth/pembayaran/rekap_spp_peserta/(:num)/login', 'Login::index');
+$routes->get('/auth/akademik/login', 'Login::index');
 $routes->get('/auth/akademik/admin_rekap_absen_peserta/login', 'Login::index');
 $routes->get('/auth/akademik/admin_rekap_absen_pengajar/login', 'Login::index');
 $routes->get('/auth/pembayaran/admin_rekap_bayar/rekap_spp_peserta/(:num)/login', 'Login::index');
@@ -68,6 +69,7 @@ $routes->get('/auth/pembayaran/tambah_bayar_spp_ganti_angkatan/dashboard', 'Dash
 $routes->get('/auth/pembayaran/admin_rekap_bayar/dashboard', 'Dashboard::index');
 $routes->get('/auth/program/kelas/dashboard', 'Dashboard::index');
 $routes->get('/auth/pembayaran/rekap_spp_peserta/(:num)/dashboard', 'Dashboard::index');
+$routes->get('/auth/akademik/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_rekap_absen_peserta/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_rekap_absen_pengajar/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran/admin_rekap_bayar/rekap_spp_peserta/(:num)/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
@@ -121,6 +123,8 @@ $routes->get('/auth/akademik/admin_rekap_absen_peserta', 'Akademik::admin_rekap_
 $routes->get('/auth/akademik/admin_rekap_absen_peserta/(:num)', 'Akademik::admin_rekap_absen_peserta/$1', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_rekap_absen_pengajar', 'Akademik::admin_rekap_absen_pengajar', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_rekap_absen_pengajar/(:num)', 'Akademik::admin_rekap_absen_pengajar/$1', ['filter' => 'Validasilogin']);
+$routes->get('/auth/akademik/admin_rekap_ujian', 'Akademik::admin_rekap_ujian', ['filter' => 'Validasilogin']);
+$routes->get('/auth/akademik/admin_rekap_ujian/(:num)', 'Akademik::admin_rekap_ujian/$1', ['filter' => 'Validasilogin']);
 
 
 $routes->get('/auth/absen/index_pengajar', 'Absen::index_pengajar', ['filter' => 'Validasilogin']);

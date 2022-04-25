@@ -86,7 +86,7 @@ class Modelpesertakelas extends Model
             ->join('peserta_level', 'peserta_level.peserta_level_id = peserta.level_peserta')
             ->where('spp_status !=', 'BELUM BAYAR PENDAFTARAN')
             ->where('angkatan_kelas', $angkatan)
-            ->orderBy('nama_peserta', 'DESC')
+            ->orderBy('nama_peserta', 'ASC')
             ->get()->getResultArray();
     }
 
@@ -102,7 +102,23 @@ class Modelpesertakelas extends Model
             ->join('absen_peserta', 'absen_peserta.absen_peserta_id = peserta_kelas.data_absen')
             ->where('spp_status !=', 'BELUM BAYAR PENDAFTARAN')
             ->where('angkatan_kelas', $angkatan)
-            ->orderBy('nama_peserta', 'DESC')
+            ->orderBy('nama_peserta', 'ASC')
+            ->get()->getResultArray();
+    }
+
+    //Rekap data ujian peserta - Admin panel
+    public function admin_rekap_ujian($angkatan)
+    {
+        return $this->table('peserta_kelas')
+            ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
+            ->join('program_kelas', 'program_kelas.kelas_id = peserta_kelas.data_kelas_id')
+            ->join('program', 'program.program_id = program_kelas.program_id')
+            ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+            ->join('peserta_level', 'peserta_level.peserta_level_id = peserta.level_peserta')
+            ->join('ujian', 'ujian.ujian_id = peserta_kelas.data_ujian')
+            ->where('spp_status !=', 'BELUM BAYAR PENDAFTARAN')
+            ->where('angkatan_kelas', $angkatan)
+            ->orderBy('nama_peserta', 'ASC')
             ->get()->getResultArray();
     }
 

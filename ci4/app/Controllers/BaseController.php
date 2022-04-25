@@ -51,6 +51,7 @@ use App\Models\Modelbank;
 use App\Models\Modellog;
 use App\Models\Modelabsenpeserta;
 use App\Models\Modelabsenpengajar;
+use App\Models\Modelujian;
 
 class BaseController extends Controller
 {
@@ -110,5 +111,6 @@ class BaseController extends Controller
 		$this->log = new Modellog;
 		$this->absen_peserta = new Modelabsenpeserta;
 		$this->absen_pengajar = new Modelabsenpengajar;
+		$this->ujian = new Modelujian;
 	}
 }

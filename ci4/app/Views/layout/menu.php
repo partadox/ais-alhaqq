@@ -153,7 +153,7 @@
         <a href="<?= base_url('auth/akademik/admin_rekap_absen_pengajar') ?>" class="waves-effect">
             <i class="mdi mdi-check-box-outline"></i> <span> Absensi Pengajar</span>
         </a>
-        <a href="<?= base_url('#') ?>" class="waves-effect">
+        <a href="<?= base_url('auth/akademik/admin_rekap_ujian') ?>" class="waves-effect">
             <i class="mdi mdi-book"></i> <span> Hasil Ujian </span>
         </a>
         <a href="<?= base_url('#') ?>" class="waves-effect">

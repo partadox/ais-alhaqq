@@ -401,6 +401,15 @@ class Pembayaran extends BaseController
                     // Get last id insert from absen peserta
                     $last_id = $this->absen_peserta->insertID();
 
+                    //Create Data Ujian Peserta di Kelas
+                    $dataujian = [
+                        'tgl_ujian'   => NULL,
+                    ];
+                    $this->ujian->insert($dataujian);
+
+                    // Get last id insert from data ujian peserta
+                    $last_id_ujian = $this->ujian->insertID();
+
                     $sppdaftar = $biaya_bulanan + $biaya_daftar + $biaya_modul;
                     $piutang1  = $total_lunas - $sppdaftar;
 
@@ -414,6 +423,7 @@ class Pembayaran extends BaseController
                         // 'data_peserta_id'       => $peserta_id,
                         // 'data_kelas_id'         => $kelas_id,
                         'data_absen'            => $last_id,
+                        'data_ujian'            => $last_id_ujian,
                         'status_peserta_kelas'  => 'Belum Lulus',
                         'byr_daftar'            => $bayar_daftar,
                         'byr_spp1'              => $bayar_spp1,

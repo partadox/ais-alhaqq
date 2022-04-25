@@ -76,4 +76,28 @@ class Akademik extends BaseController
         ];
         return view('auth/akademik/rekap_absen_pengajar', $data);
     }
+
+    public function admin_rekap_ujian()
+    {
+        $uri                = service('uri');
+        $get_angkatan_url   = $uri->getSegment(4);
+        if ($get_angkatan_url == NULL) {
+            $get_angkatan       = $this->konfigurasi->angkatan_kuliah();
+            //Angkatan perkuliahan
+            $angkatan           = $get_angkatan->angkatan_kuliah;
+        } elseif ($get_angkatan_url != NULL) {
+            $angkatan = $get_angkatan_url;
+        }
+        
+        $list_angkatan      = $this->program->list_unik_angkatan();
+        $list_ujian         = $this->peserta_kelas->admin_rekap_ujian($angkatan);
+
+        $data = [
+            'title'         => 'Al-Haqq - Data Ujian Peserta pada Angkatan Perkuliahan ' . $angkatan,
+            'list'          => $list_ujian,
+            'list_angkatan' => $list_angkatan,
+            'angkatan_pilih'=> $angkatan,
+        ];
+        return view('auth/akademik/rekap_ujian_peserta', $data);
+    }
 }
