@@ -36,7 +36,7 @@
                 <th>Kelas</th>
                 <th>Angkatan <br> Perkuliahan</th>
                 <th>Pengajar</th>
-                <th>Hari <br> Kelas/th>
+                <th>Hari <br> Kelas</th>
                 <th>Waktu <br> Kelas</th>
                 <th>Tgl. <br> Ujian</th>
                 <th>Waktu <br> Ujian</th>

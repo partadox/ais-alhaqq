@@ -125,6 +125,8 @@ $routes->get('/auth/akademik/admin_rekap_absen_pengajar', 'Akademik::admin_rekap
 $routes->get('/auth/akademik/admin_rekap_absen_pengajar/(:num)', 'Akademik::admin_rekap_absen_pengajar/$1', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_rekap_ujian', 'Akademik::admin_rekap_ujian', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_rekap_ujian/(:num)', 'Akademik::admin_rekap_ujian/$1', ['filter' => 'Validasilogin']);
+$routes->get('/auth/akademik/admin_sertifikat', 'Akademik::admin_sertifikat', ['filter' => 'Validasilogin']);
+$routes->get('/auth/akademik/admin_sertifikat/(:num)', 'Akademik::admin_sertifikat/$1', ['filter' => 'Validasilogin']);
 
 
 $routes->get('/auth/absen/index_pengajar', 'Absen::index_pengajar', ['filter' => 'Validasilogin']);

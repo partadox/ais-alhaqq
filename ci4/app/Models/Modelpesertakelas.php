@@ -76,6 +76,20 @@ class Modelpesertakelas extends Model
     }
 
     //Rekap data pembayaran tiap peserta - Admin panel
+    public function admin_rekap_bayar_export()
+    {
+        return $this->table('peserta_kelas')
+            ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
+            ->join('program_kelas', 'program_kelas.kelas_id = peserta_kelas.data_kelas_id')
+            ->join('program', 'program.program_id = program_kelas.program_id')
+            ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
+            ->join('peserta_level', 'peserta_level.peserta_level_id = peserta.level_peserta')
+            ->where('spp_status !=', 'BELUM BAYAR PENDAFTARAN')
+            ->orderBy('nama_peserta', 'ASC')
+            ->get()->getResultArray();
+    }
+
+    //Rekap data pembayaran tiap peserta - Admin panel
     public function admin_rekap_bayar($angkatan)
     {
         return $this->table('peserta_kelas')

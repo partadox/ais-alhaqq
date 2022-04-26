@@ -100,4 +100,28 @@ class Akademik extends BaseController
         ];
         return view('auth/akademik/rekap_ujian_peserta', $data);
     }
+
+    public function admin_sertifikat()
+    {
+        $uri                = service('uri');
+        $get_periode_url   = $uri->getSegment(4);
+        if ($get_periode_url == NULL) {
+            $get_periode       = $this->konfigurasi->periode_sertifikat();
+            //Periode Cetak Sertifiakt
+            $periode           = $get_periode->periode_sertifikat;
+        } elseif ($get_periode_url != NULL) {
+            $periode = $get_periode_url;
+        }
+        
+        $list_periode      = $this->sertifikat->list_unik_periode();
+        $list_sertifikat    = $this->sertifikat->list($periode);
+
+        $data = [
+            'title'         => 'Al-Haqq - Data Cetak Sertifikat Peserta Periode ' . $periode,
+            'list'          => $list_sertifikat,
+            'list_periode'  => $list_periode,
+            'periode_pilih' => $periode,
+        ];
+        return view('auth/akademik/rekap_sertifikat', $data);
+    }
 }

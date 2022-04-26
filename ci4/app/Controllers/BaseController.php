@@ -52,6 +52,7 @@ use App\Models\Modellog;
 use App\Models\Modelabsenpeserta;
 use App\Models\Modelabsenpengajar;
 use App\Models\Modelujian;
+use App\Models\Modelsertifikat;
 
 class BaseController extends Controller
 {
@@ -112,5 +113,6 @@ class BaseController extends Controller
 		$this->absen_peserta = new Modelabsenpeserta;
 		$this->absen_pengajar = new Modelabsenpengajar;
 		$this->ujian = new Modelujian;
+		$this->sertifikat = new Modelsertifikat;
 	}
 }

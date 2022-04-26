@@ -94,19 +94,19 @@
     <div class="form-group">
       <div class="mb-3">
         <label class="form-label">SPP-2 <code>*</code></label>
-        <input class="form-control number-separator" type="text" id="spp2" name="spp2" placeholder="(Masukan 0 jika hanya bayar untuk daftar dan SPP-1)">
+        <input class="form-control number-separator" type="text" id="spp2" name="spp2" placeholder="(Masukan 0 jika bukan untuk SPP-2)">
       </div>
     </div>
     <div class="form-group">
       <div class="mb-3">
         <label class="form-label">SPP-3 <code>*</code></label>
-        <input class="form-control number-separator" type="text" id="spp3" name="spp3" placeholder="(Masukan 0 jika hanya bayar untuk daftar dan SPP-1)">
+        <input class="form-control number-separator" type="text" id="spp3" name="spp3" placeholder="(Masukan 0 jika bukan untuk SPP-3)">
       </div>
     </div>
     <div class="form-group">
       <div class="mb-3">
         <label class="form-label">SPP-4 <code>*</code></label>
-        <input class="form-control number-separator" type="text" id="spp4" name="spp4" placeholder="(Masukan 0 jika hanya bayar untuk daftar dan SPP-1)">
+        <input class="form-control number-separator" type="text" id="spp4" name="spp4" placeholder="(Masukan 0 jika bukan untuk SPP-4)">
       </div>
     </div>
     <div class="form-group">

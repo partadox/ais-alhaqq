@@ -1114,7 +1114,7 @@ class Pembayaran extends BaseController
 
     public function rekap_spp_admin_export()
     {
-        $rekap_spp =  $this->peserta_kelas->admin_rekap_bayar();
+        $rekap_spp =  $this->peserta_kelas->admin_rekap_bayar_export();
 
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 
