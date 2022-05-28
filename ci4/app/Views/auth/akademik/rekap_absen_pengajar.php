@@ -20,7 +20,7 @@
         <select onchange="javascript:location.href = this.value;" class="form-control js-example-basic-single" name="absen_pilih" id="absen_pilih" class="js-example-basic-single mb-2">
             <option value="" disabled selected>Download...</option>
             <?php foreach ($list_angkatan as $key => $data) { ?>
-            <option value="/akademik/rekap_absen_pengajar_export/<?= $data['angkatan_kelas'] ?>"> Angkatan Kuliah <?= $data['angkatan_kelas'] ?> </option>
+            <option value="/ais/public/auth/akademik/rekap_absen_pengajar_export/<?= $data['angkatan_kelas'] ?>"> Angkatan Kuliah <?= $data['angkatan_kelas'] ?> </option>
             <?php } ?>
         </select>
     </div>
