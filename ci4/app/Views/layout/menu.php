@@ -68,9 +68,9 @@
         <a href="<?= base_url('auth/akademik') ?>" class="waves-effect">
             <i class="mdi mdi-application"></i> <span> Program & Absensi </span>
         </a>
-        <!-- <a href="<?= base_url('#') ?>" class="waves-effect">
+        <a href="<?= base_url('auth/akademik/peserta_sertifikat') ?>" class="waves-effect">
             <i class="mdi mdi-certificate"></i> <span> Sertifikat</span>
-        </a> -->
+        </a>
     </li>
 <?php } ?>
 

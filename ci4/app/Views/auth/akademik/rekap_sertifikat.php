@@ -10,13 +10,30 @@
 <?= $this->section('isi') ?>
 
 <div class="row">
-    <!-- <div class="col-sm-auto">
+    <div class="col-sm-auto ml-4 mb-2">
+        <label for="angkatan_kelas">Pilih Periode Cetak Sertifikat</label>
+        <select onchange="javascript:location.href = this.value;" class="form-control js-example-basic-single" name="periode_cetak" id="periode_cetak" class="js-example-basic-single mb-2">
+            <?php foreach ($list_periode as $key => $data) { ?>
+            <option value="/ais/public/auth/akademik/admin_sertifikat/<?= $data['periode_cetak'] ?>" <?php if ($periode_pilih == $data['periode_cetak']) echo "selected"; ?>> <?= $data['periode_cetak'] ?> </option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-auto">
         <a href="<?= base_url('#') ?>"> 
             <button type="button" class="btn btn-secondary mb-3"><i class=" fa fa-file-download"></i> Export Excel (Download)</button>
         </a>
-    </div> -->
+    </div>
+    <div class="col-sm-auto">
+        <button type="button" class="btn btn-success mb-3" onclick="AturSertifikat('')" ><i class="fa fa-screwdriver"></i> Pengaturan Pendaftaran</button>
+    </div>
     
 </div>
+
+<p class="mt-1">Catatan :<br> 
+    <i class="mdi mdi-information"></i> Status Cetak <b>"Proses"</b> = Sudah bayar dan input form tapi belum dikonfirmasi admin. <br>
+    <i class="mdi mdi-information"></i> Status Cetak <b>"Konfirmasi"</b> = Sudah bayar sudah dikonfirmasi admin, hanya tinggal dilakukan proses pembuatan sertifikat. <br>
+    <i class="mdi mdi-information"></i> Status Cetak <b>"Selesai"</b> = Sertifikat sudah jadi dan peserta hanya tinggal mendownload saja. <br>
+</p>
 
 <div class="table-responsive">
     <table id="datatable" class="table table-striped table-bordered nowrap mt-1" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -90,6 +107,9 @@
 <div class="viewmodalrincian">
 </div>
 
+<div class="viewmodalatur">
+</div>
+
 <script>
     $('#periode_cetak').bind('change', function () { // bind change event to select
         var url = $(this).val(); // get selected value
@@ -98,6 +118,22 @@
         }
         return false;
     });
+
+    function AturSertifikat() {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('akademik/input_atur_sertifikat') ?>",
+            data: {
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.sukses) {
+                    $('.viewmodalatur').html(response.sukses).show();
+                    $('#modalatur').modal('show');
+                }
+            }
+        });
+    }
 </script>
 
 <?= $this->endSection('isi') ?>

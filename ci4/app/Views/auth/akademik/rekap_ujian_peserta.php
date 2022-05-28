@@ -16,6 +16,15 @@
         </a>
     </div> -->
     <div class="col-sm-auto mb-2">
+        <label for="absen_pilih">Export Excel (Download)</label>
+        <select onchange="javascript:location.href = this.value;" class="form-control js-example-basic-single" name="absen_pilih" id="absen_pilih" class="js-example-basic-single mb-2">
+            <option value="" disabled selected>Download...</option>
+            <?php foreach ($list_angkatan as $key => $data) { ?>
+            <option value="/akademik/rekap_ujian_peserta_export/<?= $data['angkatan_kelas'] ?>"> Angkatan Kuliah <?= $data['angkatan_kelas'] ?> </option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-auto mb-2">
         <label for="angkatan_kelas">Pilih Angkatan Perkuliahan</label>
         <select onchange="javascript:location.href = this.value;" class="form-control js-example-basic-single" name="angkatan_kelas" id="angkatan_kelas" class="js-example-basic-single mb-2">
             <?php foreach ($list_angkatan as $key => $data) { ?>
@@ -23,6 +32,9 @@
             <?php } ?>
         </select>
     </div>
+    <a class="ml-5"> 
+    <button type="button" class="btn btn-success mb-3" data-toggle="modal" data-target="#importexcel" ><i class=" fa fa-file-excel"></i> Import File Excel</button>
+</a>
 </div>
 
 <div class="table-responsive">
@@ -87,8 +99,54 @@
 <div class="viewmodalrincian">
 </div>
 
+<!-- Start Modal Import File Excel -->
+<div class="modal fade" id="importexcel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Import File Excel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <?php echo form_open_multipart('/akademik/rekap_ujian_peserta_import');
+            ?>
+            <?= csrf_field() ?>
+            <div class="modal-body">
+                <p class="mt-1">Catatan :<br> 
+                    <i class="mdi mdi-information"></i> Data import Excel maximal berisi 300 Data/Baris. Jika lebih maka data selebihnya akan gagal ter-import ke dalam sistem.<br>
+                    <i class="mdi mdi-information"></i> Data yang diproses pada menu import ini hanya data <b>Tgl Ujian, Waktu Ujian, Nilai Ujian, Nilai Akhir, Kelulusan.</b><br>
+                    <i class="mdi mdi-information"></i> Harap Diperhatikan ketika import menggunakan excel <b>Tgl Ujian</b> harus berformat <b>Tahun-Bulan-Tgl (YYYY-MM-DD)</b> dan <b>Waktu Ujian</b> harus berformat <b>Jam:Menit:Detik (HH:MM:SS)</b>.<br>
+                    <i class="mdi mdi-information"></i> Contoh penulisan Tgl Ujian dan Waktu Ujian yang benar adalah Tgl Ujian = 20-11-2021 dan Waktu Ujian 18:30:00<br>
+                    <i class="mdi mdi-information"></i> Penulisan Nilai Ujian dan Nilai Akhir menggunakan angka dan status kelulusan menggunakan format huruf depan kapital, cth: Lulus.<br>
+                    <i class="mdi mdi-information"></i> Jika penulisan tidak sesuai format maka data akan gagal terexport.<br>
+                </p>
+                    <div class="form-group">
+                        <label>Pilih File Excel</label>
+                        <input type="file" class="form-control" name="file_excel" accept=".xls, .xlsx">
+                    </div>
+            </div>    
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success btnsimpan"><i class="fa fa-file-upload"></i> Import</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+            <?php echo form_close() ?>
+        </div>
+    </div>
+</div>
+<!-- End Modal Import File Excel -->
+
 <script>
     $('#angkatan_kelas').bind('change', function () { // bind change event to select
+        var url = $(this).val(); // get selected value
+        if (url != '') { // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    });
+
+    $('#absen_pilih').bind('change', function () { // bind change event to select
         var url = $(this).val(); // get selected value
         if (url != '') { // require a URL
             window.location = url; // redirect

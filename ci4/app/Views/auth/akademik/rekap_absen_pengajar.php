@@ -16,6 +16,15 @@
         </a>
     </div> -->
     <div class="col-sm-auto mb-2">
+        <label for="absen_pilih">Export Excel (Download)</label>
+        <select onchange="javascript:location.href = this.value;" class="form-control js-example-basic-single" name="absen_pilih" id="absen_pilih" class="js-example-basic-single mb-2">
+            <option value="" disabled selected>Download...</option>
+            <?php foreach ($list_angkatan as $key => $data) { ?>
+            <option value="/akademik/rekap_absen_pengajar_export/<?= $data['angkatan_kelas'] ?>"> Angkatan Kuliah <?= $data['angkatan_kelas'] ?> </option>
+            <?php } ?>
+        </select>
+    </div>
+    <div class="col-sm-auto mb-2">
         <label for="angkatan_kelas">Pilih Angkatan Perkuliahan</label>
         <select onchange="javascript:location.href = this.value;" class="form-control js-example-basic-single" name="angkatan_kelas" id="angkatan_kelas" class="js-example-basic-single mb-2">
             <?php foreach ($list_angkatan as $key => $data) { ?>
@@ -256,6 +265,14 @@
 
 <script>
     $('#angkatan_kelas').bind('change', function () { // bind change event to select
+        var url = $(this).val(); // get selected value
+        if (url != '') { // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    });
+
+    $('#absen_pilih').bind('change', function () { // bind change event to select
         var url = $(this).val(); // get selected value
         if (url != '') { // require a URL
             window.location = url; // redirect

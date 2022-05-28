@@ -50,6 +50,7 @@ $routes->get('/auth/akademik/admin_rekap_absen_peserta/login', 'Login::index');
 $routes->get('/auth/akademik/admin_rekap_absen_pengajar/login', 'Login::index');
 $routes->get('/auth/pembayaran/admin_rekap_bayar/rekap_spp_peserta/(:num)/login', 'Login::index');
 $routes->get('/auth/program/kelas/kelas_peserta/login', 'Login::index');
+$routes->get('/auth/akademik/peserta_sertifikat/login', 'Login::index');
 
 $routes->get('/auth/register', 'Register::index');
 $routes->get('/auth/daftar', 'Daftar::index', ['filter' => 'Validasilogin']);
@@ -74,6 +75,7 @@ $routes->get('/auth/akademik/admin_rekap_absen_peserta/dashboard', 'Dashboard::i
 $routes->get('/auth/akademik/admin_rekap_absen_pengajar/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/pembayaran/admin_rekap_bayar/rekap_spp_peserta/(:num)/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 $routes->get('/auth/program/kelas/kelas_peserta/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
+$routes->get('/auth/akademik/peserta_sertifikat/dashboard', 'Dashboard::index', ['filter' => 'Validasilogin']);
 
 $routes->get('/auth/pembayaran/konfirmasi', 'Pembayaran::konfirmasi', ['filter' => 'Validasilogin']);
 //Ganti Angakatan Rekap SPP - start
@@ -121,12 +123,15 @@ $routes->get('/auth/akademik', 'Akademik::Index', ['filter' => 'Validasilogin'])
 $routes->get('/auth/akun/biodata_peserta', 'Akun::biodata_peserta', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_rekap_absen_peserta', 'Akademik::admin_rekap_absen_peserta', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_rekap_absen_peserta/(:num)', 'Akademik::admin_rekap_absen_peserta/$1', ['filter' => 'Validasilogin']);
+$routes->get('/auth/akademik/rekap_absen_peserta_export/(:num)', 'Akademik::admin_rekap_absen_peserta_export', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_rekap_absen_pengajar', 'Akademik::admin_rekap_absen_pengajar', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_rekap_absen_pengajar/(:num)', 'Akademik::admin_rekap_absen_pengajar/$1', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_rekap_ujian', 'Akademik::admin_rekap_ujian', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_rekap_ujian/(:num)', 'Akademik::admin_rekap_ujian/$1', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_sertifikat', 'Akademik::admin_sertifikat', ['filter' => 'Validasilogin']);
 $routes->get('/auth/akademik/admin_sertifikat/(:num)', 'Akademik::admin_sertifikat/$1', ['filter' => 'Validasilogin']);
+
+$routes->get('/auth/akademik/peserta_sertifikat', 'Akademik::peserta_sertifikat', ['filter' => 'Validasilogin']);
 
 
 $routes->get('/auth/absen/index_pengajar', 'Absen::index_pengajar', ['filter' => 'Validasilogin']);
