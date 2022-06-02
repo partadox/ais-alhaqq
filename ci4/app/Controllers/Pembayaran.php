@@ -1099,7 +1099,7 @@ class Pembayaran extends BaseController
         if ($this->request->isAJAX()) {
                 //Get nominal (on rupiah curenncy format) input from view
                 $get_byr_daftar     = $this->request->getVar('byr_daftar');
-                $get_spp_modul      = $this->request->getVar('spp_modul');
+                $get_byr_modul      = $this->request->getVar('byr_modul');
                 $get_byr_spp1       = $this->request->getVar('byr_spp1');
                 $get_byr_spp2       = $this->request->getVar('byr_spp2');
                 $get_byr_spp3       = $this->request->getVar('byr_spp3');
@@ -1107,22 +1107,29 @@ class Pembayaran extends BaseController
 
                 //Replace Rp. and thousand separtor from input
                 $byr_daftar   = str_replace(str_split('Rp. .'), '', $get_byr_daftar);
-                $spp_modul    = str_replace(str_split('Rp. .'), '', $get_spp_modul);
+                $byr_modul    = str_replace(str_split('Rp. .'), '', $get_byr_modul);
                 $byr_spp1     = str_replace(str_split('Rp. .'), '', $get_byr_spp1);
                 $byr_spp2     = str_replace(str_split('Rp. .'), '', $get_byr_spp2);
                 $byr_spp3     = str_replace(str_split('Rp. .'), '', $get_byr_spp3);
                 $byr_spp4     = str_replace(str_split('Rp. .'), '', $get_byr_spp4);
 
-                $spp_terbayar = $data['byr_daftar'] + $data['byr_spp1'] + $data['byr_spp2'] + $data['byr_spp3'] + $data['byr_spp4'] + $data['byr_modul'];
+                $spp_terbayar = $byr_daftar + $byr_modul + $byr_spp1 + $byr_spp2 + $byr_spp3 + $byr_spp4;
                 $total_biaya  = $this->request->getVar('total_biaya');
-                $spp_piutang  = $spp_terbayar - $total_biaya;
+                $spp_piutang  = abs($spp_terbayar - $total_biaya);
+
+                if ($spp_piutang == '0') {
+                    $spp_status = "LUNAS";
+                } elseif ($spp_piutang != '0') {
+                    $spp_status = "BELUM LUNAS";
+                }
 
 
                 $simpandata = [
                     'spp_terbayar'   => $spp_terbayar,
                     'spp_piutang'    => $spp_piutang,
+                    'spp_status'     => $spp_status,
                     'byr_daftar'     => $byr_daftar,
-                    'spp_modul'      => $spp_modul,
+                    'byr_modul'      => $byr_modul,
                     'byr_spp1'       => $byr_spp1,
                     'byr_spp2'       => $byr_spp2,
                     'byr_spp3'       => $byr_spp3,

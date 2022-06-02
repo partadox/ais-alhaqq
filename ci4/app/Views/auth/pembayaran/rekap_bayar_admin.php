@@ -122,7 +122,7 @@
                         <a href="rekap_spp_peserta/<?= $data['peserta_id'] ?>/<?= $data['kelas_id'] ?>" class="btn btn-info mb-2">
                             <i class=" fa fa-info mr-1"></i> Rincian
                         </a> <br>
-                        <button type="button" class="btn btn-warning mb-2" onclick="edit('<?= $data['peserta_kelas_id'] ?>, <?= $data['biaya_daftar'] ?>, <?= $data['biaya_modul'] ?>, <?= $data['biaya_program'] ?>')" >
+                        <button type="button" class="btn btn-warning mb-2" onclick="edit(<?= $data['peserta_kelas_id'] ?>, <?= $data['biaya_daftar'] ?>, <?= $data['biaya_modul'] ?>, <?= $data['biaya_program'] ?>)" >
                         <i class=" fa fa-edit mr-1"></i>Edit</button>
                     </td>
                 </tr>
