@@ -1227,6 +1227,7 @@ class Pembayaran extends BaseController
         }
         
         $rekap_spp         = $this->peserta_kelas->admin_rekap_bayar($angkatan);
+        $judul = "DATA REKAP PEMBAYARAN SPP ALHAQQ - ACADEMIC ALHAQQ INFORMATION SYSTEM ANGKATAN " . $angkatan;
 
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 
@@ -1251,7 +1252,7 @@ class Pembayaran extends BaseController
             ],
         ];
 
-        $sheet->setCellValue('A1', "DATA REKAP PEMBAYARAN SPP ALHAQQ - ACADEMIC ALHAQQ INFORMATION SYSTEM");
+        $sheet->setCellValue('A1', $judul);
         $sheet->mergeCells('A1:Y1');
         $sheet->getStyle('A1')->applyFromArray($styleColumn);
 
@@ -1288,56 +1289,56 @@ class Pembayaran extends BaseController
             ->setCellValue('X4', 'DT BYR SPP4')
             ->setCellValue('Y4', 'DT KONF. SPP4');
         
-        $sheet->getStyle('A4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('A4')->applyFromArray($styleColumn);
         $sheet->getStyle('A4')->applyFromArray($border);
-        $sheet->getStyle('B4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('B4')->applyFromArray($styleColumn);
         $sheet->getStyle('B4')->applyFromArray($border);
-        $sheet->getStyle('C4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('C4')->applyFromArray($styleColumn);
         $sheet->getStyle('C4')->applyFromArray($border);
-        $sheet->getStyle('D4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('D4')->applyFromArray($styleColumn);
         $sheet->getStyle('D4')->applyFromArray($border);
-        $sheet->getStyle('E4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('E4')->applyFromArray($styleColumn);
         $sheet->getStyle('E4')->applyFromArray($border);
-        $sheet->getStyle('F4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('F4')->applyFromArray($styleColumn);
         $sheet->getStyle('F4')->applyFromArray($border);
-        $sheet->getStyle('G4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('G4')->applyFromArray($styleColumn);
         $sheet->getStyle('G4')->applyFromArray($border);
-        $sheet->getStyle('H4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('H4')->applyFromArray($styleColumn);
         $sheet->getStyle('H4')->applyFromArray($border);
-        $sheet->getStyle('I4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('I4')->applyFromArray($styleColumn);
         $sheet->getStyle('I4')->applyFromArray($border);
-        $sheet->getStyle('J4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('J4')->applyFromArray($styleColumn);
         $sheet->getStyle('J4')->applyFromArray($border);
-        $sheet->getStyle('K4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('K4')->applyFromArray($styleColumn);
         $sheet->getStyle('K4')->applyFromArray($border);
-        $sheet->getStyle('L4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('L4')->applyFromArray($styleColumn);
         $sheet->getStyle('L4')->applyFromArray($border);
-        $sheet->getStyle('M4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('M4')->applyFromArray($styleColumn);
         $sheet->getStyle('M4')->applyFromArray($border);
-        $sheet->getStyle('N4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('N4')->applyFromArray($styleColumn);
         $sheet->getStyle('N4')->applyFromArray($border);
-        $sheet->getStyle('O4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('O4')->applyFromArray($styleColumn);
         $sheet->getStyle('O4')->applyFromArray($border);
-        $sheet->getStyle('P4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('P4')->applyFromArray($styleColumn);
         $sheet->getStyle('P4')->applyFromArray($border);
-        $sheet->getStyle('Q4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('Q4')->applyFromArray($styleColumn);
         $sheet->getStyle('Q4')->applyFromArray($border);
 
-        $sheet->getStyle('R4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('R4')->applyFromArray($styleColumn);
         $sheet->getStyle('R4')->applyFromArray($border);
-        $sheet->getStyle('S4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('S4')->applyFromArray($styleColumn);
         $sheet->getStyle('S4')->applyFromArray($border);
-        $sheet->getStyle('T4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('T4')->applyFromArray($styleColumn);
         $sheet->getStyle('T4')->applyFromArray($border);
-        $sheet->getStyle('U4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('U4')->applyFromArray($styleColumn);
         $sheet->getStyle('U4')->applyFromArray($border);
-        $sheet->getStyle('V4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('V4')->applyFromArray($styleColumn);
         $sheet->getStyle('V4')->applyFromArray($border);
-        $sheet->getStyle('W4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('W4')->applyFromArray($styleColumn);
         $sheet->getStyle('W4')->applyFromArray($border);
-        $sheet->getStyle('X4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('X4')->applyFromArray($styleColumn);
         $sheet->getStyle('X4')->applyFromArray($border);
-        $sheet->getStyle('Y4')->applyFromArray($styleColumn);
+        //$sheet->getStyle('Y4')->applyFromArray($styleColumn);
         $sheet->getStyle('Y4')->applyFromArray($border);
 
 
