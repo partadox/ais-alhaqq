@@ -17,23 +17,23 @@
                     <table class="table table-striped table-bordered nowrap mt-1" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
                             <tr>
-                            <th width="3%">1</th>
-                            <th width="3%">2</th>
-                            <th width="3%">3</th>
-                            <th width="3%">4</th>
-                            <th width="3%">5</th>
-                            <th width="3%">6</th>
-                            <th width="3%">7</th>
-                            <th width="3%">8</th>
-                            <th width="3%">9</th>
-                            <th width="3%">10</th>
-                            <th width="3%">11</th>
-                            <th width="3%">12</th>
-                            <th width="3%">13</th>
-                            <th width="3%">14</th>
-                            <th width="3%">15</th>
-                            <th width="3%">16</th>
-                            <th width="5%"class="missed-col">Jumlah <br> Kehadiran</th>
+                            <th width="5%">TM-1</th>
+                            <th width="5%">TM-2</th>
+                            <th width="5%">TM-3</th>
+                            <th width="5%">TM-4</th>
+                            <th width="5%">TM-5</th>
+                            <th width="5%">TM-6</th>
+                            <th width="5%">TM-7</th>
+                            <th width="5%">TM-8</th>
+                            <th width="5%">TM-9</th>
+                            <th width="5%">TM-10</th>
+                            <th width="5%">TM-11</th>
+                            <th width="5%">TM-12</th>
+                            <th width="5%">TM-13</th>
+                            <th width="5%">TM-14</th>
+                            <th width="5%">TM-15</th>
+                            <th width="5%">TM-16</th>
+                            <th width="7%"class="missed-col">Jumlah <br> Kehadiran</th>
                             </tr>
                         </thead>
 
@@ -45,7 +45,7 @@
                                         <p></p>
                                     <?php } ?>
                                     <?php if($tm1 == '0') { ?>
-                                        <i class=" fa fa-minus" style="color:red"></i>
+                                        <i class=" fa fa-minus" style="color:red"></i> 
                                     <?php } ?>
                                     <?php if($tm1 == '1') { ?>
                                         <i class=" fa fa-check" style="color:green"></i>
@@ -217,6 +217,136 @@
                                     <?php } ?>
                                 </td>
                                 <td ><?= $tm1+$tm2+$tm3+$tm4+$tm5+$tm6+$tm7+$tm8+$tm9+$tm10+$tm11+$tm12+$tm13+$tm14+$tm15+$tm16 ?></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm1'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm1'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm1']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm2'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm2'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm2']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm3'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm3'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm3']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm4'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm4'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm4']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm5'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm5'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm5']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm6'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm6'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm6']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm7'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm7'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm7']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm8'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm8'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm8']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm9'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm9'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm9']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm10'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm10'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm10']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm11'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm11'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm11']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm12'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm12'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm12']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm13'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm13'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm13']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm14'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm14'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm14']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm15'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm15'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm15']) ?></p>
+                                        <?php } ?>
+                                    </td>
+                                    <td>
+                                        <?php if($detail_kelas[0]['tgl_tm16'] == '1000-01-01') { ?>
+                                            <p></p>
+                                        <?php } ?>
+                                        <?php if($detail_kelas[0]['tgl_tm16'] != '1000-01-01') { ?>
+                                            <p><?= longdate_indo($detail_kelas[0]['tgl_tm16']) ?></p>
+                                        <?php } ?>
+                                    </td>
                                 </tr>
                         </tbody>
                     </table>

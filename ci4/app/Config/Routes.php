@@ -132,6 +132,8 @@ $routes->get('/auth/akademik/admin_sertifikat/(:num)', 'Akademik::admin_sertifik
 
 $routes->get('/auth/akademik/peserta_sertifikat', 'Akademik::peserta_sertifikat', ['filter' => 'Validasilogin']);
 
+$routes->get('/pembayaran/rekap_spp_admin_export/', 'Pembayaran::rekap_spp_admin_export', ['filter' => 'Validasilogin']);
+$routes->get('/pembayaran/rekap_spp_admin_export/(:num)', 'Pembayaran::rekap_spp_admin_export', ['filter' => 'Validasilogin']);
 $routes->get('/akademik/rekap_absen_peserta_export/', 'Akademik::rekap_absen_peserta_export', ['filter' => 'Validasilogin']);
 $routes->get('/akademik/rekap_absen_peserta_export/(:num)', 'Akademik::rekap_absen_peserta_export', ['filter' => 'Validasilogin']);
 $routes->get('/akademik/rekap_absen_pengajar_export/', 'Akademik::rekap_absen_pengajar_export', ['filter' => 'Validasilogin']);

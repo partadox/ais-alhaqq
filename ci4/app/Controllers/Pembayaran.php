@@ -1056,6 +1056,108 @@ class Pembayaran extends BaseController
         return view('auth/pembayaran/rekap_bayar_admin', $data);
     }
 
+    public function edit_rekap_spp()
+    {
+        if ($this->request->isAJAX()) {
+
+            $peserta_kelas_id       = $this->request->getVar('peserta_kelas_id');
+            $find_data              = $this->peserta_kelas->find($peserta_kelas_id);
+            $peserta_id             = $find_data['data_peserta_id'];
+            $peserta_data           = $this->peserta->find($peserta_id);
+            $kelas_id               = $find_data['data_kelas_id'];
+            $kelas_data             = $this->program->find($kelas_id);
+
+            $biaya_daftar       = $this->request->getVar('biaya_daftar');
+            $biaya_modul        = $this->request->getVar('biaya_modul');
+            $biaya_program      = $this->request->getVar('biaya_program');
+            $total_biaya        = $biaya_daftar + $biaya_modul + $biaya_program;
+
+            $data = [
+                'title'                 => 'Ubah Data Rekap Pembayaran SPP',
+                'peserta_kelas_id'      => $peserta_kelas_id,
+                'total_biaya'           => $total_biaya,
+                'byr_daftar'            => $find_data['byr_daftar'],
+                'byr_modul'             => $find_data['byr_modul'],
+                'byr_spp1'              => $find_data['byr_spp1'],
+                'byr_spp2'              => $find_data['byr_spp2'],
+                'byr_spp3'              => $find_data['byr_spp3'],
+                'byr_spp4'              => $find_data['byr_spp4'],
+                'nis'                   => $peserta_data['nis'],
+                'nama_peserta'          => $peserta_data['nama_peserta'],
+                'nama_kelas'            => $kelas_data['nama_kelas']
+
+            ];
+            $msg = [
+                'sukses' => view('auth/pembayaran/edit_rekap_spp', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function simpan_rekap_spp()
+    {
+        if ($this->request->isAJAX()) {
+                //Get nominal (on rupiah curenncy format) input from view
+                $get_byr_daftar     = $this->request->getVar('byr_daftar');
+                $get_spp_modul      = $this->request->getVar('spp_modul');
+                $get_byr_spp1       = $this->request->getVar('byr_spp1');
+                $get_byr_spp2       = $this->request->getVar('byr_spp2');
+                $get_byr_spp3       = $this->request->getVar('byr_spp3');
+                $get_byr_spp4       = $this->request->getVar('byr_spp4');
+
+                //Replace Rp. and thousand separtor from input
+                $byr_daftar   = str_replace(str_split('Rp. .'), '', $get_byr_daftar);
+                $spp_modul    = str_replace(str_split('Rp. .'), '', $get_spp_modul);
+                $byr_spp1     = str_replace(str_split('Rp. .'), '', $get_byr_spp1);
+                $byr_spp2     = str_replace(str_split('Rp. .'), '', $get_byr_spp2);
+                $byr_spp3     = str_replace(str_split('Rp. .'), '', $get_byr_spp3);
+                $byr_spp4     = str_replace(str_split('Rp. .'), '', $get_byr_spp4);
+
+                $spp_terbayar = $data['byr_daftar'] + $data['byr_spp1'] + $data['byr_spp2'] + $data['byr_spp3'] + $data['byr_spp4'] + $data['byr_modul'];
+                $total_biaya  = $this->request->getVar('total_biaya');
+                $spp_piutang  = $spp_terbayar - $total_biaya;
+
+
+                $simpandata = [
+                    'spp_terbayar'   => $spp_terbayar,
+                    'spp_piutang'    => $spp_piutang,
+                    'byr_daftar'     => $byr_daftar,
+                    'spp_modul'      => $spp_modul,
+                    'byr_spp1'       => $byr_spp1,
+                    'byr_spp2'       => $byr_spp2,
+                    'byr_spp3'       => $byr_spp3,
+                    'byr_spp4'       => $byr_spp4,
+                ];
+                
+                $peserta_kelas_id       = $this->request->getVar('peserta_kelas_id');
+                $find_data              = $this->peserta_kelas->find($peserta_kelas_id);
+                $peserta_id             = $find_data['data_peserta_id'];
+                $kelas_id               = $find_data['data_kelas_id'];
+                $kelas_data             = $this->program->find($kelas_id);
+
+                $this->peserta_kelas->update($peserta_kelas_id, $simpandata);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Ubah Data Rekap SPP Peserta  ' . $peserta_data['nis'] . ' ' . $peserta_data['nama_peserta'] . ' Kelas ' . $kelas_data['nama_kelas'],
+                ];
+                $this->log->insert($log);
+                // Data Log END
+
+                $msg = [
+                    'sukses' => [
+                        'link' => 'admin_rekap_bayar'
+                    ]
+                ];
+            
+            echo json_encode($msg);
+        }
+    }
+
     // public function admin_rekap_bayar_ganti_angkatan($angkatan_kelas)
     // {
     //     if (!session()->get('user_id')) {
@@ -1114,7 +1216,17 @@ class Pembayaran extends BaseController
 
     public function rekap_spp_admin_export()
     {
-        $rekap_spp =  $this->peserta_kelas->admin_rekap_bayar_export();
+        $uri                = service('uri');
+        $get_angkatan_url   = $uri->getSegment(3);
+        if ($get_angkatan_url == NULL) {
+            $get_angkatan       = $this->konfigurasi->angkatan_kuliah();
+            //Angkatan perkuliahan
+            $angkatan           = $get_angkatan->angkatan_kuliah;
+        } elseif ($get_angkatan_url != NULL) {
+            $angkatan = $get_angkatan_url;
+        }
+        
+        $rekap_spp         = $this->peserta_kelas->admin_rekap_bayar($angkatan);
 
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
 

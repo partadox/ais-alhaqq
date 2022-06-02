@@ -207,6 +207,7 @@ class Modelprogram extends Model
             ->join('program', 'program.program_id = program_kelas.program_id')
             ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
             ->join('peserta_level', 'peserta_level.peserta_level_id = program_kelas.peserta_level')
+            ->join('absen_pengajar', 'absen_pengajar.absen_pengajar_id = program_kelas.data_absen_pengajar')
             ->where('kelas_id', $kelas_id)
             ->get()->getResultArray();
     }

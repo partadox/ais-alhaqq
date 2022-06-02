@@ -10,10 +10,19 @@
 <?= $this->section('isi') ?>
 
 <div class="row">
-    <div class="col-sm-auto">
+    <!-- <div class="col-sm-auto">
         <a href="<?= base_url('pembayaran/rekap_spp_admin_export') ?>"> 
             <button type="button" class="btn btn-secondary mb-3"><i class=" fa fa-file-download"></i> Export Excel (Download)</button>
         </a>
+    </div> -->
+    <div class="col-sm-auto mb-2">
+        <label for="export_spp">Export Excel (Download)</label>
+        <select onchange="javascript:location.href = this.value;" class="form-control js-example-basic-single" name="export_spp" id="export_spp" class="js-example-basic-single mb-2">
+            <option value="" disabled selected>Download...</option>
+            <?php foreach ($list_angkatan as $key => $data) { ?>
+            <option value="/ais/public/pembayaran/rekap_spp_admin_export/<?= $data['angkatan_kelas'] ?>"> Angkatan Kuliah <?= $data['angkatan_kelas'] ?> </option>
+            <?php } ?>
+        </select>
     </div>
     <div class="col-sm-auto mb-2">
         <label for="angkatan_kelas">Pilih Angkatan Perkuliahan</label>
@@ -70,52 +79,51 @@
                         <?php } ?>
                     </td>
                     <td width="3%">
-                        <?php if($data['spp_status'] == 'BELUM LUNAS') { ?>
+                        <?php if(($data['biaya_daftar'] + $data['biaya_modul'] + $data['biaya_program']) - ($data['byr_daftar'] + $data['byr_spp1'] + $data['byr_spp2'] + $data['byr_spp3'] + $data['byr_spp4'] + $data['byr_modul']) != 0) { ?>
                             <button class="btn btn-warning btn-sm mb-2" disabled>BELUM LUNAS</button>
                         <?php } ?>
-                        <?php if($data['spp_status'] == 'LUNAS') { ?>
+                        <?php if(($data['biaya_daftar'] + $data['biaya_modul'] + $data['biaya_program']) - ($data['byr_daftar'] + $data['byr_spp1'] + $data['byr_spp2'] + $data['byr_spp3'] + $data['byr_spp4'] + $data['byr_modul']) == 0) { ?>
                             <button class="btn btn-success btn-sm mb-2" disabled>LUNAS</button>
                         <?php } ?>
                     </td>
-                    <td width="3%">Rp <?= rupiah($data['spp_terbayar']) ?></td>
-                    <td width="3%">Rp <?= rupiah($data['spp_piutang']) ?></td>
+                    <td width="3%">Rp <?= rupiah($data['byr_daftar'] + $data['byr_spp1'] + $data['byr_spp2'] + $data['byr_spp3'] + $data['byr_spp4'] + $data['byr_modul']) ?></td>
+                    <td width="3%">Rp <?= rupiah(($data['biaya_daftar'] + $data['biaya_modul'] + $data['biaya_program']) - ($data['byr_daftar'] + $data['byr_spp1'] + $data['byr_spp2'] + $data['byr_spp3'] + $data['byr_spp4'] + $data['byr_modul'])) ?></td>
                     <td width="3%">
-                        <?php if($data['byr_daftar'] != NULL && $data['byr_daftar'] != '0') { ?>
+                        <?php if($data['byr_daftar'] == $data['biaya_daftar']) { ?>
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
                     <td width="3%">
-                        <?php if($data['byr_spp1'] != NULL && $data['byr_spp1'] != '0') { ?>
+                        <?php if($data['byr_spp1'] == $data['biaya_bulanan']) { ?>
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
                     <td width="3%">
-                        <?php if($data['byr_spp2'] != NULL && $data['byr_spp2'] != '0') { ?>
+                        <?php if($data['byr_spp2'] == $data['biaya_bulanan']) { ?>
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
                     <td width="3%">
-                        <?php if($data['byr_spp3'] != NULL && $data['byr_spp3'] != '0') { ?>
+                        <?php if($data['byr_spp3'] == $data['biaya_bulanan']) { ?>
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
                     <td width="3%">
-                        <?php if($data['byr_spp4'] != NULL && $data['byr_spp4'] != '0' ) { ?>
+                        <?php if($data['byr_spp4'] == $data['biaya_bulanan'] ) { ?>
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
                     <td width="3%">
-                        <?php if($data['byr_modul'] == '0') { ?>
-                            <i class=" fa fa-minus" style="color:grey"></i>
-                        <?php } ?>
-                        <?php if($data['byr_modul'] != NULL && $data['byr_modul'] != '0') { ?>
+                        <?php if($data['byr_modul'] == $data['biaya_modul']) { ?>
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
                     <td width="8%">
-                        <a href="rekap_spp_peserta/<?= $data['peserta_id'] ?>/<?= $data['kelas_id'] ?>" class="btn btn-info">
-                            <i class=" fa fa-info mr-1"> Rincian</i>
-                        </a>
+                        <a href="rekap_spp_peserta/<?= $data['peserta_id'] ?>/<?= $data['kelas_id'] ?>" class="btn btn-info mb-2">
+                            <i class=" fa fa-info mr-1"></i> Rincian
+                        </a> <br>
+                        <button type="button" class="btn btn-warning mb-2" onclick="edit('<?= $data['peserta_kelas_id'] ?>, <?= $data['biaya_daftar'] ?>, <?= $data['biaya_modul'] ?>, <?= $data['biaya_program'] ?>')" >
+                        <i class=" fa fa-edit mr-1"></i>Edit</button>
                     </td>
                 </tr>
 
@@ -127,8 +135,39 @@
 <div class="viewmodalrincian">
 </div>
 
+<div class="viewmodaldataedit">
+</div>
+
 <script>
     $('#angkatan_kelas').bind('change', function () { // bind change event to select
+        var url = $(this).val(); // get selected value
+        if (url != '') { // require a URL
+            window.location = url; // redirect
+        }
+        return false;
+    });
+
+    function edit(peserta_kelas_id, biaya_daftar, biaya_modul, biaya_program) {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('pembayaran/edit_rekap_spp') ?>",
+            data: {
+                peserta_kelas_id : peserta_kelas_id,
+                biaya_daftar : biaya_daftar,
+                biaya_modul : biaya_modul,
+                biaya_program : biaya_program
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.sukses) {
+                    $('.viewmodaldataedit').html(response.sukses).show();
+                    $('#modaledit').modal('show');
+                }
+            }
+        });
+    }
+
+    $('#export_spp').bind('change', function () { // bind change event to select
         var url = $(this).val(); // get selected value
         if (url != '') { // require a URL
             window.location = url; // redirect
