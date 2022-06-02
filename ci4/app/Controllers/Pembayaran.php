@@ -1139,6 +1139,7 @@ class Pembayaran extends BaseController
                 $peserta_kelas_id       = $this->request->getVar('peserta_kelas_id');
                 $find_data              = $this->peserta_kelas->find($peserta_kelas_id);
                 $peserta_id             = $find_data['data_peserta_id'];
+                $peserta_data           = $this->peserta->find($peserta_id);
                 $kelas_id               = $find_data['data_kelas_id'];
                 $kelas_data             = $this->program->find($kelas_id);
 
