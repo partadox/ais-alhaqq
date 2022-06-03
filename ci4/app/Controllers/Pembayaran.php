@@ -1104,14 +1104,34 @@ class Pembayaran extends BaseController
                 $get_byr_spp2       = $this->request->getVar('byr_spp2');
                 $get_byr_spp3       = $this->request->getVar('byr_spp3');
                 $get_byr_spp4       = $this->request->getVar('byr_spp4');
+                
+                if ($get_byr_spp1 == NULL) {
+                    $byr_spp1 = NULL;
+                } else {
+                    $byr_spp1     = str_replace(str_split('Rp. .'), '', $get_byr_spp1);
+                }
+
+                if ($get_byr_spp2 == NULL) {
+                    $byr_spp2 = NULL;
+                } else {
+                    $byr_spp2     = str_replace(str_split('Rp. .'), '', $get_byr_spp2);
+                }
+
+                if ($get_byr_spp3 == NULL) {
+                    $byr_spp3 = NULL;
+                } else {
+                    $byr_spp3     = str_replace(str_split('Rp. .'), '', $get_byr_spp3);
+                }
+
+                if ($get_byr_spp4 == NULL) {
+                    $byr_spp4 = NULL;
+                } else {
+                    $byr_spp4     = str_replace(str_split('Rp. .'), '', $get_byr_spp4);
+                }
 
                 //Replace Rp. and thousand separtor from input
                 $byr_daftar   = str_replace(str_split('Rp. .'), '', $get_byr_daftar);
                 $byr_modul    = str_replace(str_split('Rp. .'), '', $get_byr_modul);
-                $byr_spp1     = str_replace(str_split('Rp. .'), '', $get_byr_spp1);
-                $byr_spp2     = str_replace(str_split('Rp. .'), '', $get_byr_spp2);
-                $byr_spp3     = str_replace(str_split('Rp. .'), '', $get_byr_spp3);
-                $byr_spp4     = str_replace(str_split('Rp. .'), '', $get_byr_spp4);
 
                 $spp_terbayar = $byr_daftar + $byr_modul + $byr_spp1 + $byr_spp2 + $byr_spp3 + $byr_spp4;
                 $total_biaya  = $this->request->getVar('total_biaya');
