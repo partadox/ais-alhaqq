@@ -1047,6 +1047,206 @@ class Akademik extends BaseController
         }
     }
 
+    public function input_konfirmasi_sertifikat()
+    {
+        if ($this->request->isAJAX()) {
+
+            $sertifikat_id   = $this->request->getVar('sertifikat_id');
+            $data_sertifikat = $this->sertifikat->find($sertifikat_id);
+            $peserta_id      = $data_sertifikat['sertifikat_peserta_id'];
+            $data_peserta    = $this->peserta->find($peserta_id); 
+
+            $data = [
+                'title'                 => 'Konfirmasi Pendaftaran Sertifikat',
+                'sertifikat_id'         => $sertifikat_id,
+                'data_sertifikat'       => $data_sertifikat,
+                'nama_peserta'          => $data_peserta[0]['nama_peserta'],
+                'nis'                   => $data_peserta[0]['nis'],
+                'sertifikat_level'      => $data_sertifikat[0]['sertifikat_level'],
+                'nominal_bayar_cetak'   => $data_sertifikat[0]['nominal_bayar_cetak'],
+                'keterangan_cetak'      => $data_sertifikat[0]['keterangan_cetak']
+            ];
+            $msg = [
+                'sukses' => view('auth/akademik/konfirmasi_sertifikat', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function simpan_konfirmasi_sertifikat()
+    {
+        if ($this->request->isAJAX()) {
+            $validation = \Config\Services::validation();
+            $valid = $this->validate([
+                'nominal_bayar_cetak' => [
+                    'label' => 'nominal_bayar_cetak',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+            ]);
+            if (!$valid) {
+                $msg = [
+                    'error' => [
+                        'nominal_bayar_cetak'      => $validation->getError('nominal_bayar_cetak'),
+                    ]
+                ];
+            } else {
+
+                $dt = date("Y-m-d H:i:s");
+
+                $get_nominal_bayar_cetak        =  $this->request->getVar('nominal_bayar_cetak');
+                $keterangan_cetak               =  $this->request->getVar('keterangan_cetak');
+                $nominal_bayar_cetak            = str_replace(str_split('Rp. .'), '', $get_nominal_bayar_cetak);
+
+                $data = [
+                    'nominal_bayar_cetak'  => $nominal_bayar_cetak ,
+                    'status_cetak'         => 'Terkonfirmasi',
+                    'keterangan_cetak'     => $keterangan_cetak,
+                    'dt_konfirmasi'        => $dt,
+                ];
+
+                $sertifikat_id = $this->request->getVar('sertifikat_id');
+
+                $this->sertifikat->update($sertifikat_id , $data);
+
+                $data_sertifikat = $this->sertifikat->find($sertifikat_id);
+                $peserta_id      = $data_sertifikat['sertifikat_peserta_id'];
+                $data_peserta    = $this->peserta->find($peserta_id);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL', 
+                    'aktivitas_log'=> 'Konfirmasi Pendaftaran Cetak Sertifikat ' .  $data_peserta[0]['nis'] . ' ' . $data_peserta[0]['nama_peserta'],
+                ];
+                //var_dump($log);
+                $this->log->insert($log);
+                // Data Log END
+
+                $msg = [
+                    'sukses' => [
+                        'link' => 'admin_sertifikat'
+                    ]
+                ];
+            }
+            echo json_encode($msg);
+        }
+    }
+
+    public function input_edit_sertifikat()
+    {
+        if ($this->request->isAJAX()) {
+
+            $sertifikat_id   = $this->request->getVar('sertifikat_id');
+            $data_sertifikat = $this->sertifikat->find($sertifikat_id);
+            $peserta_id      = $data_sertifikat['sertifikat_peserta_id'];
+            $data_peserta    = $this->peserta->find($peserta_id); 
+
+            $data = [
+                'title'                 => 'Edit Data Pendaftaran Sertifikat',
+                'sertifikat_id'         => $sertifikat_id,
+                'data_sertifikat'       => $data_sertifikat,
+                'nama_peserta'          => $data_peserta[0]['nama_peserta'],
+                'nis'                   => $data_peserta[0]['nis'],
+                'sertifikat_level'      => $data_sertifikat[0]['sertifikat_level'],
+                'nominal_bayar_cetak'   => $data_sertifikat[0]['nominal_bayar_cetak'],
+                'keterangan_cetak'      => $data_sertifikat[0]['keterangan_cetak'],
+                'nomor_sertifikat'      => $data_sertifikat[0]['nomor_sertifikat'],
+                'status_cetak'          => $data_sertifikat[0]['status_cetak'],
+                'link_cetak'            => $data_sertifikat[0]['link_cetak'],
+            ];
+            $msg = [
+                'sukses' => view('auth/akademik/edit_sertifikat', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function simpan_edit_sertifikat()
+    {
+        if ($this->request->isAJAX()) {
+            $validation = \Config\Services::validation();
+            $valid = $this->validate([
+                'nominal_bayar_cetak' => [
+                    'label' => 'nominal_bayar_cetak',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'sertifikat_level' => [
+                    'label' => 'sertifikat_level',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+            ]);
+            if (!$valid) {
+                $msg = [
+                    'error' => [
+                        'nominal_bayar_cetak'      => $validation->getError('nominal_bayar_cetak'),
+                        'sertifikat_level'      => $validation->getError('sertifikat_level'),
+                    ]
+                ];
+            } else {
+
+                $dt = date("Y-m-d H:i:s");
+
+                $get_nominal_bayar_cetak        =  $this->request->getVar('nominal_bayar_cetak');
+                $keterangan_cetak               =  $this->request->getVar('keterangan_cetak');
+
+                $sertifikat_level               =  $this->request->getVar('sertifikat_level');
+                $status_cetak                   =  $this->request->getVar('status_cetak');
+                $nomor_sertifikat               =  $this->request->getVar('nomor_sertifikat');
+                $link_cetak                     =  $this->request->getVar('link_cetak');
+
+                $nominal_bayar_cetak            = str_replace(str_split('Rp. .'), '', $get_nominal_bayar_cetak);
+
+                $data = [
+                    'nominal_bayar_cetak'  => $nominal_bayar_cetak ,
+                    'sertifikat_level'     => $sertifikat_level,
+                    'status_cetak'         => $status_cetak,
+                    'nomor_sertifikat'     => $nomor_sertifikat,
+                    'link_cetak'           => $link_cetak,
+                    'keterangan_cetak'     => $keterangan_cetak,
+                    'dt_konfirmasi'        => $dt,
+                ];
+
+                $sertifikat_id = $this->request->getVar('sertifikat_id');
+
+                $this->sertifikat->update($sertifikat_id , $data);
+
+                $data_sertifikat = $this->sertifikat->find($sertifikat_id);
+                $peserta_id      = $data_sertifikat['sertifikat_peserta_id'];
+                $data_peserta    = $this->peserta->find($peserta_id);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL', 
+                    'aktivitas_log'=> 'Ubah Data Pendaftaran Cetak Sertifikat ' .  $data_peserta[0]['nis'] . ' ' . $data_peserta[0]['nama_peserta'],
+                ];
+                //var_dump($log);
+                $this->log->insert($log);
+                // Data Log END
+
+                $msg = [
+                    'sukses' => [
+                        'link' => 'admin_sertifikat'
+                    ]
+                ];
+            }
+            echo json_encode($msg);
+        }
+    }
+
     public function peserta_sertifikat()
     {
         if (!session()->get('user_id')) {
@@ -1058,14 +1258,121 @@ class Akademik extends BaseController
         $get_peserta = $this->peserta->get_peserta_id($user_id);
         $peserta_id = $get_peserta->peserta_id;
 
-        $periode_cetak = $this->konfigurasi->periode_sertifikat();
+        $get_periode_cetak = $this->konfigurasi->periode_sertifikat();
+        $periode_cetak = $get_periode_cetak->periode_sertifikat;
         $get_status_menu_sertifikat = $this->konfigurasi->status_menu_sertifikat();
         $status_menu_sertifikat = $get_status_menu_sertifikat -> status_menu_sertifikat;
+        $get_biaya_sertifikat = $this->konfigurasi->biaya_sertifikat();
+        $biaya_sertifikat = $get_biaya_sertifikat->biaya_sertifikat;
+
+        $list = $this->sertifikat->list_peserta($peserta_id);
 
         $data = [
-            'title'                     => 'Al-Haqq - Pengajuan Cetak Sertifikat Peserta',
+            'title'                     => 'Al-Haqq - Pengajuan Cetak Sertifikat Peserta Periode ' . $periode_cetak,
             'status_menu_sertifikat'    => $status_menu_sertifikat,
+            'list'                      => $list,
+            'peserta_id'                => $peserta_id,
+            'biaya_sertifikat'          => $biaya_sertifikat,
         ];
         return view('auth/akademik/peserta_sertifikat', $data);
+    }
+
+    public function input_pengajuan_sertifikat()
+    {
+        if ($this->request->isAJAX()) {
+
+            $get_periode_cetak = $this->konfigurasi->periode_sertifikat();
+            $periode_cetak = $get_periode_cetak->periode_sertifikat;
+
+            $data = [
+                'title'         => 'Form Pengajuan Cetak Sertifikat Periode ' . $periode_cetak,
+                'peserta_id'    => $this->request->getVar('peserta_id'),
+                'periode_cetak' => $periode_cetak,
+                // 'list_level'    => $this->level->list(),
+            ];
+            $msg = [
+                'sukses' => view('auth/akademik/pengajuan_sertifikat', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function simpan_pengajuan_sertifikat()
+    {
+            $validation = \Config\Services::validation();
+            $user_nama = session()->get('nama');
+            //Get Tgl Today
+            $dt = date("Y-m-d H:i:s");
+            $tgl = date("Y-m-d");
+            $strwaktu = date("H-i-s");
+
+            $valid = $this->validate([
+                'sertifikat_level' => [
+                    'label' => 'sertifikat_level',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'nominal_bayar_cetak' => [
+                    'label' => 'nominal_bayar_cetak',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
+                'foto' => [
+                    'rules' => 'uploaded[foto]|mime_in[foto,image/png,image/jpg,image/jpeg]|is_image[foto]',
+                    'errors' => [
+                        'mime_in' => 'Harus gambar!'
+                    ]
+                ]
+            ]);
+
+            if (!$valid) {
+                $this->session->setFlashdata('pesan_error', 'ERROR! Seluruh Form Input Bertanda * Wajib Diisi dan Harap Upload Bukti Bayar!');
+                return redirect()->to('peserta_sertifikat');
+            } else {
+
+                // get file foto from input
+                $filefoto = $this->request->getFile('foto');
+                // ambil nama file
+                $namafoto = $filefoto->getName();
+                // nama foto baru
+                $namafoto_new = $user_nama . '_'. $tgl . '_' . $strwaktu .'_'. $namafoto;
+
+                //Get from form input view modal
+                $get_nominal_bayar_cetak        =  $this->request->getVar('nominal_bayar_cetak');
+
+                //Replace Rp. and thousand separtor from input
+                $nominal_bayar_cetak           = str_replace(str_split('Rp. .'), '', $get_nominal_bayar_cetak);
+
+                //Get Data from Input view
+                $sertifikat_peserta_id  =  $this->request->getVar('sertifikat_peserta_id');
+                $periode_cetak          =  $this->request->getVar('periode_cetak');
+                $sertifikat_level       =  $this->request->getVar('sertifikat_level');
+                $keterangan_cetak       =  $this->request->getVar('keterangan_cetak');
+                
+
+                $simpandata = [
+                    'sertifikat_peserta_id'     => $sertifikat_peserta_id,
+                    'periode_cetak'             => $periode_cetak,
+                    'nominal_bayar_cetak'       => $nominal_bayar_cetak,
+                    'sertifikat_level'          => $sertifikat_level,
+                    'status_cetak'              => 'Proses',
+                    'bukti_bayar_cetak'         => $namafoto_new,
+                    'keterangan_cetak'          => $keterangan_cetak ,
+                    'dt_ajuan'                  => $dt,
+                    'dt_konfirmasi'             => '1000-01-01 00:00:00',
+                ];
+                
+                // insert status konfirmasi
+                $this->sertifikat->insert($simpandata);
+
+                $filefoto->move('img/transfer/', $namafoto_new);
+                
+                $this->session->setFlashdata('pesan_sukses', 'Data Pengajuan Cetak Sertifikat Berhasil!');
+                return redirect()->to('peserta_sertifikat');
+            }
     }
 }
