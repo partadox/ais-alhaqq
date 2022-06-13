@@ -88,6 +88,7 @@
                             <option value="KURANG BAYAR" <?php if ($status_bayar_admin == 'KURANG BAYAR') echo "selected"; ?>>KURANG BAYAR</option>
                             <option value="LEBIH BAYAR" <?php if ($status_bayar_admin == 'LEBIH BAYAR') echo "selected"; ?>>LEBIH BAYAR</option>
                             <option value="BELUM BAYAR" <?php if ($status_bayar_admin == 'BELUM BAYAR') echo "selected"; ?>>BELUM BAYAR</option>
+                            <option value="BEBAS BIAYA" <?php if ($status_bayar_admin == 'BEBAS BIAYA') echo "selected"; ?>>BEBAS BIAYA</option>
                         </select>
                         <div class="invalid-feedback errorStatus_bayar_admin"></div>
                     </div>

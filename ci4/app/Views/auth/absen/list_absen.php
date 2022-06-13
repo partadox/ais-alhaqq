@@ -348,7 +348,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm1 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm1) ?>
+                            <?= longdate_indo($tgl_tm1) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm1 ?> </td>
@@ -371,7 +371,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm2 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm2) ?>
+                            <?= longdate_indo($tgl_tm2) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm2 ?> </td>
@@ -394,7 +394,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm3 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm3) ?>
+                            <?= longdate_indo($tgl_tm3) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm3 ?> </td>
@@ -417,7 +417,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm4 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm4) ?>
+                            <?= longdate_indo($tgl_tm4) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm4 ?> </td>
@@ -440,7 +440,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm5 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm5) ?>
+                            <?= longdate_indo($tgl_tm5) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm5 ?> </td>
@@ -463,7 +463,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm6 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm6) ?>
+                            <?= longdate_indo($tgl_tm6) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm6 ?> </td>
@@ -486,7 +486,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm7 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm7) ?>
+                            <?= longdate_indo($tgl_tm7) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm7 ?> </td>
@@ -509,7 +509,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm8 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm8) ?>
+                            <?= longdate_indo($tgl_tm8) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm8 ?> </td>
@@ -532,7 +532,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm9 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm9) ?>
+                            <?= longdate_indo($tgl_tm9) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm9 ?> </td>
@@ -555,7 +555,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm10 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm10) ?>
+                            <?= longdate_indo($tgl_tm10) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm10 ?> </td>
@@ -578,7 +578,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm11 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm11) ?>
+                            <?= longdate_indo($tgl_tm11) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm11 ?> </td>
@@ -601,7 +601,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm12 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm12) ?>
+                            <?= longdate_indo($tgl_tm12) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm12 ?> </td>
@@ -624,7 +624,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm13 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm13) ?>
+                            <?= longdate_indo($tgl_tm13) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm13 ?> </td>
@@ -647,7 +647,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm14 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm14) ?>
+                            <?= longdate_indo($tgl_tm14) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm14 ?> </td>
@@ -670,7 +670,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm15 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm15) ?>
+                            <?= longdate_indo($tgl_tm15) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm15 ?> </td>
@@ -693,7 +693,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                             <p>-</p>
                         <?php } ?> 
                         <?php if($tgl_tm16 != '1000-01-01') { ?>
-                            <?= shortdate_indo($tgl_tm16) ?>
+                            <?= longdate_indo($tgl_tm16) ?>
                         <?php } ?> 
                     </td>
                     <td > <?= $note_tm16 ?> </td>

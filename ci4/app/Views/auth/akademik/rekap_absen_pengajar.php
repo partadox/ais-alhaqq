@@ -78,7 +78,9 @@
                        <?= $data['tm1_pengajar']+$data['tm2_pengajar']+$data['tm3_pengajar']+$data['tm4_pengajar']+$data['tm5_pengajar']+$data['tm6_pengajar']+$data['tm7_pengajar']+$data['tm8_pengajar']+$data['tm9_pengajar']+$data['tm10_pengajar']+$data['tm11_pengajar']+$data['tm12_pengajar']+$data['tm13_pengajar']+$data['tm14_pengajar']+$data['tm15_pengajar']+$data['tm16_pengajar'] ?>
                     </td>
                     <td>
-                        <a href="#" class="btn btn-info">Catatan</a>
+                    <button type="button" class="btn btn-info mb-2" onclick="catatan(<?= $data['absen_pengajar_id'] ?>, <?= $data['kelas_id'] ?>)" >
+                        <i class=" fa fa-file mr-1"></i>Catatan</button>
+                        
                     </td>
                    <td >
                         <?php if($data['tm1_pengajar'] == NULL) { ?>
@@ -263,6 +265,9 @@
     </table>
 </div>
 
+<div class="viewmodalcatatan">
+</div>
+
 <script>
     $('#angkatan_kelas').bind('change', function () { // bind change event to select
         var url = $(this).val(); // get selected value
@@ -279,6 +284,24 @@
         }
         return false;
     });
+
+    function catatan(absen_pengajar_id, kelas_id) {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('akademik/catatan_absen_pengajar') ?>",
+            data: {
+                absen_pengajar_id : absen_pengajar_id,
+                kelas_id : kelas_id
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.sukses) {
+                    $('.viewmodalcatatan').html(response.sukses).show();
+                    $('#modalcatatan').modal('show');
+                }
+            }
+        });
+    }
 </script>
 
 <?= $this->endSection('isi') ?>

@@ -268,6 +268,65 @@ class Akademik extends BaseController
         return view('auth/akademik/rekap_absen_pengajar', $data);
     }
 
+    public function catatan_absen_pengajar()
+    {
+        if ($this->request->isAJAX()) {
+
+            $absen_pengajar_id  = $this->request->getVar('absen_pengajar_id');
+            $kelas_id           = $this->request->getVar('kelas_id');
+            $data_kelas         = $this->program->find($kelas_id);
+            $pengajar_id        = $data_kelas['pengajar_id'];
+            $data_pengajar      = $this->pengajar->find($pengajar_id);
+            $nama_pengajar      = $data_pengajar['nama_pengajar'];
+            $nama_kelas         = $data_kelas['nama_kelas'];
+             // Get data absen pengajar
+            $absen_pengajar         = $this->absen_pengajar->find($absen_pengajar_id);
+
+            $data = [
+                'title'   => 'Catatan Absen Pengajar Kelas ' . $nama_kelas ,
+                'pengajar' => $nama_pengajar,
+                'note_tm1'               => $absen_pengajar ['note_tm1'],
+                'note_tm2'               => $absen_pengajar ['note_tm2'],
+                'note_tm3'               => $absen_pengajar ['note_tm3'],
+                'note_tm4'               => $absen_pengajar ['note_tm4'],
+                'note_tm5'               => $absen_pengajar ['note_tm5'],
+                'note_tm6'               => $absen_pengajar ['note_tm6'],
+                'note_tm7'               => $absen_pengajar ['note_tm7'],
+                'note_tm8'               => $absen_pengajar ['note_tm8'],
+                'note_tm9'               => $absen_pengajar ['note_tm9'],
+                'note_tm10'              => $absen_pengajar ['note_tm10'],
+                'note_tm11'              => $absen_pengajar ['note_tm11'],
+                'note_tm12'              => $absen_pengajar ['note_tm12'],
+                'note_tm13'              => $absen_pengajar ['note_tm13'],
+                'note_tm14'              => $absen_pengajar ['note_tm14'],
+                'note_tm15'              => $absen_pengajar ['note_tm15'],
+                'note_tm16'              => $absen_pengajar ['note_tm16'],
+
+                'tgl_tm1'               => $absen_pengajar ['tgl_tm1'],
+                'tgl_tm2'               => $absen_pengajar ['tgl_tm2'],
+                'tgl_tm3'               => $absen_pengajar ['tgl_tm3'],
+                'tgl_tm4'               => $absen_pengajar ['tgl_tm4'],
+                'tgl_tm5'               => $absen_pengajar ['tgl_tm5'],
+                'tgl_tm6'               => $absen_pengajar ['tgl_tm6'],
+                'tgl_tm7'               => $absen_pengajar ['tgl_tm7'],
+                'tgl_tm8'               => $absen_pengajar ['tgl_tm8'],
+                'tgl_tm9'               => $absen_pengajar ['tgl_tm9'],
+                'tgl_tm10'              => $absen_pengajar ['tgl_tm10'],
+                'tgl_tm11'              => $absen_pengajar ['tgl_tm11'],
+                'tgl_tm12'              => $absen_pengajar ['tgl_tm12'],
+                'tgl_tm13'              => $absen_pengajar ['tgl_tm13'],
+                'tgl_tm14'              => $absen_pengajar ['tgl_tm14'],
+                'tgl_tm15'              => $absen_pengajar ['tgl_tm15'],
+                'tgl_tm16'              => $absen_pengajar ['tgl_tm16'],
+
+            ];
+            $msg = [
+                'sukses' => view('auth/akademik/catatan_absen_pengajar', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
     public function rekap_absen_pengajar_export()
     {
         $uri                = service('uri');

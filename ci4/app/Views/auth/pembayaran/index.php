@@ -66,19 +66,9 @@ if (session()->getFlashdata('pesan_sukses')) {
                 <td width="15%">
                     <h6>Nama: <?= $data['nama_peserta'] ?></h6>
                     <p>NIS: <?= $data['nis'] ?></p>
+                    <p>Kelas: <?= $data['nama_kelas'] ?></p>
                 </td>
-                <!-- <td width="15%">
-                    <?php if($data['kelas_id'] != NULL) { ?>
-                        <p>Prgram: <?= $data['nama_program'] ?></p>
-                        <p>Kelas: <?= $data['nama_kelas'] ?></p>
-                        <p>Hari: <?= $data['hari_kelas'] ?></p>
-                        <p>Waktu: <?= $data['waktu_kelas'] ?></p>
-                        <p>Pengajar: <?= $data['nama_pengajar'] ?></p>
-                    <?php } ?>
-                    <?php if($data['kelas_id'] == NULL) { ?>
-                        <p>-</p>
-                    <?php } ?>
-                </td> -->
+                
                 <td width="10%">
                     <p>Tgl:  <?= shortdate_indo($data['tgl_bayar'])?></p>
                     <p>Jam: <?= $data['waktu_bayar'] ?></p>
@@ -104,8 +94,17 @@ if (session()->getFlashdata('pesan_sukses')) {
                     <?php if($data['status_bayar_admin'] == 'SESUAI BAYAR') { ?>
                         <button class="btn btn-success btn-sm mb-2" disabled>SESUAI BAYAR</button>
                     <?php } ?>
-                    <?php if($data['status_bayar_admin'] != 'SESUAI BAYAR') { ?>
+                    <?php if($data['status_bayar_admin'] == 'KURANG BAYAR') { ?>
+                        <button class="btn btn-warning btn-sm mb-2" disabled><?= $data['status_bayar_admin'] ?></button>
+                    <?php } ?>
+                    <?php if($data['status_bayar_admin'] == 'LEBIH BAYAR') { ?>
                         <button class="btn btn-secondary btn-sm mb-2" disabled><?= $data['status_bayar_admin'] ?></button>
+                    <?php } ?>
+                    <?php if($data['status_bayar_admin'] == 'BELUM BAYAR') { ?>
+                        <button class="btn btn-danger btn-sm mb-2" disabled><?= $data['status_bayar_admin'] ?></button>
+                    <?php } ?>
+                    <?php if($data['status_bayar_admin'] == 'BEBAS BIAYA') { ?>
+                        <button class="btn btn-info btn-sm mb-2" disabled><?= $data['status_bayar_admin'] ?></button>
                     <?php } ?>
                     <p>Ket Adm: <br> <?= $data['keterangan_bayar_admin'] ?></p>
                 </td>

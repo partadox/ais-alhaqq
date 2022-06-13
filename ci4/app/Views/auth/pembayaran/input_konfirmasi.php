@@ -95,6 +95,7 @@
                             <option value="KURANG BAYAR">KURANG BAYAR</option>
                             <option value="LEBIH BAYAR">LEBIH BAYAR</option>
                             <option value="BELUM BAYAR">BELUM BAYAR</option>
+                            <option value="BEBAS BIAYA">BEBAS BIAYA</option>
                         </select>
                         <div class="invalid-feedback errorStatus_bayar_admin"></div>
                     </div>

@@ -60,20 +60,21 @@
                     </div>
                     <div class="form-group">
                       <div class="mb-3">
-                        <label class="form-label">NIK KTP (16 Digit)</label>
-                        <input class="form-control" type="text" id="nik" name="nik"  value="<?= $nik ?>" disabled>
+                        <label class="form-label">NIS</label>
+                        <input class="form-control" type="text" id="nis" name="nis"  value="<?= $nis ?>"  readonly>
                       </div>
                     </div>
                     <div class="form-group">
                       <div class="mb-3">
-                        <label class="form-label">NIS</label>
-                        <input class="form-control" type="text" id="nis" name="nis"  value="<?= $nis ?>"  disabled>
+                        <label class="form-label">NIK KTP (16 Digit)</label>
+                        <input class="form-control" type="text" id="nik" name="nik"  value="<?= $nik ?>">
+                        <div class="invalid-feedback errorNik">
                       </div>
                     </div>
                     <div class="form-group">
                       <div class="mb-3">
                         <label class="form-label">Nama Lengkap (Sesuai KTP) <code>*</code> </label>
-                        <input class="form-control text-uppercase" type="text" id="nama" name="nama"  value="<?= $nama ?>" disabled>
+                        <input class="form-control text-uppercase" type="text" id="nama" name="nama"  value="<?= $nama ?>">
                         <div class="invalid-feedback errorNama">
                       </div>
                     </div>
@@ -98,7 +99,10 @@
                     <div class="form-group">
                       <div class="mb-3">
                         <label class="form-label">Jenis Kelamin<code>*</code></label>
-                        <input class="form-control text-uppercase" type="text" id="jenkel" name="jenkel"  value="<?= $jenkel ?>" disabled>
+                        <select class="form-control btn-square" id="jenkel" name="jenkel">
+                          <option value="IKHWAN"  <?php if ($jenkel == 'IKHWAN') echo "selected"; ?>>IKHWAN</option>
+                          <option value="AKHWAT" <?php if ($jenkel == 'AKHWAT') echo "selected"; ?>>AKHWAT</option>
+                        </select>
                         <div class="invalid-feedback errorJenkel">
                       </div>
                     </div>
@@ -171,7 +175,7 @@
                     <div class="form-group">
                       <div class="mb-3">
                         <label class="form-label">E-Mail<code>*</code></label>
-                        <input class="form-control text-lowercase" type="text" id="email" name="email" value="<?= $email ?>" disabled>
+                        <input class="form-control text-lowercase" type="text" id="email" name="email" value="<?= $email ?>">
                         <div class="invalid-feedback errorEmail">
                       </div>
                     </div>
@@ -257,7 +261,7 @@
                     nik: $('input#nik').val(),
                     tmp_lahir: $('input#tmp_lahir').val(),
                     tgl_lahir: $('input#tgl_lahir').val(),
-                    jenkel: $('input#jenkel').val(),
+                    jenkel: $('select#jenkel').val(),
                     pendidikan: $('select#pendidikan').val(),
                     jurusan: $('input#jurusan').val(),
                     status_kerja: $('select#status_kerja').val(),
@@ -279,6 +283,14 @@
                 },
                 success: function(response) {
                     if (response.error) {
+                      if (response.error.nik) {
+                            $('#nik').addClass('is-invalid');
+                            $('.errorNik').html(response.error.nik);
+                        } else {
+                            $('#nik').removeClass('is-invalid');
+                            $('.errorNik').html('');
+                        }
+
                         if (response.error.nama) {
                             $('#nama').addClass('is-invalid');
                             $('.errorNama').html(response.error.nama);

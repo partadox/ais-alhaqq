@@ -1085,6 +1085,13 @@ class Akun extends BaseController
         if ($this->request->isAJAX()) {
             $validation = \Config\Services::validation();
             $valid = $this->validate([
+                'nik' => [
+                    'label' => 'nik',
+                    'rules' => 'required',
+                    'errors' => [
+                        'required' => '{field} tidak boleh kosong',
+                    ]
+                ],
                 'nama' => [
                     'label' => 'Nama',
                     'rules' => 'required',
@@ -1173,6 +1180,7 @@ class Akun extends BaseController
             if (!$valid) {
                 $msg = [
                     'error' => [
+                        'nik'               => $validation->getError('nik'),
                         'nama'              => $validation->getError('nama'),
                         'tmp_lahir'         => $validation->getError('tmp_lahir'),
                         'tgl_lahir'         => $validation->getError('tgl_lahir'),
@@ -1191,6 +1199,7 @@ class Akun extends BaseController
 
                 $update_data = [
                     'user_id'               => $this->request->getVar('user_id'),
+                    'nik'                   => $this->request->getVar('nik'),
                     'nama_peserta'          => strtoupper($this->request->getVar('nama')),
                     'tmp_lahir'             => strtoupper($this->request->getVar('tmp_lahir')),
                     'tgl_lahir'             => $this->request->getVar('tgl_lahir'),

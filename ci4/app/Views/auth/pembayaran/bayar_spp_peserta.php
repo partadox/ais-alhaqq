@@ -77,35 +77,32 @@
                     <td width="3%">Rp <?= rupiah($data['spp_terbayar']) ?></td>
                     <td width="3%">Rp <?= rupiah($data['spp_piutang']) ?></td>
                     <td width="3%">
-                        <?php if($data['byr_daftar'] != NULL && $data['byr_daftar'] != '0') { ?>
+                        <?php if($data['byr_daftar'] == $data['biaya_daftar']) { ?>
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
                     <td width="4%">
-                        <?php if($data['byr_spp1'] != NULL && $data['byr_spp1'] != '0') { ?>
+                        <?php if($data['byr_spp1'] == $data['biaya_bulanan']) { ?>
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
                     <td width="4%">
-                        <?php if($data['byr_spp2'] != NULL && $data['byr_spp2'] != '0') { ?>
+                        <?php if($data['byr_spp2'] == $data['biaya_bulanan']) { ?>
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
                     <td width="4%">
-                        <?php if($data['byr_spp3'] != NULL && $data['byr_spp3'] != '0') { ?>
+                        <?php if($data['byr_spp3'] == $data['biaya_bulanan']) { ?>
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
                     <td width="5%">
-                        <?php if($data['byr_spp4'] != NULL && $data['byr_spp4'] != '0') { ?>
+                        <?php if($data['byr_spp4'] == $data['biaya_bulanan'] ) { ?>
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
                     <td width="4%">
-                        <?php if($data['byr_modul'] == '0') { ?>
-                            <i class=" fa fa-minus" style="color:grey"></i>
-                        <?php } ?>
-                        <?php if($data['byr_modul'] != NULL && $data['byr_modul'] != '0') { ?>
+                        <?php if($data['byr_modul'] == $data['biaya_modul']) { ?>
                             <i class=" fa fa-check" style="color:green"></i>
                         <?php } ?>
                     </td>
