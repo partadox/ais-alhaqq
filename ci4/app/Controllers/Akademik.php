@@ -1306,6 +1306,217 @@ class Akademik extends BaseController
         }
     }
 
+    public function rekap_sertifikat_export()
+    {
+        $uri                = service('uri');
+        $get_periode_url    = $uri->getSegment(3);
+        if ($get_periode_url == NULL) {
+            $get_periode       = $this->konfigurasi->periode_sertifikat();
+            $periode           = $get_periode->periode_sertifikat;
+        } elseif ($get_periode_url != NULL) {
+            $periode = $get_periode_url;
+        }
+
+        $sertifikat = $this->sertifikat->list($periode);
+        $judul = "DATA REKAP PENGAJUAN CETAK SERTIFIKAT PERIODE " . $periode;
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $styleColumn = [
+            'font' => [
+                'bold' => true,
+                'size' => 14,
+            ],
+            'alignment' => [
+                'horizontal'    => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+                'vertical'      => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
+            ]
+        ];
+
+        $border = [
+            'borders' => [
+                'outline' => [
+                    'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+                ],
+            ],
+        ];
+
+        $sheet->setCellValue('A1', $judul);
+        $sheet->mergeCells('A1:L1');
+        $sheet->getStyle('A1')->applyFromArray($styleColumn);
+
+        $sheet->setCellValue('A2', date("Y-m-d"));
+        $sheet->mergeCells('A2:L2');
+        $sheet->getStyle('A2')->applyFromArray($styleColumn);
+
+        $spreadsheet->setActiveSheetIndex(0)
+            ->setCellValue('A4', 'SERTIFIKAT ID')
+            ->setCellValue('B4', 'NIS')
+            ->setCellValue('C4', 'NAMA')
+            ->setCellValue('D4', 'JENIS KELAMIN')
+            ->setCellValue('E4', 'SERTIFIKAT LEVEL')
+            ->setCellValue('F4', 'STATUS SERTIFIKAT')
+            ->setCellValue('G4', 'WAKTU PENGAJUAN')
+            ->setCellValue('H4', 'WAKTU KONFIRMASI')
+            ->setCellValue('I4', 'NOMINAL BAYAR')
+            ->setCellValue('J4', 'KETERANGAN')
+            ->setCellValue('K4', 'NO. SERTIFIKAT')
+            ->setCellValue('L4', 'LINK UNDUH');
+        
+        $sheet->getStyle('A4')->applyFromArray($border);
+        $sheet->getStyle('B4')->applyFromArray($border);
+        $sheet->getStyle('C4')->applyFromArray($border);
+        $sheet->getStyle('D4')->applyFromArray($border);
+        $sheet->getStyle('E4')->applyFromArray($border);
+        $sheet->getStyle('F4')->applyFromArray($border);
+        $sheet->getStyle('G4')->applyFromArray($border);
+        $sheet->getStyle('H4')->applyFromArray($border);
+        $sheet->getStyle('I4')->applyFromArray($border);
+        $sheet->getStyle('J4')->applyFromArray($border);
+        $sheet->getStyle('K4')->applyFromArray($border);
+        $sheet->getStyle('L4')->applyFromArray($border);
+        
+
+        $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('B')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('C')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('D')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('L')->setAutoSize(true);
+
+        $row = 5;
+
+        foreach ($sertifikat as $data) {
+
+                $spreadsheet->setActiveSheetIndex(0)
+                ->setCellValue('A' . $row, $data['sertifikat_id'])
+                ->setCellValue('B' . $row, $data['nis'])
+                ->setCellValue('C' . $row, $data['nama_peserta'])
+                ->setCellValue('D' . $row, $data['jenkel'])
+                ->setCellValue('E' . $row, $data['sertifikat_level'])
+                ->setCellValue('F' . $row, $data['status_cetak'])
+                ->setCellValue('G' . $row, $data['dt_ajuan'])
+                ->setCellValue('H' . $row, $data['dt_konfirmasi'])
+                ->setCellValue('I' . $row, $data['nominal_bayar_cetak'])
+                ->setCellValue('J' . $row, $data['keterangan_cetak'])
+                ->setCellValue('K' . $row, $data['nomor_sertifikat'])
+                ->setCellValue('L' . $row, $data['link_cetak']);
+
+            $sheet->getStyle('A' . $row)->applyFromArray($border);
+            $sheet->getStyle('B' . $row)->applyFromArray($border);
+            $sheet->getStyle('C' . $row)->applyFromArray($border);
+            $sheet->getStyle('D' . $row)->applyFromArray($border);
+            $sheet->getStyle('E' . $row)->applyFromArray($border);
+            $sheet->getStyle('F' . $row)->applyFromArray($border);
+            $sheet->getStyle('G' . $row)->applyFromArray($border);
+            $sheet->getStyle('H' . $row)->applyFromArray($border);
+            $sheet->getStyle('I' . $row)->applyFromArray($border);
+            $sheet->getStyle('J' . $row)->applyFromArray($border);
+            $sheet->getStyle('K' . $row)->applyFromArray($border);
+            $sheet->getStyle('L' . $row)->applyFromArray($border);
+
+            $row++;
+        }
+
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+        $filename =  'Data-Rekap-Sertifikat-Cetak-Periode-' . $periode  . '-' . date('Y-m-d-His');
+
+        // Data Log START
+        $log = [
+            'username_log' => session()->get('username'),
+            'tgl_log'      => date("Y-m-d"),
+            'waktu_log'    => date("H:i:s"),
+            'status_log'   => 'BERHASIL',
+            'aktivitas_log'=> 'Download Data Rekap Pengajuan Sertifikat via Export Excel, Waktu : ' .  date('Y-m-d-H:i:s'),
+        ];
+        $this->log->insert($log);
+        // Data Log END
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+    }
+
+    public function rekap_sertifikat_import()
+    {
+        $file   = $this->request->getFile('file_excel');
+        $ext    = $file->getClientExtension();
+
+        if ($ext == 'xls') {
+            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+        } else{
+            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        }
+
+        $spreadsheet = $render->load($file);
+        $sheet       = $spreadsheet->getActiveSheet()->toArray();
+
+        $jumlaherror   = 0;
+        $jumlahsukses  = 0;
+
+        foreach ($sheet as $x => $excel) {
+
+            //Skip row pertama - keempat (judul tabel)
+            if ($x == 0) {
+                continue;
+            }
+            if ($x == 1) {
+                continue;
+            }
+            if ($x == 2) {
+                continue;
+            }
+            if ($x == 3) {
+                continue;
+            }
+
+            //Skip data nomor sertifikat duplikat
+            $sertifikat    = $this->sertifikat->cek_nomor_sertifikat_duplikat($excel['10']);
+            if ($sertifikat != 0 ) {
+                $jumlaherror++;
+            } elseif($sertifikat == 0) {
+
+                $jumlahsukses++;
+
+                $sertifikat_id = $excel['0'];
+
+                $data1   = [
+                    'status_cetak'         => $excel['5'],
+                    'nominal_bayar_cetak'  => $excel['8'],
+                    'keterangan_cetak'     => $excel['9'],
+                    'nomor_sertifikat'     => $excel['10'],
+                    'link_cetak'           => $excel['11'],
+                ];
+
+                $this->sertifikat->update($sertifikat_id, $data1);
+
+                //Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Import Data Pengajuan Sertifikat via Import Excel, NIS : ' .   $excel['1'] .  ' Nama : '. $excel['2'],
+                ];
+                $this->log->insert($log);
+                //Data Log END
+            }
+        }
+
+        $this->session->setFlashdata('pesan_sukses', "Data Excel Berhasil Import = $jumlahsukses <br> Data Gagal Import = $jumlaherror");
+        return redirect()->to('/auth/akademik/admin_sertifikat');
+        
+    }
+
     public function peserta_sertifikat()
     {
         if (!session()->get('user_id')) {

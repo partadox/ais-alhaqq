@@ -37,6 +37,17 @@
     </a>
 </div>
 
+<?php
+if (session()->getFlashdata('pesan_sukses')) {
+    echo '<div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button> <strong>';
+    echo session()->getFlashdata('pesan_sukses');
+    echo ' </strong> </div>';
+}
+?>
+
 <div class="table-responsive">
     <table id="datatable" class="table table-striped table-bordered nowrap mt-1" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
         <thead>

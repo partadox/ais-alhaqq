@@ -46,4 +46,12 @@ class Modelsertifikat extends Model
             ->get()->getResultArray();
     }
 
+     //Cek data duplikat - import file excel pada data rekap sertifikat
+     public function cek_nomor_sertifikat_duplikat($nomor_sertifikat)
+     {
+         return $this->table('sertifikat')
+             ->where('nomor_sertifikat', $nomor_sertifikat)
+             ->countAllResults();
+     }
+
 }

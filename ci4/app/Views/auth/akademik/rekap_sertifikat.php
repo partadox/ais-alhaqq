@@ -16,6 +16,7 @@
             <option value="" disabled selected>Download...</option>
             <?php foreach ($list_periode as $key => $data) { ?>
             <option value="/akademik/rekap_sertifikat_export/<?= $data['periode_cetak'] ?>">Periode - <?= $data['periode_cetak'] ?> </option>
+            <!-- <option value="/ais/public/akademik/rekap_sertifikat_export/<?= $data['periode_cetak'] ?>">Periode - <?= $data['periode_cetak'] ?> </option> -->
             <?php } ?>
         </select>
     </div>
@@ -44,6 +45,17 @@
     <i class="mdi mdi-information"></i> Status Cetak <b>"Terkonfirmasi"</b> = Sudah bayar sudah dikonfirmasi admin, hanya tinggal dilakukan proses pembuatan sertifikat dan upload link download. <br>
 </p>
 
+<?php
+if (session()->getFlashdata('pesan_sukses')) {
+    echo '<div class="alert alert-secondary alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button> <strong>';
+    echo session()->getFlashdata('pesan_sukses');
+    echo ' </strong> </div>';
+}
+?>
+
 <div class="table-responsive">
     <table id="datatable" class="table table-striped table-bordered nowrap mt-1" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
         <thead>
@@ -53,7 +65,7 @@
                 <th>NIS</th>
                 <th>Nama</th>
                 <th>Jenis <br> Kelamin</th>
-                <th>Level</th>
+                <th>Sertifikat <br> Level</th>
                 <th>Waktu</th>
                 <th>Status <br> Sertifikat</th>
                 <th>Nominal Bayar</th>
@@ -73,7 +85,7 @@
                     <td width="5%"><?= $data['nis'] ?></td>
                     <td width="10%"><?= $data['nama_peserta'] ?></td>
                     <td width="5%"><?= $data['jenkel'] ?></td>
-                    <td width="4%"><?= $data['nama_level'] ?></td>
+                    <td width="4%"><?= $data['sertifikat_level'] ?></td>
                     <td width="4%">
                         <p>Pengajuan : <?= $data['dt_ajuan'] ?></p> 
                         <?php if($data['dt_konfirmasi'] == '1000-01-01 00:00:00') { ?>
@@ -140,7 +152,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <?php echo form_open_multipart('/akademik/rekap_ujian_peserta_import');
+            <?php echo form_open_multipart('/akademik/rekap_sertifikat_import');
             ?>
             <?= csrf_field() ?>
             <div class="modal-body">
