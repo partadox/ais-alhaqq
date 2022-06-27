@@ -166,7 +166,7 @@ class Modelpesertakelas extends Model
             ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
             ->join('absen_peserta', 'absen_peserta.absen_peserta_id = peserta_kelas.data_absen')
             ->where('data_kelas_id', $kelas_id)
-            ->where('status_peserta_kelas', 'Belum Lulus')
+            //->where('status_peserta_kelas', 'Belum Lulus')
             ->orderBy('nama_peserta', 'ASC')
             ->get()->getResultArray();
     }
