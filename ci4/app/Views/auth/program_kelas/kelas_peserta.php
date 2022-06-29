@@ -49,11 +49,14 @@
                     <td width="10%"><?= $data['domisili_peserta'] ?></td>
                     <td width="10%"><?= $data['hp'] ?></td>
                     <td width="10%">
-                        <?php if($data['status_peserta_kelas'] == 'Belum Lulus') { ?>
-                            <button class="btn btn-secondary btn-sm" disabled>Belum Lulus</button> 
+                        <?php if($data['status_peserta_kelas'] == 'BELUM LULUS') { ?>
+                            <button class="btn btn-secondary btn-sm" disabled>BELUM LULUS</button> 
                         <?php } ?>
-                        <?php if($data['status_peserta_kelas'] == 'Lulus') { ?>
-                            <button class="btn btn-success btn-sm" disabled>Lulus</button> 
+                        <?php if($data['status_peserta_kelas'] == 'LULUS') { ?>
+                            <button class="btn btn-success btn-sm" disabled>LULUS</button> 
+                        <?php } ?>
+                        <?php if($data['status_peserta_kelas'] == 'MENGULANG') { ?>
+                            <button class="btn btn-success btn-sm" disabled>MENGULANG</button> 
                         <?php } ?>
                     </td>
                     <td width="10%">

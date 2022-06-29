@@ -94,9 +94,9 @@
                             <option value="SLTP" <?php if ($pendidikan == 'SLPT') echo "selected"; ?>>SLTP</option>
                             <option value="SLTA" <?php if ($pendidikan == 'SLTA') echo "selected"; ?>>SLTA</option>
                             <option value="DIPLOMA" <?php if ($pendidikan == 'DIPLOMA') echo "selected"; ?>>DIPLOMA</option>
-                            <option value="SARJANA" <?php if ($pendidikan == 'SARJANA') echo "selected"; ?>>SARJANA (S1)</option>
-                            <option value="MAGISTER" <?php if ($pendidikan == 'MAGISTER') echo "selected"; ?>>MAGISTER (S2)</option>
-                            <option value="DOKTOR" <?php if ($pendidikan == 'DOKTOR') echo "selected"; ?>>DOKTOR (S3)</option>
+                            <option value="SARJANA (S1)" <?php if ($pendidikan == 'SARJANA (S1)') echo "selected"; ?>>SARJANA (S1)</option>
+                            <option value="MAGISTER (S2)" <?php if ($pendidikan == 'MAGISTER (S2)') echo "selected"; ?>>MAGISTER (S2)</option>
+                            <option value="DOKTOR (S3)" <?php if ($pendidikan == 'DOKTOR (S3)') echo "selected"; ?>>DOKTOR (S3)</option>
                             <option value="TIDAK DIKETAHUI"  <?php if ($pendidikan == 'TIDAK DIKETAHUI') echo "selected"; ?>>TIDAK DIKETAHUI</option>
                         </select>
                         <div class="invalid-feedback errorPendidikan"></div>

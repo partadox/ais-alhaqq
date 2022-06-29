@@ -374,7 +374,7 @@ class Daftar extends BaseController
                 $datapesertakelas = [
                     'data_peserta_id'       => $peserta_id,
                     'data_kelas_id'         => $kelas_id,
-                    'status_peserta_kelas'  => 'Belum Lulus',
+                    'status_peserta_kelas'  => 'BELUM LULUS',
                     'spp_status'            => 'BELUM BAYAR PENDAFTARAN',
                     'expired_tgl_daftar'    => $tgl,
                     'expired_waktu_daftar'  => $waktu_dl,

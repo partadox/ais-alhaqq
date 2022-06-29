@@ -12,6 +12,7 @@
             <?= csrf_field(); ?>
             <div class="modal-body">
                 <input type="hidden" class="form-control" id="user_id" value="<?= $user_id ?>" name="user_id" readonly>
+                <input type="hidden" class="form-control" id="level" value="<?= $level ?>" name="level" readonly>
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">Password<code>*</code></label>
                     <div class="col-sm-8">

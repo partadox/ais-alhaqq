@@ -145,7 +145,7 @@ class Modelpesertakelas extends Model
             ->join('program', 'program.program_id = program_kelas.program_id')
             // ->join('pengajar', 'pengajar.pengajar_id = program_kelas.pengajar_id')
             ->where('data_peserta_id', $peserta_id)
-            ->where('status_peserta_kelas', 'Belum Lulus')
+            ->where('status_peserta_kelas', 'BELUM LULUS')
             // ->orderBy('angkatan_kelas', 'DESC')
             ->get()->getResultArray();
     }
@@ -154,7 +154,7 @@ class Modelpesertakelas extends Model
     public function jml_kelas_sedang_ikut($peserta_id)
     {
         return $this->table('peserta_kelas')
-        ->where('status_peserta_kelas', 'Belum Lulus')
+        ->where('status_peserta_kelas', 'BELUM LULUS')
         ->where('data_peserta_id', $peserta_id)
         ->countAllResults();
     }
@@ -182,7 +182,7 @@ class Modelpesertakelas extends Model
             ->select('data_absen')
             ->select($tm)
             ->where('data_kelas_id', $kelas_id)
-            ->where('status_peserta_kelas', 'Belum Lulus')
+            ->where('status_peserta_kelas', 'BELUM LULUS')
             ->orderBy('nama_peserta', 'ASC')
             ->get()->getResultArray();
     }

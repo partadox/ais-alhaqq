@@ -97,9 +97,9 @@
                             <option value="SLTP">SLTP</option>
                             <option value="SLTA">SLTA</option>
                             <option value="DIPLOMA">DIPLOMA</option>
-                            <option value="SARJANA">SARJANA (S1)</option>
-                            <option value="MAGISTER">MAGISTER (S2)</option>
-                            <option value="DOKTOR">DOKTOR (S3)</option>
+                            <option value="SARJANA (S1)">SARJANA (S1)</option>
+                            <option value="MAGISTER (S2)">MAGISTER (S2)</option>
+                            <option value="DOKTOR (S3)">DOKTOR (S3)</option>
                             <option value="TIDAK DIKETAHUI">TIDAK DIKETAHUI</option>
                         </select>
                         <div class="invalid-feedback errorPendidikan"></div>

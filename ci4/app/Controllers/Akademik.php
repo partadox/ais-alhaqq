@@ -760,6 +760,82 @@ class Akademik extends BaseController
         return view('auth/akademik/rekap_ujian_peserta', $data);
     }
 
+    public function edit_rekap_ujian()
+    {
+        if ($this->request->isAJAX()) {
+
+            $ujian_id           = $this->request->getVar('ujian_id');
+            $peserta_id         = $this->request->getVar('peserta_id');
+            $kelas_id           = $this->request->getVar('kelas_id');
+            $peserta_kelas_id   = $this->request->getVar('peserta_kelas_id');
+
+            $ujian          =  $this->ujian->find($ujian_id);
+            $peserta        =  $this->peserta->find($peserta_id);
+            $kelas          =  $this->program->find($kelas_id);
+            $peserta_kelas  = $this->peserta_kelas->find($peserta_kelas_id);
+
+            $data = [
+                'title'             => 'Edit Data Ujian Peserta Atas Nama : ' . $peserta['nis'] . ' - ' . $peserta['nama_peserta'],
+                'ujian'             => $ujian,
+                'peserta'           => $peserta,
+                'kelas'             => $kelas,
+                'peserta_kelas_id'  => $peserta_kelas_id,
+                'peserta_kelas'     => $peserta_kelas,
+                'peserta_id'        => $peserta_id,
+            ];
+            $msg = [
+                'sukses' => view('auth/akademik/edit_rekap_ujian', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function rekap_ujian_update()
+    {
+        if ($this->request->isAJAX()) {
+            
+            $update_data_ujian = [
+                'tgl_ujian'             => $this->request->getVar('tgl_ujian'),
+                'waktu_ujian'           => $this->request->getVar('waktu_ujian'),
+                'nilai_ujian'           => $this->request->getVar('nilai_ujian'),
+                'nilai_akhir'           => $this->request->getVar('nilai_akhir'),
+            ];
+
+            $update_status= [
+                'status_peserta_kelas'   => $this->request->getVar('status_peserta_kelas'),
+            ];
+
+            $ujian_id           = $this->request->getVar('ujian_id');
+            $this->ujian->update($ujian_id, $update_data_ujian);
+
+            $peserta_kelas_id   = $this->request->getVar('peserta_kelas_id');
+            $this->peserta_kelas->update($peserta_kelas_id, $update_status);
+
+            $peserta_id     = $this->request->getVar('peserta_id');
+            $peserta        =  $this->peserta->find($peserta_id);
+
+             //Data Log START
+             $log = [
+                'username_log' => session()->get('username'),
+                'tgl_log'      => date("Y-m-d"),
+                'waktu_log'    => date("H:i:s"),
+                'status_log'   => 'BERHASIL',
+                'aktivitas_log'=> 'Ubah Data Ujian, NIS : ' .   $peserta['nis'] .  ' Nama : '. $peserta['nama_peserta'],
+            ];
+            $this->log->insert($log);
+            //Data Log END
+            
+
+            $msg = [
+                'sukses' => [
+                    'link' => 'admin_rekap_ujian'
+                ]
+            ];
+            
+            echo json_encode($msg);
+        }
+    }
+
     public function rekap_ujian_peserta_export()
     {
         $uri                = service('uri');
@@ -969,7 +1045,7 @@ class Akademik extends BaseController
                 $this->ujian->update($id_ujian, $data1);
 
                 $data2   = [
-                    'status_peserta_kelas'                => $excel['13'],
+                    'status_peserta_kelas'                => strtoupper($excel['13']),
                 ];
 
                 $this->peserta_kelas->update($peserta_kelas_id, $data2);

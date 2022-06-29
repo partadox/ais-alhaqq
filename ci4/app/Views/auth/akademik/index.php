@@ -45,8 +45,8 @@
                         <?php } ?>
                     </td>
                     <td width="20%">
-                        <?php if($data['status_peserta_kelas'] == 'Belum Lulus') { ?>
-                            <button class="btn btn-secondary" disabled>Belum Lulus</button> 
+                        <?php if($data['status_peserta_kelas'] == 'BELUM LULUS') { ?>
+                            <button class="btn btn-secondary" disabled>BELUM LULUS</button> 
                         <?php } ?>
                     </td>
                     <td></td>

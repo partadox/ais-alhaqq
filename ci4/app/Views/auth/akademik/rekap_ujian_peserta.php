@@ -89,17 +89,17 @@ if (session()->getFlashdata('pesan_sukses')) {
                     <td width="3%"><?= $data['nilai_ujian'] ?></td>
                     <td width="3%"><?= $data['nilai_akhir'] ?></td>
                     <td width="5%">
-                        <?php if($data['status_peserta_kelas'] == 'Belum Lulus') { ?>
-                            <button class="btn btn-secondary btn-sm" disabled>Belum Lulus</button> 
+                        <?php if($data['status_peserta_kelas'] == 'BELUM LULUS') { ?>
+                            <button class="btn btn-secondary btn-sm" disabled>BELUM LULUS</button> 
                         <?php } ?>
-                        <?php if($data['status_peserta_kelas'] == 'Lulus') { ?>
-                            <button class="btn btn-success btn-sm" disabled>Lulus</button> 
+                        <?php if($data['status_peserta_kelas'] == 'LULUS') { ?>
+                            <button class="btn btn-success btn-sm" disabled>LULUS</button> 
                         <?php } ?>
-                        <?php if($data['status_peserta_kelas'] == 'Mengulang') { ?>
-                            <button class="btn btn-warning btn-sm" disabled>Mengulang</button> 
+                        <?php if($data['status_peserta_kelas'] == 'MENGULANG') { ?>
+                            <button class="btn btn-warning btn-sm" disabled>MENGULANG</button> 
                         <?php } ?>
                     </td>
-                    <td> <button class="btn btn-warning"> <i class="fa fa-edit"></i> Edit</button> </td>
+                    <td> <button type="button" class="btn btn-warning" onclick="edit(<?= $data['ujian_id'] ?>, <?= $data['peserta_id'] ?>, <?= $data['kelas_id'] ?>, <?= $data['peserta_kelas_id'] ?>)" > <i class="fa fa-edit"></i> Edit</button> </td>
                 </tr>
 
             <?php endforeach; ?>
@@ -107,7 +107,7 @@ if (session()->getFlashdata('pesan_sukses')) {
     </table>
 </div>
 
-<div class="viewmodalrincian">
+<div class="viewmodaldataedit">
 </div>
 
 <!-- Start Modal Import File Excel -->
@@ -164,6 +164,26 @@ if (session()->getFlashdata('pesan_sukses')) {
         }
         return false;
     });
+
+    function edit(ujian_id, peserta_id, kelas_id, peserta_kelas_id) {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('akademik/edit_rekap_ujian') ?>",
+            data: {
+                ujian_id : ujian_id,
+                peserta_id : peserta_id,
+                kelas_id : kelas_id,
+                peserta_kelas_id : peserta_kelas_id
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.sukses) {
+                    $('.viewmodaldataedit').html(response.sukses).show();
+                    $('#modaledit').modal('show');
+                }
+            }
+        });
+    }
 </script>
 
 <?= $this->endSection('isi') ?>
