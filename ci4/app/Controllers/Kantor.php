@@ -88,6 +88,7 @@ class Kantor extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Buat Data Kantor / Cabang Nama : ' .  $this->request->getVar('nama_kantor'),
                 ];
                 $this->log->insert($log);
@@ -183,6 +184,7 @@ class Kantor extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Ubah Data Kantor / Cabang Nama : ' .  $this->request->getVar('nama_kantor'),
                 ];
                 $this->log->insert($log);

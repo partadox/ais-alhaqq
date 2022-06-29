@@ -695,100 +695,139 @@ class Peserta extends BaseController
 
     public function import_file()
     {
-        $file   = $this->request->getFile('file_excel');
-        $ext    = $file->getClientExtension();
+        $validation = \Config\Services::validation();
+        $valid = $this->validate([
+            'file_excel' => [
+                'rules' => 'uploaded[file_excel]|ext_in[file_excel,xls,xlsx]',
+                'errors' => [
+                    'uploaded' => 'Harap Upload',
+                    'ext_in' => 'Harus File Excel!'
+                ]
+            ]
+        ]);
 
-        if ($ext == 'xls') {
-            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-        } else{
-            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        if (!$valid) {
+            $this->session->setFlashdata('pesan_error', 'ERROR! Untuk Import Harap Upload File Berjenis Excel!');
+            return redirect()->to('index');
+        } else {
+
+            $file   = $this->request->getFile('file_excel');
+            $ext    = $file->getClientExtension();
+
+            if ($ext == 'xls') {
+                $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            } else{
+                $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            }
+
+            $spreadsheet = $render->load($file);
+            $sheet       = $spreadsheet->getActiveSheet()->toArray();
+
+            $jumlaherror   = 0;
+            $jumlahsukses  = 0;
+
+            foreach ($sheet as $x => $excel) {
+
+                //Skip row pertama - keempat (judul tabel)
+                if ($x == 0) {
+                    continue;
+                }
+                if ($x == 1) {
+                    continue;
+                }
+                if ($x == 2) {
+                    continue;
+                }
+                if ($x == 3) {
+                    continue;
+                }
+
+                //Cek Duplikat Nis
+                $nis            = $this->peserta->cek_duplikat_import($excel['3']);
+                //Cek Data User ada
+                $user           = $this->user->cek_user_ada($excel['1']); 
+                //Cek Duplikat User
+                $duplikat_user  = $this->peserta->cek_duplikat_user($excel['1']);
+
+                if ($nis != 0 || $user != 1 || $duplikat_user != 0) {
+                    $jumlaherror++;
+                    if ($nis != 0) {
+                        $gagal1 =  ' Karena NIS Duplikat';
+                    } else{
+                        $gagal1 = '';
+                    }
+                    
+                    if ($user != 1) {
+                        $gagal2 = ', Karena User ID Tidak Ditemukan';
+                    } else{
+                        $gagal2 ='';
+                    }
+                    
+                    if ($duplikat_user != 0) {
+                        $gagal3 =  ', Karena User ID Duplikat';
+                    } else{
+                        $gagal3 = '';
+                    }
+                    //Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'GAGAL',
+                        'aktivitas_log'=> 'Buat Data Peserta via Import Excel, Nama Peserta : ' .  $excel['4'] . $gagal1 . $gagal2 . $gagal3,
+                    ];
+                    $this->log->insert($log);
+                    //Data Log END
+                } elseif($nis == 0 && $user == 1 && $duplikat_user == 0) {
+
+                    $jumlahsukses++;
+
+                    $data   = [
+                        'user_id'               => $excel['1'],
+                        'angkatan'              => $excel['2'],
+                        'nis'                   => $excel['3'],
+                        'nama_peserta'          => strtoupper($excel['4']),
+                        'nik'                   => $excel['5'],
+                        'level_peserta'         => $excel['6'],
+                        'status_peserta'        => strtoupper($excel['7']),
+                        'asal_cabang_peserta'   => $excel['8'],
+                        'tmp_lahir'             => strtoupper($excel['9']),
+                        'tgl_lahir'             => $excel['10'],
+                        'jenkel'                => strtoupper($excel['11']),
+                        'pendidikan'            => strtoupper($excel['12']),
+                        'jurusan'               => strtoupper($excel['13']),
+                        'status_kerja'          => $excel['14'],
+                        'pekerjaan'             => strtoupper($excel['15']),
+                        'domisili_peserta'      => strtoupper($excel['16']),
+                        'alamat'                => strtoupper($excel['17']),
+                        'hp'                    => $excel['18'],
+                        'email'                 => strtolower($excel['19']),
+                        'tgl_gabung'            => $excel['20'],
+                    ];
+
+                    $this->peserta->insert($data);
+
+                    //Update Status User Aktif
+                    $updateusr = ['active' => '1'];
+                    $usrid = $excel['1'];
+                    $this->user->update($usrid, $updateusr);
+
+                    //Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'BERHASIL',
+                        'aktivitas_log'=> 'Buat Data Peserta via Import Excel, Nama Peserta : ' .  $excel['4'],
+                    ];
+                    $this->log->insert($log);
+                    //Data Log END
+                }
+            }
+            $this->session->setFlashdata('pesan_sukses', "Data Excel Berhasil Import = $jumlahsukses <br> Data Gagal Import = $jumlaherror");
+            return redirect()->to('index');
         }
 
-        $spreadsheet = $render->load($file);
-        $sheet       = $spreadsheet->getActiveSheet()->toArray();
-
-        $jumlaherror   = 0;
-        $jumlahsukses  = 0;
-
-        foreach ($sheet as $x => $excel) {
-
-            //Skip row pertama - keempat (judul tabel)
-            if ($x == 0) {
-                continue;
-            }
-            if ($x == 1) {
-                continue;
-            }
-            if ($x == 2) {
-                continue;
-            }
-            if ($x == 3) {
-                continue;
-            }
-
-            //Skip data duplikat
-            $nis    = $this->peserta->cek_duplikat_import($excel['3']);
-            if ($nis != 0 ) {
-                $jumlaherror++;
-                //Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'GAGAL',
-                    'aktivitas_log'=> 'Buat Data Peserta via Import Excel, Nama Peserta : ' .  $excel['4'],
-                ];
-                $this->log->insert($log);
-                //Data Log END
-            } elseif($nis == 0) {
-
-                $jumlahsukses++;
-
-                $data   = [
-                    'user_id'               => $excel['1'],
-                    'angkatan'              => $excel['2'],
-                    'nis'                   => $excel['3'],
-                    'nama_peserta'          => strtoupper($excel['4']),
-                    'nik'                   => $excel['5'],
-                    'level_peserta'         => $excel['6'],
-                    'status_peserta'        => strtoupper($excel['7']),
-                    'asal_cabang_peserta'   => $excel['8'],
-                    'tmp_lahir'             => strtoupper($excel['9']),
-                    'tgl_lahir'             => $excel['10'],
-                    'jenkel'                => strtoupper($excel['11']),
-                    'pendidikan'            => strtoupper($excel['12']),
-                    'jurusan'               => strtoupper($excel['13']),
-                    'status_kerja'          => $excel['14'],
-                    'pekerjaan'             => strtoupper($excel['15']),
-                    'domisili_peserta'      => strtoupper($excel['16']),
-                    'alamat'                => strtoupper($excel['17']),
-                    'hp'                    => $excel['18'],
-                    'email'                 => strtolower($excel['19']),
-                    'tgl_gabung'            => $excel['20'],
-                ];
-
-                $this->peserta->insert($data);
-
-                //Update Status User Aktif
-                $updateusr = ['active' => '1'];
-                $usrid = $excel['1'];
-                $this->user->update($usrid, $updateusr);
-
-                //Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'BERHASIL',
-                    'aktivitas_log'=> 'Buat Data Peserta via Import Excel, Nama Peserta : ' .  $excel['4'],
-                ];
-                $this->log->insert($log);
-                //Data Log END
-            }
-        }
-
-        $this->session->setFlashdata('pesan_sukses', "Data Excel Berhasil Import = $jumlahsukses <br> Data Gagal Import = $jumlaherror");
-        return redirect()->to('index');
     }
 
     public function export()
@@ -990,97 +1029,146 @@ class Peserta extends BaseController
 
     public function edit_multiple()
     {
-        $file   = $this->request->getFile('file_excel');
-        $ext    = $file->getClientExtension();
+        $validation = \Config\Services::validation();
+        $valid = $this->validate([
+            'file_excel' => [
+                'rules' => 'uploaded[file_excel]|ext_in[file_excel,xls,xlsx]',
+                'errors' => [
+                    'uploaded' => 'Harap Upload',
+                    'ext_in' => 'Harus File Excel!'
+                ]
+            ]
+        ]);
 
-        if ($ext == 'xls') {
-            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-        } else{
-            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        if (!$valid) {
+            $this->session->setFlashdata('pesan_error', 'ERROR! Untuk Import Harap Upload File Berjenis Excel!');
+            return redirect()->to('index');
+        } else {
+
+            $file   = $this->request->getFile('file_excel');
+            $ext    = $file->getClientExtension();
+
+            if ($ext == 'xls') {
+                $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            } else{
+                $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            }
+
+            $spreadsheet = $render->load($file);
+            $sheet       = $spreadsheet->getActiveSheet()->toArray();
+
+            $jumlaherror   = 0;
+            $jumlahsukses  = 0;
+
+            foreach ($sheet as $x => $excel) {
+
+                //Skip row pertama - keempat (judul tabel)
+                if ($x == 0) {
+                    continue;
+                }
+                if ($x == 1) {
+                    continue;
+                }
+                if ($x == 2) {
+                    continue;
+                }
+                if ($x == 3) {
+                    continue;
+                }
+
+                //Skip data duplikat
+                $peserta_id    = $this->peserta->cek_multiple_edit($excel['1']);
+                //Cek Duplikat Nis
+                $nis            = $this->peserta->cek_duplikat_import($excel['4']);
+                //Cek Data User ada
+                $user           = $this->user->cek_user_ada($excel['2']); 
+                //Cek Duplikat User
+                $duplikat_user  = $this->peserta->cek_duplikat_user($excel['2']);
+
+                if ($peserta_id == 0 || $nis != 0 || $user != 1 || $duplikat_user != 0) {
+                    $jumlaherror++;
+
+                    if ($nis != 0) {
+                        $gagal1 =  ' Karena NIS Duplikat';
+                    } else{
+                        $gagal1 = '';
+                    }
+                    
+                    if ($user != 1) {
+                        $gagal2 = ', Karena User ID Tidak Ditemukan';
+                    } else{
+                        $gagal2 ='';
+                    }
+                    
+                    if ($duplikat_user != 0) {
+                        $gagal3 =  ', Karena User ID Duplikat';
+                    } else{
+                        $gagal3 = '';
+                    }
+
+                    if ($peserta_id == 0) {
+                        $gagal4 =  ', Karena Peserta ID Tidak Ditemukan';
+                    } else{
+                        $gagal4 = '';
+                    }
+
+                    //Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'GAGAL',
+                        'aktivitas_log'=> 'Edit Data Peserta via Multiple Edit, Peserta : ' .  $excel['4'] . ' - ' .  $excel['5'] . ' ' . $gagal1 . $gagal2 . $gagal3 . $gagal4,
+                    ];
+                    $this->log->insert($log);
+                    //Data Log END
+                } elseif($peserta_id == 1 && $nis == 0 || $user == 1 || $duplikat_user == 0) {
+
+                    $jumlahsukses++;
+
+                    $updatedata   = [
+                        'user_id'               => $excel['2'],
+                        'angkatan'              => $excel['3'],
+                        'nis'                   => $excel['4'],
+                        'nama_peserta'          => strtoupper($excel['5']),
+                        'nik'                   => $excel['6'],
+                        'level_peserta'         => $excel['7'],
+                        'status_peserta'        => strtoupper($excel['8']),
+                        'asal_cabang_peserta'   => $excel['9'],
+                        'tmp_lahir'             => strtoupper($excel['10']),
+                        'tgl_lahir'             => $excel['11'],
+                        'jenkel'                => strtoupper($excel['12']),
+                        'pendidikan'            => strtoupper($excel['13']),
+                        'jurusan'               => strtoupper($excel['14']),
+                        'status_kerja'          => $excel['15'],
+                        'pekerjaan'             => strtoupper($excel['16']),
+                        'domisili_peserta'      => strtoupper($excel['17']),
+                        'alamat'                => strtoupper($excel['18']),
+                        'hp'                    => $excel['19'],
+                        'email'                 => strtolower($excel['20']),
+                        'tgl_gabung'            => $excel['21'],
+                    ];
+
+                    // Update Data Peserta
+                    $psrtid = $excel['1'];
+                    $this->peserta->update($psrtid, $updatedata);
+
+                    // Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'BERHASIL',
+                        'aktivitas_log'=> 'Edit Data Peserta via Multiple Edit, Peserta : '  .  $excel['4'] . ' | ' .  $excel['5'],
+                    ];
+                    $this->log->insert($log);
+                    // Data Log END
+                }
+            }
+            $this->session->setFlashdata('pesan_sukses', "Data Berhasil Diedit = $jumlahsukses <br> Data Gagal Diedit = $jumlaherror");
+            return redirect()->to('index');
         }
-
-        $spreadsheet = $render->load($file);
-        $sheet       = $spreadsheet->getActiveSheet()->toArray();
-
-        $jumlaherror   = 0;
-        $jumlahsukses  = 0;
-
-        foreach ($sheet as $x => $excel) {
-
-            //Skip row pertama - keempat (judul tabel)
-            if ($x == 0) {
-                continue;
-            }
-            if ($x == 1) {
-                continue;
-            }
-            if ($x == 2) {
-                continue;
-            }
-            if ($x == 3) {
-                continue;
-            }
-
-            //Skip data duplikat
-            $peserta_id    = $this->peserta->cek_multiple_edit($excel['1']);
-            if ($peserta_id == 0 ) {
-                $jumlaherror++;
-                //Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'GAGAL',
-                    'aktivitas_log'=> 'Edit Data Peserta via Multiple Edit, Peserta : ' .  $excel['4'] . ' | ' .  $excel['5'],
-                ];
-                $this->log->insert($log);
-                //Data Log END
-            } elseif($peserta_id == 1) {
-
-                $jumlahsukses++;
-
-                $updatedata   = [
-                    'user_id'               => $excel['2'],
-                    'angkatan'              => $excel['3'],
-                    'nis'                   => $excel['4'],
-                    'nama_peserta'          => strtoupper($excel['5']),
-                    'nik'                   => $excel['6'],
-                    'level_peserta'         => $excel['7'],
-                    'status_peserta'        => $excel['8'],
-                    'asal_cabang_peserta'   => $excel['9'],
-                    'tmp_lahir'             => strtoupper($excel['10']),
-                    'tgl_lahir'             => $excel['11'],
-                    'jenkel'                => $excel['12'],
-                    'pendidikan'            => $excel['13'],
-                    'jurusan'               => strtoupper($excel['14']),
-                    'status_kerja'          => $excel['15'],
-                    'pekerjaan'             => $excel['16'],
-                    'domisili_peserta'      => $excel['17'],
-                    'alamat'                => strtoupper($excel['18']),
-                    'hp'                    => $excel['19'],
-                    'email'                 => strtolower($excel['20']),
-                    'tgl_gabung'            => $excel['21'],
-                ];
-
-                // Update Data Peserta
-                $psrtid = $excel['1'];
-                $this->peserta->update($psrtid, $updatedata);
-
-                // Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'BERHASIL',
-                    'aktivitas_log'=> 'Edit Data Peserta via Multiple Edit, Peserta : '  .  $excel['4'] . ' | ' .  $excel['5'],
-                ];
-                $this->log->insert($log);
-                // Data Log END
-            }
-        }
-
-        $this->session->setFlashdata('pesan_sukses', "Data Berhasil Diedit = $jumlahsukses <br> Data Gagal Diedit = $jumlaherror");
-        return redirect()->to('index');
+        
     }
 
 

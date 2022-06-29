@@ -221,6 +221,7 @@ class Program extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Buat Data Program Nama : ' .  $this->request->getVar('nama_program'),
                 ];
                 $this->log->insert($log);
@@ -367,6 +368,7 @@ class Program extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Ubah Data Program Nama : ' .  $this->request->getVar('nama_program'),
                 ];
                 $this->log->insert($log);
@@ -623,7 +625,8 @@ class Program extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
-                    'aktivitas_log'=> 'BERHASIL - Buat Data Kelas Nama : ' .  $this->request->getVar('nama_kelas'),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Buat Data Kelas Nama : ' .  $this->request->getVar('nama_kelas'),
                 ];
                 $this->log->insert($log);
                 // Data Log END
@@ -821,6 +824,7 @@ class Program extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Ubah Data Kelas Nama : ' .  $this->request->getVar('nama_kelas'),
                 ];
                 $this->log->insert($log);

@@ -45,6 +45,14 @@ class Modelpengajar extends Model
             ->countAllResults();
     }
 
+    //Cek data duplikat user id- import file excel pada data peserta
+    public function cek_duplikat_user($user_id)
+    {
+        return $this->table('pengajar')
+            ->where('user_id', $user_id)
+            ->countAllResults();
+    }
+
     //Cek data pengajar ada atau tidak berdasarkan pengajar_id
     public function cek_multiple_edit($pengajar_id)
     {

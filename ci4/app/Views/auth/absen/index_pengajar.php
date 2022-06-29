@@ -59,6 +59,9 @@
                     <td width="10%">
                         <a href="list_absen/<?= $data['kelas_id'] ?>" class="btn btn-info">
                             <i class=" fa fa-user-graduate mr-1"></i>Absensi
+                        </a> <br> <br>
+                        <a href="ujian/<?= $data['kelas_id'] ?>" class="btn btn-warning">
+                            <i class=" fa fa-file-archive mr-1"></i>Hasil Ujian
                         </a>
                     </td>
                 </tr>

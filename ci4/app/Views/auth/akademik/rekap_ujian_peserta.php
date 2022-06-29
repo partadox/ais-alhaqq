@@ -84,7 +84,7 @@ if (session()->getFlashdata('pesan_sukses')) {
                     <td width="4%"><?= $data['nama_pengajar'] ?></td>
                     <td width="3%"><?= $data['hari_kelas'] ?></td>
                     <td width="3%"><?= $data['waktu_kelas'] ?> <?= $data['zona_waktu_kelas'] ?></td>
-                    <td width="3%"><?= $data['tgl_ujian'] ?></td>
+                    <td width="3%"><?= shortdate_indo($data['tgl_ujian']) ?></td>
                     <td width="3%"><?= $data['waktu_ujian'] ?></td>
                     <td width="3%"><?= $data['nilai_ujian'] ?></td>
                     <td width="3%"><?= $data['nilai_akhir'] ?></td>

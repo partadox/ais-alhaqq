@@ -30,6 +30,17 @@ class Modelpesertakelas extends Model
             ->get()->getResultArray();
     }
 
+    public function peserta_onkelas_ujian($kelas_id)
+    {
+        return $this->table('peserta_kelas')
+            ->join('peserta', 'peserta.peserta_id = peserta_kelas.data_peserta_id')
+            ->join('ujian', 'ujian.ujian_id = peserta_kelas.data_ujian')
+            ->where('data_kelas_id', $kelas_id)
+            // ->where('status_peserta_kelas', 'Belum Lulus')
+            ->orderBy('nama_peserta', 'ASC')
+            ->get()->getResultArray();
+    }
+
     //Jumlah peserta dalam kelas - Peserta_Kelas
     public function jumlah_peserta_onkelas($kelas_id)
     {

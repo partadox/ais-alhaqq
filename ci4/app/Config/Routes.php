@@ -145,6 +145,7 @@ $routes->get('/akademik/rekap_ujian_peserta_export/(:num)', 'Akademik::rekap_uji
 
 $routes->get('/auth/absen/index_pengajar', 'Absen::index_pengajar', ['filter' => 'Validasilogin']);
 $routes->get('/auth/absen/list_absen/(:num)', 'Absen::list_absen/$1', ['filter' => 'Validasilogin']);
+$routes->get('/auth/absen/ujian/(:num)', 'Absen::list_hasil_ujian/$1', ['filter' => 'Validasilogin']);
 
 $routes->get('/auth/pembayaran/rekap_spp_peserta/(:num)/(:num)', 'Pembayaran::rekap_spp_peserta/$1/$1', ['filter' => 'Validasilogin']);
 

@@ -162,6 +162,14 @@ class Modelpeserta extends Model
             ->countAllResults();
     }
 
+    //Cek data duplikat user id- import file excel pada data peserta
+    public function cek_duplikat_user($user_id)
+    {
+        return $this->table('peserta')
+            ->where('user_id', $user_id)
+            ->countAllResults();
+    }
+
     //Cek data peserta ada atau tidak berdasarkan peserta_id
     public function cek_multiple_edit($peserta_id)
     {

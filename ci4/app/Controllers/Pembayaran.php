@@ -132,6 +132,7 @@ class Pembayaran extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Buat NIS Peserta ' . $this->request->getVar('nis'),
                 ];
                 $this->log->insert($log);
@@ -814,6 +815,7 @@ class Pembayaran extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Buat Data Pembayaran Baru Peserta ID : ' . $bayar_peserta_id,
                 ];
                 $this->log->insert($log);
@@ -1009,6 +1011,7 @@ class Pembayaran extends BaseController
                 'username_log' => session()->get('username'),
                 'tgl_log'      => date("Y-m-d"),
                 'waktu_log'    => date("H:i:s"),
+                'status_log'   => 'BERHASIL',
                 'aktivitas_log'=> 'Hapus Data Pembayaran ID : ' .  $this->request->getVar('bayar_id'),
             ];
             $this->log->insert($log);

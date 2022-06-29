@@ -198,7 +198,7 @@
     <li class="menu-title">Akademik</li>
     <li>
         <a href="<?= base_url('auth/absen/index_pengajar') ?>" class="waves-effect">
-            <i class="mdi mdi-school"></i> <span> Kelas & Absensi </span>
+            <i class="mdi mdi-school"></i> <span> Kelas </span>
         </a>
     </li>
     <li class="menu-title">Akun</li>
@@ -215,10 +215,7 @@
     <li class="menu-title">Akademik</li>
     <li>
         <a href="<?= base_url('auth/absen/index_pengajar') ?>" class="waves-effect">
-            <i class="mdi mdi-school"></i> <span> Kelas & Absensi </span>
-        </a>
-        <a href="<?= base_url('#') ?>" class="waves-effect">
-            <i class="mdi mdi-school"></i> <span> Nilai Ujian </span>
+            <i class="mdi mdi-school"></i> <span> Kelas </span>
         </a>
     </li>
     <li class="menu-title">Akun</li>

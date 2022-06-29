@@ -427,6 +427,7 @@ class Akun extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Edit Data Akun User Nama : ' . $this->request->getVar('nama'),
                 ];
                 $this->log->insert($log);
@@ -851,6 +852,7 @@ class Akun extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Buat Data Akun Admin Nama : ' . $this->request->getVar('nama'),
                 ];
                 $this->log->insert($log);
@@ -939,6 +941,7 @@ class Akun extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Edit Data Akun Admin Nama : ' . $this->request->getVar('nama'),
                 ];
                 $this->log->insert($log);
@@ -1006,6 +1009,7 @@ class Akun extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Edit Data Akun Admin Username : ' .  $this->request->getVar('username'),
                 ];
                 $this->log->insert($log);
@@ -1034,6 +1038,7 @@ class Akun extends BaseController
                 'username_log' => session()->get('username'),
                 'tgl_log'      => date("Y-m-d"),
                 'waktu_log'    => date("H:i:s"),
+                'status_log'   => 'BERHASIL',
                 'aktivitas_log'=> 'Hapus Data Akun Admin ID : ' .  $this->request->getVar('user_id'),
             ];
             $this->log->insert($log);
@@ -1527,85 +1532,107 @@ class Akun extends BaseController
 
     public function import_file()
     {
+        $validation = \Config\Services::validation();
         $pst_or_pgj = $this->request->getVar('pst_or_pgj');
-        $file   = $this->request->getFile('file_excel');
-        $ext    = $file->getClientExtension();
+        $valid = $this->validate([
+            'file_excel' => [
+                'rules' => 'uploaded[file_excel]|ext_in[file_excel,xls,xlsx]',
+                'errors' => [
+                    'uploaded' => 'Harap Upload',
+                    'ext_in' => 'Harus File Excel!'
+                ]
+            ]
+        ]);
 
-        if ($ext == 'xls') {
-            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-        } else{
-            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
-        }
-
-        $spreadsheet = $render->load($file);
-        $sheet       = $spreadsheet->getActiveSheet()->toArray();
-
-        $jumlaherror   = 0;
-        $jumlahsukses  = 0;
-
-        foreach ($sheet as $x => $excel) {
-
-            //Skip row pertama - keempat (judul tabel)
-            if ($x == 0) {
-                continue;
+        if (!$valid) {
+            $this->session->setFlashdata('pesan_error', 'ERROR! Untuk Import Harap Upload File Berjenis Excel!');
+            if($pst_or_pgj == 'peserta'){
+                return redirect()->to('user_peserta');
+            } elseif($pst_or_pgj == 'pengajar') {
+                return redirect()->to('user_pengajar');
             }
-            if ($x == 1) {
-                continue;
-            }
-            if ($x == 2) {
-                continue;
-            }
-            if ($x == 3) {
-                continue;
+        } else {
+
+            $file   = $this->request->getFile('file_excel');
+            $ext    = $file->getClientExtension();
+
+            if ($ext == 'xls') {
+                $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            } else{
+                $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
             }
 
-            //Skip data akun username duplikat
-            $username    = $this->user->cek_duplikat_import_akun_peserta($excel['2']);
-            if ($username != 0 ) {
-                $jumlaherror++;
-                //Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'GAGAL',
-                    'aktivitas_log'=> 'Buat Data Akun via Import Excel, ' .   $pst_or_pgj .  ' Nama : ' . $excel["1"],
-                ];
-                $this->log->insert($log);
-                //Data Log END
-            } elseif($username == 0) {
+            $spreadsheet = $render->load($file);
+            $sheet       = $spreadsheet->getActiveSheet()->toArray();
 
-                $jumlahsukses++;
+            $jumlaherror   = 0;
+            $jumlahsukses  = 0;
 
-                $data   = [
-                    'nama'                  => strtoupper( $excel['1']),
-                    'username'              => $excel['2'],
-                    'password'              => (password_hash($excel['3'], PASSWORD_BCRYPT)),
-                    'foto'                  => 'default.png',
-                    'level'                 => $excel['4'],
-                    'active'                => '0',
-                ];
+            foreach ($sheet as $x => $excel) {
 
-                $this->user->insert($data);
+                //Skip row pertama - keempat (judul tabel)
+                if ($x == 0) {
+                    continue;
+                }
+                if ($x == 1) {
+                    continue;
+                }
+                if ($x == 2) {
+                    continue;
+                }
+                if ($x == 3) {
+                    continue;
+                }
 
-                //Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'BERHASIL',
-                    'aktivitas_log'=> 'Buat Data Akun via Import Excel, Nama : ' .   $pst_or_pgj .  ' Nama : '. $excel["1"],
-                ];
-                $this->log->insert($log);
-                //Data Log END
+                //Skip data akun username duplikat
+                $username    = $this->user->cek_duplikat_import_akun_peserta($excel['2']);
+                if ($username != 0 ) {
+                    $jumlaherror++;
+                    //Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'GAGAL',
+                        'aktivitas_log'=> 'Buat Data Akun via Import Excel, ' .   $pst_or_pgj .  ' Nama : ' . $excel["1"],
+                    ];
+                    $this->log->insert($log);
+                    //Data Log END
+                } elseif($username == 0) {
+
+                    $jumlahsukses++;
+
+                    $data   = [
+                        'nama'                  => strtoupper( $excel['1']),
+                        'username'              => $excel['2'],
+                        'password'              => (password_hash($excel['3'], PASSWORD_BCRYPT)),
+                        'foto'                  => 'default.png',
+                        'level'                 => $excel['4'],
+                        'active'                => '0',
+                    ];
+
+                    $this->user->insert($data);
+
+                    //Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'BERHASIL',
+                        'aktivitas_log'=> 'Buat Data Akun via Import Excel, Nama : ' .   $pst_or_pgj .  ' Nama : '. $excel["1"],
+                    ];
+                    $this->log->insert($log);
+                    //Data Log END
+                }
             }
-        }
 
-        $this->session->setFlashdata('pesan_sukses', "Data Excel Berhasil Import = $jumlahsukses <br> Data Gagal Import = $jumlaherror");
-        if($pst_or_pgj == 'peserta'){
-            return redirect()->to('user_peserta');
-        } elseif($pst_or_pgj == 'pengajar') {
-            return redirect()->to('user_pengajar');
+            $this->session->setFlashdata('pesan_sukses', "Data Excel Berhasil Import = $jumlahsukses <br> Data Gagal Import = $jumlaherror");
+            if($pst_or_pgj == 'peserta'){
+                return redirect()->to('user_peserta');
+            } elseif($pst_or_pgj == 'pengajar') {
+                return redirect()->to('user_pengajar');
+            }
+
         }
         
     }
@@ -1826,87 +1853,109 @@ class Akun extends BaseController
 
     public function edit_multiple()
     {
+        $validation = \Config\Services::validation();
         $pst_or_pgj = $this->request->getVar('pst_or_pgj');
-        $file   = $this->request->getFile('file_excel');
-        $ext    = $file->getClientExtension();
+        $valid = $this->validate([
+            'file_excel' => [
+                'rules' => 'uploaded[file_excel]|ext_in[file_excel,xls,xlsx]',
+                'errors' => [
+                    'uploaded' => 'Harap Upload',
+                    'ext_in' => 'Harus File Excel!'
+                ]
+            ]
+        ]);
 
-        if ($ext == 'xls') {
-            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-        } else{
-            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        if (!$valid) {
+            $this->session->setFlashdata('pesan_error', 'ERROR! Untuk Import Harap Upload File Berjenis Excel!');
+            if($pst_or_pgj == 'peserta'){
+                return redirect()->to('user_peserta');
+            } elseif($pst_or_pgj == 'pengajar') {
+                return redirect()->to('user_pengajar');
+            }
+        } else {
+
+            $file   = $this->request->getFile('file_excel');
+            $ext    = $file->getClientExtension();
+
+            if ($ext == 'xls') {
+                $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            } else{
+                $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            }
+
+            $spreadsheet = $render->load($file);
+            $sheet       = $spreadsheet->getActiveSheet()->toArray();
+
+            $jumlaherror   = 0;
+            $jumlahsukses  = 0;
+
+            foreach ($sheet as $x => $excel) {
+
+                //Skip row pertama - keempat (judul tabel)
+                if ($x == 0) {
+                    continue;
+                }
+                if ($x == 1) {
+                    continue;
+                }
+                if ($x == 2) {
+                    continue;
+                }
+                if ($x == 3) {
+                    continue;
+                }
+
+                //Skip data akun username duplikat
+                $user_id    = $this->user->cek_multiple_edit($excel['0']);
+                if ($user_id == 0 ) {
+                    $jumlaherror++;
+                    //Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'GAGAL',
+                        'aktivitas_log'=> 'Edit Data Akun via Multiple Edit Excel,' .   $pst_or_pgj .  ' Nama : ' . $excel["1"] ,
+                    ];
+                    $this->log->insert($log);
+                    //Data Log END
+                } elseif($user_id == 1) {
+
+                    $jumlahsukses++;
+
+                    $updatedata   = [
+                        'nama'                  => strtoupper( $excel['1']),
+                        'username'              => $excel['2'],
+                        'password'              => (password_hash($excel['3'], PASSWORD_BCRYPT)),
+                        'foto'                  => 'default.png',
+                        'level'                 => $excel['4'],
+                        'active'                => $excel['5'],
+                    ];
+
+                    // Update Data Akun Peserta
+                    $usrid = $excel['0'];
+                    $this->user->update($usrid, $updatedata);
+
+                    //Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'BERHASIL',
+                        'aktivitas_log'=> 'Edit Data Akun via Multiple Edit Excel,' .   $pst_or_pgj .  ' Nama : ' . $excel["1"] ,
+                    ];
+                    $this->log->insert($log);
+                    //Data Log END
+                }
+            }
+
+            $this->session->setFlashdata('pesan_sukses', "Data Berhasil Diedit = $jumlahsukses <br> Data Gagal Diedit = $jumlaherror");
+            if($pst_or_pgj == 'peserta'){
+                return redirect()->to('user_peserta');
+            } elseif($pst_or_pgj == 'pengajar') {
+                return redirect()->to('user_pengajar');
         }
 
-        $spreadsheet = $render->load($file);
-        $sheet       = $spreadsheet->getActiveSheet()->toArray();
-
-        $jumlaherror   = 0;
-        $jumlahsukses  = 0;
-
-        foreach ($sheet as $x => $excel) {
-
-            //Skip row pertama - keempat (judul tabel)
-            if ($x == 0) {
-                continue;
-            }
-            if ($x == 1) {
-                continue;
-            }
-            if ($x == 2) {
-                continue;
-            }
-            if ($x == 3) {
-                continue;
-            }
-
-            //Skip data akun username duplikat
-            $user_id    = $this->user->cek_multiple_edit($excel['0']);
-            if ($user_id == 0 ) {
-                $jumlaherror++;
-                //Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'GAGAL',
-                    'aktivitas_log'=> 'Edit Data Akun via Multiple Edit Excel,' .   $pst_or_pgj .  ' Nama : ' . $excel["1"] ,
-                ];
-                $this->log->insert($log);
-                //Data Log END
-            } elseif($user_id == 1) {
-
-                $jumlahsukses++;
-
-                $updatedata   = [
-                    'nama'                  => strtoupper( $excel['1']),
-                    'username'              => $excel['2'],
-                    'password'              => (password_hash($excel['3'], PASSWORD_BCRYPT)),
-                    'foto'                  => 'default.png',
-                    'level'                 => $excel['4'],
-                    'active'                => $excel['5'],
-                ];
-
-                // Update Data Akun Peserta
-                $usrid = $excel['0'];
-                $this->user->update($usrid, $updatedata);
-
-                //Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'BERHASIL',
-                    'aktivitas_log'=> 'Edit Data Akun via Multiple Edit Excel,' .   $pst_or_pgj .  ' Nama : ' . $excel["1"] ,
-                ];
-                $this->log->insert($log);
-                //Data Log END
-            }
-        }
-
-        $this->session->setFlashdata('pesan_sukses', "Data Berhasil Diedit = $jumlahsukses <br> Data Gagal Diedit = $jumlaherror");
-        if($pst_or_pgj == 'peserta'){
-            return redirect()->to('user_peserta');
-        } elseif($pst_or_pgj == 'pengajar') {
-            return redirect()->to('user_pengajar');
         }
         
     }

@@ -161,6 +161,14 @@ class Modeluser extends Model
             ->countAllResults();
     }
 
+    //Cek akun user ada - import file excel pada data akun user peserta
+    public function cek_user_ada($user_id)
+    {
+        return $this->table('user')
+            ->where('user_id', $user_id)
+            ->countAllResults();
+    }
+
     //Cek data akun peserta ada atau tidak berdasarkan user_id
     public function cek_multiple_edit($user_id)
     {

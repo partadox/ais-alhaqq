@@ -100,6 +100,24 @@ class Absen extends BaseController
         return view('auth/absen/list_absen', $data);
     }
 
+    public function list_hasil_ujian($kelas_id)
+    {
+        if (!session()->get('user_id')) {
+            return redirect()->to('login');
+        }
+
+        $peserta_onkelas    = $this->peserta_kelas->peserta_onkelas_ujian($kelas_id);
+
+        $data = [
+            'title'             => 'Al-Haqq - Hasil Ujian Peserta Kelas',
+            'list'              => $this->program->list(),
+            'peserta_onkelas'   => $peserta_onkelas,
+            'detail_kelas'      => $this->program->list_detail_kelas($kelas_id),
+            'jumlah_peserta'    => $this->peserta_kelas->jumlah_peserta_onkelas($kelas_id),
+        ];
+        return view('auth/absen/list_hasil_ujian', $data);
+    }
+
     public function input_tm()
     {
         if ($this->request->isAJAX()) {

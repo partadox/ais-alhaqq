@@ -79,6 +79,7 @@ class Bank extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Buat Data Bank Rek. : ' .  $this->request->getVar('rekening_bank'),
                 ];
                 $this->log->insert($log);
@@ -164,6 +165,7 @@ class Bank extends BaseController
                     'username_log' => session()->get('username'),
                     'tgl_log'      => date("Y-m-d"),
                     'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
                     'aktivitas_log'=> 'Ubah Data Bank Rek. : ' .  $this->request->getVar('rekening_bank'),
                 ];
                 $this->log->insert($log);
@@ -192,6 +194,7 @@ class Bank extends BaseController
                 'username_log' => session()->get('username'),
                 'tgl_log'      => date("Y-m-d"),
                 'waktu_log'    => date("H:i:s"),
+                'status_log'   => 'BERHASIL',
                 'aktivitas_log'=> 'Hapus Data Bank ID : ' .  $this->request->getVar('bank_id'),
             ];
             $this->log->insert($log);

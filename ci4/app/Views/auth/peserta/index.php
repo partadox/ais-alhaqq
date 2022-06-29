@@ -36,6 +36,17 @@
 </div>
 
 <?php
+if (session()->getFlashdata('pesan_error')) {
+    echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button> <strong>';
+    echo session()->getFlashdata('pesan_error');
+    echo ' </strong> </div>';
+}
+?>
+
+<?php
 if (session()->getFlashdata('pesan_sukses')) {
     echo '<div class="alert alert-secondary alert-dismissible fade show" role="alert">
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
