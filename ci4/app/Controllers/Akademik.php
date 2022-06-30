@@ -991,81 +991,97 @@ class Akademik extends BaseController
 
     public function rekap_ujian_peserta_import()
     {
-        $pst_or_pgj = $this->request->getVar('pst_or_pgj');
-        $file   = $this->request->getFile('file_excel');
-        $ext    = $file->getClientExtension();
+        $validation = \Config\Services::validation();
+        $valid = $this->validate([
+            'file_excel' => [
+                'rules' => 'uploaded[file_excel]|ext_in[file_excel,xls,xlsx]',
+                'errors' => [
+                    'uploaded' => 'Harap Upload',
+                    'ext_in' => 'Harus File Excel!'
+                ]
+            ]
+        ]);
 
-        if ($ext == 'xls') {
-            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-        } else{
-            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        if (!$valid) {
+            $this->session->setFlashdata('pesan_error', 'ERROR! Untuk Import Harap Upload File Berjenis Excel!');
+            return redirect()->to('/auth/akademik/admin_rekap_ujian');
+        } else {
+
+            $pst_or_pgj = $this->request->getVar('pst_or_pgj');
+            $file   = $this->request->getFile('file_excel');
+            $ext    = $file->getClientExtension();
+
+            if ($ext == 'xls') {
+                $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            } else{
+                $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            }
+
+            $spreadsheet = $render->load($file);
+            $sheet       = $spreadsheet->getActiveSheet()->toArray();
+
+            $jumlaherror   = 0;
+            $jumlahsukses  = 0;
+
+            foreach ($sheet as $x => $excel) {
+
+                //Skip row pertama - keempat (judul tabel)
+                if ($x == 0) {
+                    continue;
+                }
+                if ($x == 1) {
+                    continue;
+                }
+                if ($x == 2) {
+                    continue;
+                }
+                if ($x == 3) {
+                    continue;
+                }
+
+                //Skip data akun username duplikat
+                $ujian    = $this->ujian->cek_ujian($excel['0']);
+                if ($ujian != 1 ) {
+                    $jumlaherror++;
+                } elseif($ujian == 1) {
+
+                    $jumlahsukses++;
+
+                    $id_ujian = $excel['0'];
+                    $get_id_peserta_kelas = $this->peserta_kelas->get_peserta_kelas_id_ujian($id_ujian);
+                    $peserta_kelas_id = $get_id_peserta_kelas-> peserta_kelas_id;
+
+                    $data1   = [
+                        'tgl_ujian'                => $excel['9'],
+                        'waktu_ujian'              => $excel['10'],
+                        'nilai_ujian'              => $excel['11'],
+                        'nilai_akhir'              => $excel['12'],
+                    ];
+
+                    $this->ujian->update($id_ujian, $data1);
+
+                    $data2   = [
+                        'status_peserta_kelas'                => strtoupper($excel['13']),
+                    ];
+
+                    $this->peserta_kelas->update($peserta_kelas_id, $data2);
+
+                    //Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'BERHASIL',
+                        'aktivitas_log'=> 'Ubah Data Ujian via Import Excel, NIS : ' .   $excel['1'] .  ' Nama : '. $excel['2'],
+                    ];
+                    $this->log->insert($log);
+                    //Data Log END
+                }
+            }
+
+            $this->session->setFlashdata('pesan_sukses', "Data Excel Berhasil Import = $jumlahsukses <br> Data Gagal Import = $jumlaherror");
+            return redirect()->to('/auth/akademik/admin_rekap_ujian');
         }
-
-        $spreadsheet = $render->load($file);
-        $sheet       = $spreadsheet->getActiveSheet()->toArray();
-
-        $jumlaherror   = 0;
-        $jumlahsukses  = 0;
-
-        foreach ($sheet as $x => $excel) {
-
-            //Skip row pertama - keempat (judul tabel)
-            if ($x == 0) {
-                continue;
-            }
-            if ($x == 1) {
-                continue;
-            }
-            if ($x == 2) {
-                continue;
-            }
-            if ($x == 3) {
-                continue;
-            }
-
-            //Skip data akun username duplikat
-            $ujian    = $this->ujian->cek_ujian($excel['0']);
-            if ($ujian != 1 ) {
-                $jumlaherror++;
-            } elseif($ujian == 1) {
-
-                $jumlahsukses++;
-
-                $id_ujian = $excel['0'];
-                $get_id_peserta_kelas = $this->peserta_kelas->get_peserta_kelas_id_ujian($id_ujian);
-                $peserta_kelas_id = $get_id_peserta_kelas-> peserta_kelas_id;
-
-                $data1   = [
-                    'tgl_ujian'                => $excel['9'],
-                    'waktu_ujian'              => $excel['10'],
-                    'nilai_ujian'              => $excel['11'],
-                    'nilai_akhir'              => $excel['12'],
-                ];
-
-                $this->ujian->update($id_ujian, $data1);
-
-                $data2   = [
-                    'status_peserta_kelas'                => strtoupper($excel['13']),
-                ];
-
-                $this->peserta_kelas->update($peserta_kelas_id, $data2);
-
-                //Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'BERHASIL',
-                    'aktivitas_log'=> 'Ubah Data Ujian via Import Excel, NIS : ' .   $excel['1'] .  ' Nama : '. $excel['2'],
-                ];
-                $this->log->insert($log);
-                //Data Log END
-            }
-        }
-
-        $this->session->setFlashdata('pesan_sukses', "Data Excel Berhasil Import = $jumlahsukses <br> Data Gagal Import = $jumlaherror");
-        return redirect()->to('/auth/akademik/admin_rekap_ujian');
-        
     }
 
     public function admin_sertifikat()
@@ -1524,73 +1540,89 @@ class Akademik extends BaseController
 
     public function rekap_sertifikat_import()
     {
-        $file   = $this->request->getFile('file_excel');
-        $ext    = $file->getClientExtension();
+        $validation = \Config\Services::validation();
+        $valid = $this->validate([
+            'file_excel' => [
+                'rules' => 'uploaded[file_excel]|ext_in[file_excel,xls,xlsx]',
+                'errors' => [
+                    'uploaded' => 'Harap Upload',
+                    'ext_in' => 'Harus File Excel!'
+                ]
+            ]
+        ]);
 
-        if ($ext == 'xls') {
-            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
-        } else{
-            $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+        if (!$valid) {
+            $this->session->setFlashdata('pesan_error', 'ERROR! Untuk Import Harap Upload File Berjenis Excel!');
+            return redirect()->to('/auth/akademik/admin_sertifikat');
+        } else {
+
+            $file   = $this->request->getFile('file_excel');
+            $ext    = $file->getClientExtension();
+
+            if ($ext == 'xls') {
+                $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xls();
+            } else{
+                $render     = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+            }
+
+            $spreadsheet = $render->load($file);
+            $sheet       = $spreadsheet->getActiveSheet()->toArray();
+
+            $jumlaherror   = 0;
+            $jumlahsukses  = 0;
+
+            foreach ($sheet as $x => $excel) {
+
+                //Skip row pertama - keempat (judul tabel)
+                if ($x == 0) {
+                    continue;
+                }
+                if ($x == 1) {
+                    continue;
+                }
+                if ($x == 2) {
+                    continue;
+                }
+                if ($x == 3) {
+                    continue;
+                }
+
+                //Skip data nomor sertifikat duplikat
+                $sertifikat    = $this->sertifikat->cek_nomor_sertifikat_duplikat($excel['10']);
+                if ($sertifikat != 0 ) {
+                    $jumlaherror++;
+                } elseif($sertifikat == 0) {
+
+                    $jumlahsukses++;
+
+                    $sertifikat_id = $excel['0'];
+
+                    $data1   = [
+                        'status_cetak'         => $excel['5'],
+                        'nominal_bayar_cetak'  => $excel['8'],
+                        'keterangan_cetak'     => $excel['9'],
+                        'nomor_sertifikat'     => $excel['10'],
+                        'link_cetak'           => $excel['11'],
+                    ];
+
+                    $this->sertifikat->update($sertifikat_id, $data1);
+
+                    //Data Log START
+                    $log = [
+                        'username_log' => session()->get('username'),
+                        'tgl_log'      => date("Y-m-d"),
+                        'waktu_log'    => date("H:i:s"),
+                        'status_log'   => 'BERHASIL',
+                        'aktivitas_log'=> 'Import Data Pengajuan Sertifikat via Import Excel, NIS : ' .   $excel['1'] .  ' Nama : '. $excel['2'],
+                    ];
+                    $this->log->insert($log);
+                    //Data Log END
+                }
+            }
+
+            $this->session->setFlashdata('pesan_sukses', "Data Excel Berhasil Import = $jumlahsukses <br> Data Gagal Import = $jumlaherror");
+            return redirect()->to('/auth/akademik/admin_sertifikat');
         }
-
-        $spreadsheet = $render->load($file);
-        $sheet       = $spreadsheet->getActiveSheet()->toArray();
-
-        $jumlaherror   = 0;
-        $jumlahsukses  = 0;
-
-        foreach ($sheet as $x => $excel) {
-
-            //Skip row pertama - keempat (judul tabel)
-            if ($x == 0) {
-                continue;
-            }
-            if ($x == 1) {
-                continue;
-            }
-            if ($x == 2) {
-                continue;
-            }
-            if ($x == 3) {
-                continue;
-            }
-
-            //Skip data nomor sertifikat duplikat
-            $sertifikat    = $this->sertifikat->cek_nomor_sertifikat_duplikat($excel['10']);
-            if ($sertifikat != 0 ) {
-                $jumlaherror++;
-            } elseif($sertifikat == 0) {
-
-                $jumlahsukses++;
-
-                $sertifikat_id = $excel['0'];
-
-                $data1   = [
-                    'status_cetak'         => $excel['5'],
-                    'nominal_bayar_cetak'  => $excel['8'],
-                    'keterangan_cetak'     => $excel['9'],
-                    'nomor_sertifikat'     => $excel['10'],
-                    'link_cetak'           => $excel['11'],
-                ];
-
-                $this->sertifikat->update($sertifikat_id, $data1);
-
-                //Data Log START
-                $log = [
-                    'username_log' => session()->get('username'),
-                    'tgl_log'      => date("Y-m-d"),
-                    'waktu_log'    => date("H:i:s"),
-                    'status_log'   => 'BERHASIL',
-                    'aktivitas_log'=> 'Import Data Pengajuan Sertifikat via Import Excel, NIS : ' .   $excel['1'] .  ' Nama : '. $excel['2'],
-                ];
-                $this->log->insert($log);
-                //Data Log END
-            }
-        }
-
-        $this->session->setFlashdata('pesan_sukses', "Data Excel Berhasil Import = $jumlahsukses <br> Data Gagal Import = $jumlaherror");
-        return redirect()->to('/auth/akademik/admin_sertifikat');
-        
     }
 
     public function peserta_sertifikat()
