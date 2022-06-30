@@ -1004,7 +1004,7 @@ class Akademik extends BaseController
 
         if (!$valid) {
             $this->session->setFlashdata('pesan_error', 'ERROR! Untuk Import Harap Upload File Berjenis Excel!');
-            return redirect()->to('/auth/akademik/admin_rekap_ujian');
+            return redirect()->to('/ais/public//auth/akademik/admin_rekap_ujian');
         } else {
 
             $pst_or_pgj = $this->request->getVar('pst_or_pgj');
@@ -1553,7 +1553,7 @@ class Akademik extends BaseController
 
         if (!$valid) {
             $this->session->setFlashdata('pesan_error', 'ERROR! Untuk Import Harap Upload File Berjenis Excel!');
-            return redirect()->to('/auth/akademik/admin_sertifikat');
+            return redirect()->to('/ais/public/auth/akademik/admin_sertifikat');
         } else {
 
             $file   = $this->request->getFile('file_excel');
