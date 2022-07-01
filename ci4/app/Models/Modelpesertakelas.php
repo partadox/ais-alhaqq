@@ -193,7 +193,7 @@ class Modelpesertakelas extends Model
             ->select('data_absen')
             ->select($tm)
             ->where('data_kelas_id', $kelas_id)
-            ->where('status_peserta_kelas', 'BELUM LULUS')
+            //->where('status_peserta_kelas', 'BELUM LULUS')
             ->orderBy('nama_peserta', 'ASC')
             ->get()->getResultArray();
     }
