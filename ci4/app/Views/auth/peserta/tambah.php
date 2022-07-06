@@ -70,7 +70,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-4 col-form-label">NIK<code>*</code></label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" id="nik" name="nik">
+                        <input type="number" class="form-control" id="nik" name="nik">
                         <div class="invalid-feedback errorNik"></div>
                     </div>
                 </div>
@@ -153,7 +153,7 @@
                 <div class="form-group row">
                     <label class="col-sm-4 col-form-label">No. HP<code>*</code></label>
                     <div class="col-sm-8">
-                        <input class="form-control" type="text" id="hp" name="hp" >
+                        <input class="form-control" type="number" id="hp" name="hp" >
                         <div class="invalid-feedback errorHp"></div>
                     </div>
                 </div>
