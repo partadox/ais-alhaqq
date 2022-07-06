@@ -748,37 +748,231 @@ class Peserta extends BaseController
                 $user           = $this->user->cek_user_ada($excel['1']); 
                 //Cek Duplikat User
                 $duplikat_user  = $this->peserta->cek_duplikat_user($excel['1']);
+                
+                //Validasi Setelah Meet tgl 30-06-2022
 
-                if ($nis != 0 || $user != 1 || $duplikat_user != 0) {
+                //1. Cek Angkatan is numerik
+                $cek_angkatan = is_numeric($excel['2']);
+
+                //2a. Cek NIK is numerik
+                $cek_nik = is_numeric($excel['5']);
+                //2b. Cek NIK berjumlah 16 digits
+                $cek2_nik = strlen((string)$excel['5']);
+                if ($cek2_nik == "16") {
+                    $cek_nik_digit = true;
+                } else {
+                    $cek_nik_digit = false;
+                }
+
+                //3. Cek Level is numerik
+                $cek_level = is_numeric($excel['6']);
+
+                //4. Cek Status Peserta harus AKTIF/OFF/CUTI
+                if ($excel['7'] == "AKTIF" || $excel['7'] == "OFF" || $excel['7'] == "CUTI") {
+                    $cek_status_peserta = true;
+                } else {
+                    $cek_status_peserta = false;
+                }
+
+                //5. Cek asal cabang is numerik
+                $cek_cabang = is_numeric($excel['8']);
+
+                //6. Cek format tgl lahir YYYY-MM-DD
+                if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$excel['10'])) {
+                    $cek_tgl_lahir = true;
+                } else {
+                    $cek_tgl_lahir = false;
+                }
+
+                //7. Cek Jenis Kelamin
+                if ($excel['11'] == "IKHWAN" || $excel['11'] == "AKHWAT") {
+                    $cek_status_peserta = true;
+                } else {
+                    $cek_status_peserta = false;
+                }
+
+                //8. Cek pendidikan
+                if ($excel['12'] == "SD" || $excel['12'] == "SLTP" || $excel['12'] == "SLTA" || $excel['12'] == "DIPLOMA" || $excel['12'] == "SARJANA (S1)" || $excel['12'] == "MAGISTER (S2)" || $excel['12'] == "DOKTOR (S3)" || $excel['12'] == "TIDAK DIKETAHUI") {
+                    $cek_pendidikan = true;
+                } else {
+                    $cek_pendidikan = false;
+                }
+
+                //9. Status Pekerjaan
+                if ($excel['14'] == "1" || $excel['14'] == "0") {
+                    $cek_status_pekerjaan = true;
+                } else {
+                    $cek_status_pekerjaan = false;
+                }
+
+                //10. Pekerjaan
+                if ($excel['15'] == "WIRASWASTA" || $excel['15'] == "PEGAWAI SWASTA" || $excel['15'] == "PEMERINTAH/PNS" || $excel['15'] == "BUMN" || $excel['15'] == "USAHA/DAGANG" || $excel['15'] == "KEAMANAN/MILITER/POLISI" || $excel['15'] == "PERBANKAN/KEUANGAN" || $excel['15'] == "PENDIDIKAN" || $excel['15'] == "OLAHRAGA/ATLET" || $excel['15'] == "KESENIAN/ARTIS" || $excel['15'] == "KEAGAMAAN/MAJELIS" || $excel['15'] == "PELAJAR/MAHASISWA" || $excel['15'] == "KESEHATAN" || $excel['15'] == "KELUARGA/RUMAH TANGGA" || $excel['15'] == "FREELANCE"  || $excel['15'] == "LAINNYA" || $excel['15'] == "PENSIUNAN" || $excel['15'] == "TIDAK DIKETAHUI") {
+                    $cek_pekerjaan = true;
+                } else {
+                    $cek_pekerjaan = false;
+                }
+
+                //11. Cek Domisili
+                if ($excel['16'] == "BALIKPAPAN" || $excel['16'] == "LUAR BALIKPAPAN") {
+                    $cek_domisili = true;
+                } else {
+                    $cek_domisili = false;
+                }
+
+                //12. Cek format tgl gabung YYYY-MM-DD
+                if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$excel['20'])) {
+                    $cek_tgl_gabung = true;
+                } else {
+                    $cek_tgl_gabung = false;
+                }
+
+                //13. Cek No HP Awal harus 62 (Nomor Indonesia)
+                $cek2_hp = substr($excel['18'], 0, 2);
+                if ($cek2_hp == "62") {
+                    $cek_hp = true;
+                } else {
+                    $cek_hp = false;
+                }
+
+
+                if ($nis != 0 || $user != 1 || $duplikat_user != 0 
+                    || $cek_angkatan == false
+                    || $cek_nik == false
+                    || $cek_nik_digit == false
+                    || $cek_level == false
+                    || $cek_status_peserta == false
+                    || $cek_cabang == false
+                    || $cek_tgl_lahir == false
+                    || $cek_status_peserta == false
+                    || $cek_pendidikan == false
+                    || $cek_status_pekerjaan == false
+                    || $cek_pekerjaan == false
+                    || $cek_domisili == false
+                    || $cek_tgl_gabung == false
+                    || $cek_hp = false) {
                     $jumlaherror++;
                     if ($nis != 0) {
-                        $gagal1 =  ' Karena NIS Duplikat';
+                        $gagal1 =  ' NIS Duplikat';
                     } else{
                         $gagal1 = '';
                     }
                     
                     if ($user != 1) {
-                        $gagal2 = ', Karena User ID Tidak Ditemukan';
+                        $gagal2 = ', User ID Tidak Ditemukan';
                     } else{
                         $gagal2 ='';
                     }
                     
                     if ($duplikat_user != 0) {
-                        $gagal3 =  ', Karena User ID Duplikat';
+                        $gagal3 =  ', User ID Duplikat';
                     } else{
                         $gagal3 = '';
                     }
+
+                    
+                    if ($cek_angkatan == false) {
+                       $gagal4 = ', Penulisan Angkatan Tidak Sesuai Format';
+                    } else {
+                        $gagal4 = '';
+                    }
+
+                    if ($cek_nik == false) {
+                        $gagal5 = ', Format NIK Tidak Numerik';
+                    } else {
+                        $gagal5 = '';
+                    }
+
+                    if ($cek_nik_digit == false) {
+                        $gagal6 = ', NIK Tidak Berdigit 16';
+                    } else {
+                        $gagal6 = '';
+                    }
+
+                    if ($cek_level == false) {
+                        $gagal7 = ', Level Tidak Numerik';
+                    } else {
+                        $gagal7 = '';
+                    }
+
+                    if ($cek_status_peserta == false) {
+                        $gagal8 = ', Karena Status Peserta Tidak Sesuai Pilihan AKTIF/OFF/CUTI';
+                    } else {
+                        $gagal8 = '';
+                    }
+
+                    if ($cek_cabang == false) {
+                        $gagal9 = ', Karena Level Tidak Numerik';
+                    } else {
+                        $gagal9 = '';
+                    }
+
+                    if ($cek_tgl_lahir == false) {
+                        $gagal10 = ', Karena Level Tidak Sesuai Format Tanggal';
+                    } else {
+                        $gagal10 = '';
+                    }
+
+                    if ($cek_pendidikan == false) {
+                        $gagal11 = ', Karena Pendidikan Tidak Sesuai Pilihan'; 
+                    } else {
+                        $gagal11 = '';
+                    }
+
+                    if ($cek_status_pekerjaan == false) {
+                        $gagal12 = ', Karena Status Bekerja Tidak Numerik';
+                    } else {
+                        $gagal12 = '';
+                    }
+                    
+                    if ($cek_pekerjaan == false) {
+                        $gagal13 = ', Karena Pekerjaan Tidak Sesuai Pilihan';
+                    } else {
+                        $gagal13 = '';
+                    }
+
+                    if ($cek_domisili == false) {
+                        $gagal14 = ', Karena Domisili Tidak BALIKPAPAN/LUAR BALIKPAPAN';
+                    } else {
+                        $gagal14 = '';
+                    }
+
+                    if ($cek_tgl_gabung == false) {
+                        $gagal15 = ', Karena Level Tidak Sesuai Format Tanggal';
+                    } else {
+                        $gagal15 = '';
+                    }
+
+                    if ($cek_hp == false) {
+                        $gagal16 = ', Karena No HP Tidak Berawalan 62';
+                    } else {
+                        $gagal16 = '';
+                    }
+
                     //Data Log START
                     $log = [
                         'username_log' => session()->get('username'),
                         'tgl_log'      => date("Y-m-d"),
                         'waktu_log'    => date("H:i:s"),
                         'status_log'   => 'GAGAL',
-                        'aktivitas_log'=> 'Buat Data Peserta via Import Excel, Nama Peserta : ' .  $excel['4'] . $gagal1 . $gagal2 . $gagal3,
+                        'aktivitas_log'=> 'Buat Data Peserta via Import Excel, Peserta : '  . $excel['3'] . ' - ' .  $excel['4'] . $gagal1 . $gagal2 . $gagal3 . $gagal4 . $gagal5 . $gagal6 . $gagal7 . $gagal8 . $gagal9 . $gagal10 . $gagal11 . $gagal12 . $gagal13 . $gagal14 . $gagal15 . $gagal16,
                     ];
                     $this->log->insert($log);
                     //Data Log END
-                } elseif($nis == 0 && $user == 1 && $duplikat_user == 0) {
+                } elseif($nis == 0 && $user == 1 && $duplikat_user == 0
+                    || $cek_angkatan == true
+                    || $cek_nik == true
+                    || $cek_nik_digit == true
+                    || $cek_level == true
+                    || $cek_status_peserta == true
+                    || $cek_cabang == true
+                    || $cek_tgl_lahir == true
+                    || $cek_status_peserta == true
+                    || $cek_pendidikan == true
+                    || $cek_status_pekerjaan == true
+                    || $cek_pekerjaan == true
+                    || $cek_domisili == true
+                    || $cek_tgl_gabung == true
+                    || $cek_hp = true) {
 
                     $jumlahsukses++;
 
@@ -1085,29 +1279,29 @@ class Peserta extends BaseController
                 //Cek Duplikat User
                 $duplikat_user  = $this->peserta->cek_duplikat_user($excel['2']);
 
-                if ($peserta_id == 0 || $nis != 0 || $user != 1 || $duplikat_user != 0) {
+                if ($peserta_id == 0 || $nis != 1 || $user != 1 || $duplikat_user != 1) {
                     $jumlaherror++;
 
-                    if ($nis != 0) {
-                        $gagal1 =  ' Karena NIS Duplikat';
+                    if ($nis != 1) {
+                        $gagal1 =  ' NIS Duplikat';
                     } else{
                         $gagal1 = '';
                     }
                     
                     if ($user != 1) {
-                        $gagal2 = ', Karena User ID Tidak Ditemukan';
+                        $gagal2 = ', User ID Tidak Ditemukan';
                     } else{
                         $gagal2 ='';
                     }
                     
-                    if ($duplikat_user != 0) {
-                        $gagal3 =  ', Karena User ID Duplikat';
+                    if ($duplikat_user != 1) {
+                        $gagal3 =  ', User ID Duplikat';
                     } else{
                         $gagal3 = '';
                     }
 
                     if ($peserta_id == 0) {
-                        $gagal4 =  ', Karena Peserta ID Tidak Ditemukan';
+                        $gagal4 =  ', Peserta ID Tidak Ditemukan';
                     } else{
                         $gagal4 = '';
                     }
@@ -1122,7 +1316,7 @@ class Peserta extends BaseController
                     ];
                     $this->log->insert($log);
                     //Data Log END
-                } elseif($peserta_id == 1 && $nis == 0 || $user == 1 || $duplikat_user == 0) {
+                } elseif($peserta_id == 1 && $nis == 1 || $user == 1 || $duplikat_user == 1) {
 
                     $jumlahsukses++;
 
