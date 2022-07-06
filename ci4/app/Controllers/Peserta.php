@@ -1174,6 +1174,8 @@ class Peserta extends BaseController
 
             $sheet->getStyle('F' . $row)->getNumberFormat()
             ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
+            $sheet->getStyle('S' . $row)->getNumberFormat()
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
 
             $sheet->getStyle('A' . $row)->applyFromArray($border);
             $sheet->getStyle('B' . $row)->applyFromArray($border);
