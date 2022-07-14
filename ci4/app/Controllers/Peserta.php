@@ -1172,8 +1172,8 @@ class Peserta extends BaseController
                 ->setCellValue('T' . $row, $psrtdata['email'])
                 ->setCellValue('U' . $row, $psrtdata['tgl_gabung']);
 
-            $sheet->getStyle('F' . $row)->getNumberFormat()
-            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+            // $sheet->getStyle('F' . $row)->getNumberFormat()
+            // ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
             $sheet->getStyle('S' . $row)->getNumberFormat()
             ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
 
