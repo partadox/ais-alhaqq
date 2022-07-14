@@ -1155,7 +1155,7 @@ class Peserta extends BaseController
                 ->setCellValue('C' . $row, $psrtdata['angkatan'])
                 ->setCellValue('D' . $row, $psrtdata['nis'])
                 ->setCellValue('E' . $row, $psrtdata['nama_peserta'])
-                ->setCellValue('F' . $row, "'" . $psrtdata['nik'])
+                ->setCellValue('F' . $row, $psrtdata['nik'])
                 ->setCellValue('G' . $row, $psrtdata['level_peserta'])
                 ->setCellValue('H' . $row, $psrtdata['status_peserta'])
                 ->setCellValue('I' . $row, $psrtdata['asal_cabang_peserta'])
@@ -1172,8 +1172,8 @@ class Peserta extends BaseController
                 ->setCellValue('T' . $row, $psrtdata['email'])
                 ->setCellValue('U' . $row, $psrtdata['tgl_gabung']);
 
-            // $sheet->getStyle('F' . $row)->getNumberFormat()
-            // ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+            $sheet->getStyle('F' . $row)->getNumberFormat()
+            ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
             $sheet->getStyle('S' . $row)->getNumberFormat()
             ->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_NUMBER);
 
@@ -1322,14 +1322,14 @@ class Peserta extends BaseController
 
                     $jumlahsukses++;
 
-                    $nik = substr($excel['6'], 1);
+                    //$nik = substr($excel['6'], 1);
 
                     $updatedata   = [
                         'user_id'               => $excel['2'],
                         'angkatan'              => $excel['3'],
                         'nis'                   => $excel['4'],
                         'nama_peserta'          => strtoupper($excel['5']),
-                        'nik'                   => $nik,
+                        'nik'                   => $excel['6'],
                         'level_peserta'         => $excel['7'],
                         'status_peserta'        => strtoupper($excel['8']),
                         'asal_cabang_peserta'   => $excel['9'],
