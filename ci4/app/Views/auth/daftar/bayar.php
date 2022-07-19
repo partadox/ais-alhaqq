@@ -66,7 +66,9 @@
                                       <td> 
                                       Total Bayar Lunas = <br> <b>Rp <?= rupiah( $program_bayar[0]['biaya_program']+$program_bayar[0]['biaya_daftar']+$program_bayar[0]['biaya_modul']) ?></b>
                                       <hr>
-                                        Total Pendaftaran + SPP 1 + Modul= <br> <b>Rp <?= rupiah($program_bayar[0]['biaya_bulanan']+$program_bayar[0]['biaya_daftar']+$program_bayar[0]['biaya_modul']) ?></b>
+                                        Total Pendaftaran + SPP 1 <?php if($program_bayar[0]['biaya_modul'] != '0') { ?>
+                                        + Modul
+                                      <?php } ?> = <br> <b>Rp <?= rupiah($program_bayar[0]['biaya_bulanan']+$program_bayar[0]['biaya_daftar']+$program_bayar[0]['biaya_modul']) ?></b>
                                       </td>
                                       <td>
                                       <?php if($program_bayar[0]['status_konfirmasi'] == '') { ?>
@@ -173,7 +175,7 @@
                         <div class="form-group">
                           <div class="mb-3">
                             <label class="form-label">Modul <code>*</code></label>
-                            <input class="form-control number-separator" type="text" id="modul" name="modul" placeholder="(Masukan 0 jika tidak membayar modul)" value="<?= $program_bayar[0]['biaya_modul'] ?>">
+                            <input class="form-control number-separator" type="text" id="modul" name="modul" placeholder="(Masukan 0 jika tidak membayar modul)">
                           </div>
                         </div>
                         <div class="form-group">
@@ -193,7 +195,7 @@
                           <div class="col-lg-6">
                               <div class="input-group">
                                   <div class="custom-file">
-                                      <input type="file" class="custom-file-input"  id="foto" name="foto" onchange="previewimg()">
+                                      <input type="file" class="custom-file-input"  id="foto" name="foto" onchange="previewimg()" accept=".jpg,.jpeg,.png">
                                       <label class="custom-file-label">Upload Bukti Transfer</label>
                                   </div>
                               </div>

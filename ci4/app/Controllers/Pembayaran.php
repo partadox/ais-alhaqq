@@ -361,6 +361,15 @@ class Pembayaran extends BaseController
                 $bayar_lain         = $bayar_lain_int;
 
                 $databayar = [
+                    'awal_bayar'                => $nominal_bayar,
+                    'awal_bayar_daftar'         => $bayar_daftar,
+                    'awal_bayar_spp1'           => $bayar_spp1,
+                    'awal_bayar_spp2'           => $bayar_spp2,
+                    'awal_bayar_spp3'           => $bayar_spp3,
+                    'awal_bayar_spp4'           => $bayar_spp4,
+                    'awal_bayar_modul'          => $bayar_modul,
+                    'awal_bayar_infaq'          => $bayar_infaq,
+                    'awal_bayar_lainnya'        => $bayar_lain,
                     'status_bayar'              => 'Lunas',
                     'status_konfirmasi'         => 'Terkonfirmasi',
                     'status_bayar_admin'        => $status_bayar_admin,
@@ -971,6 +980,7 @@ class Pembayaran extends BaseController
                     'awal_bayar_spp4'       => $awal_bayar_spp4,
                     'keterangan_bayar'      => $keterangan_bayar,
                     'status_bayar_admin'    => $status_bayar_admin,
+                    'nominal_bayar'         => $awal_bayar,
                     'keterangan_bayar_admin'=> $keterangan_bayar_admin,
                 ];
 
@@ -996,6 +1006,89 @@ class Pembayaran extends BaseController
             }
             echo json_encode($msg);
         }
+    }
+
+    public function edit_gambar()
+    {
+        if ($this->request->isAJAX()) {
+            $bayar_id = $this->request->getVar('bayar_id');
+            //$list =  $this->program_bayar->find($bayar_id);
+            $data = [
+                'title'     => 'Upload Bukti Transfer Baru',
+                //'list'      => $list,
+                'bayar_id'  => $bayar_id
+            ];
+            $msg = [
+                'sukses' => view('auth/pembayaran/edit_gambar', $data)
+            ];
+            echo json_encode($msg);
+        }
+    }
+
+    public function simpan_gambar()
+    {
+            $validation = \Config\Services::validation();
+
+            //Get Nama User
+            $user_nama = session()->get('nama');
+            //Get Tgl Today
+            $tgl = date("Y-m-d");
+            $waktu = date("H:i:s");
+            $strwaktu = date("H-i-s");
+
+            $valid = $this->validate([
+                'foto' => [
+                    'rules' => 'uploaded[foto]|mime_in[foto,image/png,image/jpg,image/jpeg]|is_image[foto]',
+                    'errors' => [
+                        'mime_in' => 'Harus gambar!'
+                    ]
+                ]
+            ]);
+
+            if (!$valid) {
+                $this->session->setFlashdata('pesan_error', 'ERROR! Upload Bukti Bayar!');
+                return redirect()->to('index');
+            } else {
+
+                $bayar_id           = $this->request->getVar('bayar_id');
+                $databayar          = $this->program_bayar->find($bayar_id);
+                $bukti_bayar_lama   = $databayar['bukti_bayar'];
+                $bayar_peserta_id   = $databayar['bayar_peserta_id'];
+                $datapeserta        = $this->peserta->find($bayar_peserta_id);
+                $nama_peserta       = $datapeserta['nama_peserta'];
+                $nis_peserta        = $datapeserta['nis'];
+
+                // get file foto from input
+                $filefoto = $this->request->getFile('foto');
+                // ambil nama file
+                $namafoto = $filefoto->getName();
+                // nama foto baru
+                $namafoto_new = $nama_peserta . '_'. $tgl . '_' . $strwaktu .'_'. $namafoto;
+
+                $data_bayar = [
+                    'bukti_bayar'               => $namafoto_new,
+                ];
+                
+                // insert status konfirmasi
+                $this->program_bayar->update($bayar_id, $data_bayar);
+
+                $filefoto->move('img/transfer/', $namafoto_new);
+                unlink('img/transfer/' . $bukti_bayar_lama);
+
+                // Data Log START
+                $log = [
+                    'username_log' => session()->get('username'),
+                    'tgl_log'      => date("Y-m-d"),
+                    'waktu_log'    => date("H:i:s"),
+                    'status_log'   => 'BERHASIL',
+                    'aktivitas_log'=> 'Ubah Bukti Transfer, ID Pembayaran : ' . $bayar_id . ' Atas Nama ' .  $nis_peserta .  ' - '. $nama_peserta, 
+                ];
+                $this->log->insert($log);
+                // Data Log END
+                
+                $this->session->setFlashdata('pesan_sukses', 'Bukti Pembayaran Berhasil Diubah!');
+                return redirect()->to('index');
+            }
     }
 
     public function hapus_bayar()

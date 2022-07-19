@@ -598,6 +598,7 @@ class Daftar extends BaseController
                 $data_bayar = [
                     'status_konfirmasi'         => 'Proses',
                     'awal_bayar'                => $awal_bayar,
+                    'nominal_bayar'             => $awal_bayar,
                     'awal_bayar_daftar'         => $awal_bayar_daftar,
                     'awal_bayar_infaq'          => $awal_bayar_infaq,
                     'awal_bayar_spp1'           => $awal_bayar_spp1,

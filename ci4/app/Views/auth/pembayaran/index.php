@@ -145,6 +145,8 @@ if (session()->getFlashdata('pesan_sukses')) {
                         <i class=" fa fa-edit mr-1"></i>Edit</button>
                         <button type="button" class="btn btn-danger mb-2" onclick="hapus('<?= $data['bayar_id'] ?>')" >
                         <i class=" fa fa-trash mr-1"></i>Hapus</button>
+                        <button type="button" class="btn btn-info mb-2" onclick="gambar('<?= $data['bayar_id'] ?>')" >
+                        <i class=" fa fa-image mr-1"></i> Bukti</button>
                 </td>
             </tr>
 
@@ -157,6 +159,9 @@ if (session()->getFlashdata('pesan_sukses')) {
 </div>
 
 <div class="viewmodaldataedit">
+</div>
+
+<div class="viewmodalgambar">
 </div>
 
 <script>
@@ -221,6 +226,23 @@ if (session()->getFlashdata('pesan_sukses')) {
                 if (response.sukses) {
                     $('.viewmodaldataedit').html(response.sukses).show();
                     $('#modaledit').modal('show');
+                }
+            }
+        });
+    }
+
+    function gambar(bayar_id) {
+        $.ajax({
+            type: "post",
+            url: "<?= site_url('pembayaran/edit_gambar') ?>",
+            data: {
+                bayar_id : bayar_id
+            },
+            dataType: "json",
+            success: function(response) {
+                if (response.sukses) {
+                    $('.viewmodalgambar').html(response.sukses).show();
+                    $('#modalgambar').modal('show');
                 }
             }
         });
